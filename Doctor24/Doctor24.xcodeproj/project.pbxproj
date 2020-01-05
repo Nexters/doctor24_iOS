@@ -1,0 +1,595 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3723C219A200FE4D6C /* AppDelegate.swift */; };
+		A1F19D3A23C219A200FE4D6C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3923C219A200FE4D6C /* SceneDelegate.swift */; };
+		A1F19D3C23C219A200FE4D6C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3B23C219A200FE4D6C /* ViewController.swift */; };
+		A1F19D3F23C219A200FE4D6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F19D3D23C219A200FE4D6C /* Main.storyboard */; };
+		A1F19D4123C219A500FE4D6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1F19D4023C219A500FE4D6C /* Assets.xcassets */; };
+		A1F19D4423C219A500FE4D6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F19D4223C219A500FE4D6C /* LaunchScreen.storyboard */; };
+		A1F19D4F23C219A500FE4D6C /* Doctor24Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D4E23C219A500FE4D6C /* Doctor24Tests.swift */; };
+		A1F19D5A23C219A500FE4D6C /* Doctor24UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D5923C219A500FE4D6C /* Doctor24UITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A1F19D4B23C219A500FE4D6C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1F19D2C23C219A200FE4D6C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1F19D3323C219A200FE4D6C;
+			remoteInfo = Doctor24;
+		};
+		A1F19D5623C219A500FE4D6C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1F19D2C23C219A200FE4D6C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1F19D3323C219A200FE4D6C;
+			remoteInfo = Doctor24;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A1F19D3423C219A200FE4D6C /* Doctor24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doctor24.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1F19D3723C219A200FE4D6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A1F19D3923C219A200FE4D6C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A1F19D3B23C219A200FE4D6C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A1F19D3E23C219A200FE4D6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A1F19D4023C219A500FE4D6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1F19D4323C219A500FE4D6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A1F19D4523C219A500FE4D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1F19D4A23C219A500FE4D6C /* Doctor24Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Doctor24Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1F19D4E23C219A500FE4D6C /* Doctor24Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doctor24Tests.swift; sourceTree = "<group>"; };
+		A1F19D5023C219A500FE4D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1F19D5523C219A500FE4D6C /* Doctor24UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Doctor24UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1F19D5923C219A500FE4D6C /* Doctor24UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doctor24UITests.swift; sourceTree = "<group>"; };
+		A1F19D5B23C219A500FE4D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A1F19D3123C219A200FE4D6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1F19D4723C219A500FE4D6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1F19D5223C219A500FE4D6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A1F19D2B23C219A200FE4D6C = {
+			isa = PBXGroup;
+			children = (
+				A1F19D3623C219A200FE4D6C /* Doctor24 */,
+				A1F19D4D23C219A500FE4D6C /* Doctor24Tests */,
+				A1F19D5823C219A500FE4D6C /* Doctor24UITests */,
+				A1F19D3523C219A200FE4D6C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A1F19D3523C219A200FE4D6C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1F19D3423C219A200FE4D6C /* Doctor24.app */,
+				A1F19D4A23C219A500FE4D6C /* Doctor24Tests.xctest */,
+				A1F19D5523C219A500FE4D6C /* Doctor24UITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1F19D3623C219A200FE4D6C /* Doctor24 */ = {
+			isa = PBXGroup;
+			children = (
+				A1F19D3723C219A200FE4D6C /* AppDelegate.swift */,
+				A1F19D3923C219A200FE4D6C /* SceneDelegate.swift */,
+				A1F19D3B23C219A200FE4D6C /* ViewController.swift */,
+				A1F19D3D23C219A200FE4D6C /* Main.storyboard */,
+				A1F19D4023C219A500FE4D6C /* Assets.xcassets */,
+				A1F19D4223C219A500FE4D6C /* LaunchScreen.storyboard */,
+				A1F19D4523C219A500FE4D6C /* Info.plist */,
+			);
+			path = Doctor24;
+			sourceTree = "<group>";
+		};
+		A1F19D4D23C219A500FE4D6C /* Doctor24Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A1F19D4E23C219A500FE4D6C /* Doctor24Tests.swift */,
+				A1F19D5023C219A500FE4D6C /* Info.plist */,
+			);
+			path = Doctor24Tests;
+			sourceTree = "<group>";
+		};
+		A1F19D5823C219A500FE4D6C /* Doctor24UITests */ = {
+			isa = PBXGroup;
+			children = (
+				A1F19D5923C219A500FE4D6C /* Doctor24UITests.swift */,
+				A1F19D5B23C219A500FE4D6C /* Info.plist */,
+			);
+			path = Doctor24UITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A1F19D3323C219A200FE4D6C /* Doctor24 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1F19D5E23C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24" */;
+			buildPhases = (
+				A1F19D3023C219A200FE4D6C /* Sources */,
+				A1F19D3123C219A200FE4D6C /* Frameworks */,
+				A1F19D3223C219A200FE4D6C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Doctor24;
+			productName = Doctor24;
+			productReference = A1F19D3423C219A200FE4D6C /* Doctor24.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A1F19D4923C219A500FE4D6C /* Doctor24Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1F19D6123C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24Tests" */;
+			buildPhases = (
+				A1F19D4623C219A500FE4D6C /* Sources */,
+				A1F19D4723C219A500FE4D6C /* Frameworks */,
+				A1F19D4823C219A500FE4D6C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A1F19D4C23C219A500FE4D6C /* PBXTargetDependency */,
+			);
+			name = Doctor24Tests;
+			productName = Doctor24Tests;
+			productReference = A1F19D4A23C219A500FE4D6C /* Doctor24Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A1F19D5423C219A500FE4D6C /* Doctor24UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1F19D6423C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24UITests" */;
+			buildPhases = (
+				A1F19D5123C219A500FE4D6C /* Sources */,
+				A1F19D5223C219A500FE4D6C /* Frameworks */,
+				A1F19D5323C219A500FE4D6C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A1F19D5723C219A500FE4D6C /* PBXTargetDependency */,
+			);
+			name = Doctor24UITests;
+			productName = Doctor24UITests;
+			productReference = A1F19D5523C219A500FE4D6C /* Doctor24UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1F19D2C23C219A200FE4D6C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = JHH;
+				TargetAttributes = {
+					A1F19D3323C219A200FE4D6C = {
+						CreatedOnToolsVersion = 11.3;
+					};
+					A1F19D4923C219A500FE4D6C = {
+						CreatedOnToolsVersion = 11.3;
+						TestTargetID = A1F19D3323C219A200FE4D6C;
+					};
+					A1F19D5423C219A500FE4D6C = {
+						CreatedOnToolsVersion = 11.3;
+						TestTargetID = A1F19D3323C219A200FE4D6C;
+					};
+				};
+			};
+			buildConfigurationList = A1F19D2F23C219A200FE4D6C /* Build configuration list for PBXProject "Doctor24" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A1F19D2B23C219A200FE4D6C;
+			productRefGroup = A1F19D3523C219A200FE4D6C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A1F19D3323C219A200FE4D6C /* Doctor24 */,
+				A1F19D4923C219A500FE4D6C /* Doctor24Tests */,
+				A1F19D5423C219A500FE4D6C /* Doctor24UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A1F19D3223C219A200FE4D6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1F19D4423C219A500FE4D6C /* LaunchScreen.storyboard in Resources */,
+				A1F19D4123C219A500FE4D6C /* Assets.xcassets in Resources */,
+				A1F19D3F23C219A200FE4D6C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1F19D4823C219A500FE4D6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1F19D5323C219A500FE4D6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A1F19D3023C219A200FE4D6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1F19D3C23C219A200FE4D6C /* ViewController.swift in Sources */,
+				A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */,
+				A1F19D3A23C219A200FE4D6C /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1F19D4623C219A500FE4D6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1F19D4F23C219A500FE4D6C /* Doctor24Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1F19D5123C219A500FE4D6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1F19D5A23C219A500FE4D6C /* Doctor24UITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A1F19D4C23C219A500FE4D6C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1F19D3323C219A200FE4D6C /* Doctor24 */;
+			targetProxy = A1F19D4B23C219A500FE4D6C /* PBXContainerItemProxy */;
+		};
+		A1F19D5723C219A500FE4D6C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1F19D3323C219A200FE4D6C /* Doctor24 */;
+			targetProxy = A1F19D5623C219A500FE4D6C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A1F19D3D23C219A200FE4D6C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1F19D3E23C219A200FE4D6C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A1F19D4223C219A500FE4D6C /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1F19D4323C219A500FE4D6C /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A1F19D5C23C219A500FE4D6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A1F19D5D23C219A500FE4D6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A1F19D5F23C219A500FE4D6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 594TR8CRP9;
+				INFOPLIST_FILE = Doctor24/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = JHH.Doctor24;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1F19D6023C219A500FE4D6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 594TR8CRP9;
+				INFOPLIST_FILE = Doctor24/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = JHH.Doctor24;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A1F19D6223C219A500FE4D6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 594TR8CRP9;
+				INFOPLIST_FILE = Doctor24Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = JHH.Doctor24Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Doctor24.app/Doctor24";
+			};
+			name = Debug;
+		};
+		A1F19D6323C219A500FE4D6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 594TR8CRP9;
+				INFOPLIST_FILE = Doctor24Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = JHH.Doctor24Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Doctor24.app/Doctor24";
+			};
+			name = Release;
+		};
+		A1F19D6523C219A500FE4D6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 594TR8CRP9;
+				INFOPLIST_FILE = Doctor24UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = JHH.Doctor24UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Doctor24;
+			};
+			name = Debug;
+		};
+		A1F19D6623C219A500FE4D6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 594TR8CRP9;
+				INFOPLIST_FILE = Doctor24UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = JHH.Doctor24UITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Doctor24;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A1F19D2F23C219A200FE4D6C /* Build configuration list for PBXProject "Doctor24" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1F19D5C23C219A500FE4D6C /* Debug */,
+				A1F19D5D23C219A500FE4D6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1F19D5E23C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1F19D5F23C219A500FE4D6C /* Debug */,
+				A1F19D6023C219A500FE4D6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1F19D6123C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1F19D6223C219A500FE4D6C /* Debug */,
+				A1F19D6323C219A500FE4D6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1F19D6423C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1F19D6523C219A500FE4D6C /* Debug */,
+				A1F19D6623C219A500FE4D6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1F19D2C23C219A200FE4D6C /* Project object */;
+}
