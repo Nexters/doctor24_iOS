@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		622AD305644569D976A7854B /* Pods_Doctor24UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B252508438D9F20B77BC21CC /* Pods_Doctor24UITests.framework */; };
 		A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3723C219A200FE4D6C /* AppDelegate.swift */; };
 		A1F19D3A23C219A200FE4D6C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3923C219A200FE4D6C /* SceneDelegate.swift */; };
 		A1F19D3C23C219A200FE4D6C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3B23C219A200FE4D6C /* ViewController.swift */; };
@@ -15,6 +16,8 @@
 		A1F19D4423C219A500FE4D6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F19D4223C219A500FE4D6C /* LaunchScreen.storyboard */; };
 		A1F19D4F23C219A500FE4D6C /* Doctor24Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D4E23C219A500FE4D6C /* Doctor24Tests.swift */; };
 		A1F19D5A23C219A500FE4D6C /* Doctor24UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D5923C219A500FE4D6C /* Doctor24UITests.swift */; };
+		B7B4D6E45F6F9C13B55C1EA6 /* Pods_Doctor24.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1163A7B036FB4B1CF41A5852 /* Pods_Doctor24.framework */; };
+		DED460F3286F03418A2C7BFA /* Pods_Doctor24Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7510603173A6EADA2D1AE8 /* Pods_Doctor24Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1163A7B036FB4B1CF41A5852 /* Pods_Doctor24.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Doctor24.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C20488D3924D30430143417 /* Pods-Doctor24.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24.debug.xcconfig"; path = "Target Support Files/Pods-Doctor24/Pods-Doctor24.debug.xcconfig"; sourceTree = "<group>"; };
+		3C836CA3E0B0E4497E3EB305 /* Pods-Doctor24UITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24UITests.debug.xcconfig"; path = "Target Support Files/Pods-Doctor24UITests/Pods-Doctor24UITests.debug.xcconfig"; sourceTree = "<group>"; };
+		3D8CB70DE1D92FBCF4757398 /* Pods-Doctor24.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24.release.xcconfig"; path = "Target Support Files/Pods-Doctor24/Pods-Doctor24.release.xcconfig"; sourceTree = "<group>"; };
+		512C29127C18D70CA531A822 /* Pods-Doctor24Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24Tests.release.xcconfig"; path = "Target Support Files/Pods-Doctor24Tests/Pods-Doctor24Tests.release.xcconfig"; sourceTree = "<group>"; };
+		983B041B442ABEFEFAA986AD /* Pods-Doctor24UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24UITests.release.xcconfig"; path = "Target Support Files/Pods-Doctor24UITests/Pods-Doctor24UITests.release.xcconfig"; sourceTree = "<group>"; };
 		A1F19D3423C219A200FE4D6C /* Doctor24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doctor24.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1F19D3723C219A200FE4D6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1F19D3923C219A200FE4D6C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +58,9 @@
 		A1F19D5523C219A500FE4D6C /* Doctor24UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Doctor24UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1F19D5923C219A500FE4D6C /* Doctor24UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doctor24UITests.swift; sourceTree = "<group>"; };
 		A1F19D5B23C219A500FE4D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B0731029B4147BCEBC7C2A5E /* Pods-Doctor24Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24Tests.debug.xcconfig"; path = "Target Support Files/Pods-Doctor24Tests/Pods-Doctor24Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		B252508438D9F20B77BC21CC /* Pods_Doctor24UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Doctor24UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB7510603173A6EADA2D1AE8 /* Pods_Doctor24Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Doctor24Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7B4D6E45F6F9C13B55C1EA6 /* Pods_Doctor24.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DED460F3286F03418A2C7BFA /* Pods_Doctor24Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				622AD305644569D976A7854B /* Pods_Doctor24UITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,6 +98,8 @@
 				A1F19D4D23C219A500FE4D6C /* Doctor24Tests */,
 				A1F19D5823C219A500FE4D6C /* Doctor24UITests */,
 				A1F19D3523C219A200FE4D6C /* Products */,
+				AA111BADEA93C5910316CE7E /* Pods */,
+				BEEB2349B87B215FF0BC0F82 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -128,6 +145,30 @@
 			path = Doctor24UITests;
 			sourceTree = "<group>";
 		};
+		AA111BADEA93C5910316CE7E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1C20488D3924D30430143417 /* Pods-Doctor24.debug.xcconfig */,
+				3D8CB70DE1D92FBCF4757398 /* Pods-Doctor24.release.xcconfig */,
+				B0731029B4147BCEBC7C2A5E /* Pods-Doctor24Tests.debug.xcconfig */,
+				512C29127C18D70CA531A822 /* Pods-Doctor24Tests.release.xcconfig */,
+				3C836CA3E0B0E4497E3EB305 /* Pods-Doctor24UITests.debug.xcconfig */,
+				983B041B442ABEFEFAA986AD /* Pods-Doctor24UITests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		BEEB2349B87B215FF0BC0F82 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1163A7B036FB4B1CF41A5852 /* Pods_Doctor24.framework */,
+				EB7510603173A6EADA2D1AE8 /* Pods_Doctor24Tests.framework */,
+				B252508438D9F20B77BC21CC /* Pods_Doctor24UITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,9 +176,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1F19D5E23C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24" */;
 			buildPhases = (
+				B41561B11FAD076B9F1D6827 /* [CP] Check Pods Manifest.lock */,
 				A1F19D3023C219A200FE4D6C /* Sources */,
 				A1F19D3123C219A200FE4D6C /* Frameworks */,
 				A1F19D3223C219A200FE4D6C /* Resources */,
+				D2581721967E04839DCFAA5F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -152,6 +195,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1F19D6123C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24Tests" */;
 			buildPhases = (
+				372CC4209386DA2D35CA3CB3 /* [CP] Check Pods Manifest.lock */,
 				A1F19D4623C219A500FE4D6C /* Sources */,
 				A1F19D4723C219A500FE4D6C /* Frameworks */,
 				A1F19D4823C219A500FE4D6C /* Resources */,
@@ -170,6 +214,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A1F19D6423C219A500FE4D6C /* Build configuration list for PBXNativeTarget "Doctor24UITests" */;
 			buildPhases = (
+				F55E8D8E4307265E6995C420 /* [CP] Check Pods Manifest.lock */,
 				A1F19D5123C219A500FE4D6C /* Sources */,
 				A1F19D5223C219A500FE4D6C /* Frameworks */,
 				A1F19D5323C219A500FE4D6C /* Resources */,
@@ -253,6 +298,92 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		372CC4209386DA2D35CA3CB3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Doctor24Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B41561B11FAD076B9F1D6827 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Doctor24-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D2581721967E04839DCFAA5F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Doctor24/Pods-Doctor24-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Doctor24/Pods-Doctor24-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Doctor24/Pods-Doctor24-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F55E8D8E4307265E6995C420 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Doctor24UITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A1F19D3023C219A200FE4D6C /* Sources */ = {
@@ -432,6 +563,7 @@
 		};
 		A1F19D5F23C219A500FE4D6C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C20488D3924D30430143417 /* Pods-Doctor24.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -450,6 +582,7 @@
 		};
 		A1F19D6023C219A500FE4D6C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3D8CB70DE1D92FBCF4757398 /* Pods-Doctor24.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -468,6 +601,7 @@
 		};
 		A1F19D6223C219A500FE4D6C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B0731029B4147BCEBC7C2A5E /* Pods-Doctor24Tests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -490,6 +624,7 @@
 		};
 		A1F19D6323C219A500FE4D6C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 512C29127C18D70CA531A822 /* Pods-Doctor24Tests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -512,6 +647,7 @@
 		};
 		A1F19D6523C219A500FE4D6C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3C836CA3E0B0E4497E3EB305 /* Pods-Doctor24UITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -532,6 +668,7 @@
 		};
 		A1F19D6623C219A500FE4D6C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 983B041B442ABEFEFAA986AD /* Pods-Doctor24UITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
