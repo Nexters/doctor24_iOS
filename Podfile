@@ -7,6 +7,11 @@ target 'Doctor24' do
 
   # Pods for Doctor24
 pod 'NMapsMap'
+pod 'RxSwift'
+pod 'RxCocoa'
+pod 'ReactorKit'
+pod 'Alamofire'
+pod 'SnapKit'
 
   target 'Doctor24Tests' do
     inherit! :search_paths
@@ -17,5 +22,30 @@ pod 'NMapsMap'
     inherit! :search_paths
     # Pods for testing
   end
+
+end
+
+
+target 'Domain' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+  pod 'RxSwift'
+
+  target 'DomainTests' do
+    inherit! :search_paths
+  end
+
+end
+
+
+target 'NetworkPlatform' do
+    # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+    use_frameworks!
+    pod 'RxSwift'
+    pod 'Alamofire'
+
+    target 'NetworkPlatformTests' do
+        inherit! :search_paths
+    end
 
 end
