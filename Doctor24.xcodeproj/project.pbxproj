@@ -299,9 +299,7 @@
 		6F90441223C439F300A5EFC5 /* APIs */ = {
 			isa = PBXGroup;
 			children = (
-				6F90441F23C46E3700A5EFC5 /* MockDomain.swift */,
-				6F90442123C46EE700A5EFC5 /* MockError.swift */,
-				6F90442923C471C000A5EFC5 /* MockAPI.swift */,
+				6F90442B23C478EE00A5EFC5 /* Mock */,
 			);
 			path = APIs;
 			sourceTree = "<group>";
@@ -313,6 +311,16 @@
 				6F90442723C4717D00A5EFC5 /* Model.swift */,
 			);
 			path = Entries;
+			sourceTree = "<group>";
+		};
+		6F90442B23C478EE00A5EFC5 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				6F90441F23C46E3700A5EFC5 /* MockDomain.swift */,
+				6F90442123C46EE700A5EFC5 /* MockError.swift */,
+				6F90442923C471C000A5EFC5 /* MockAPI.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		A1F19D2B23C219A200FE4D6C = {
