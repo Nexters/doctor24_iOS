@@ -5,10 +5,11 @@
 //  Created by Haehyeon Jeong on 2020/01/05.
 //  Copyright © 2020 JHH. All rights reserved.
 //
-import UIKit
-
 import Domain
 import NetworkPlatform
+
+import UIKit
+
 import NMapsMap
 import SnapKit
 import RxSwift
@@ -28,8 +29,9 @@ class ViewController: UIViewController {
         let mockAPIButton = UIButton()
         mockAPIButton.backgroundColor = .red
         
+        view.addSubview(mapView)
         view.addSubview(mockAPIButton)
-//        view.addSubview(mapView)
+        
         
         mockAPIButton.snp.makeConstraints{
             $0.center.equalToSuperview()
