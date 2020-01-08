@@ -1,14 +1,14 @@
 //
 //  APIError.swift
-//  NetworkPlatform
+//  Domain
 //
-//  Created by gabriel.jeong on 07/01/2020.
+//  Created by gabriel.jeong on 08/01/2020.
 //  Copyright © 2020 JHH. All rights reserved.
 //
 
 import Foundation
 
-protocol ServiceErrorable: Codable {
+public protocol ServiceErrorable: Codable {
     associatedtype Code: ServiceErrorCodeRawPresentable
     var code: Code { get }
     var message: String? { get }
@@ -16,16 +16,16 @@ protocol ServiceErrorable: Codable {
     static func globalException() -> Bool
 }
 
-protocol ServiceErrorCodeRawPresentable: Codable {
+public protocol ServiceErrorCodeRawPresentable: Codable {
     var rawValue: Int { get }
 }
 
-struct APIError<ServiceError: ServiceErrorable>: Error{
-    let code  : Code
-    let status: Int?
-    let message: String?
+public struct APIError<ServiceError: ServiceErrorable>: Error{
+    public let code  : Code
+    public let status: Int?
+    public let message: String?
     
-    init(code: Code,
+    public init(code: Code,
          status: Int? = nil,
          message: String? = nil) {
         self.code = code
@@ -33,7 +33,7 @@ struct APIError<ServiceError: ServiceErrorable>: Error{
         self.message = message
     }
     
-    init(data: Data,
+    public init(data: Data,
          status: Int? = nil,
          type: ServiceError.Type) throws {
         let service = try JSONDecoder().decode(ServiceError.self, from: data)

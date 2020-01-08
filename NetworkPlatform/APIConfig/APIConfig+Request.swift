@@ -7,6 +7,7 @@
 //
 
 import Alamofire
+import Domain
 import RxSwift
 
 extension APIConfig {

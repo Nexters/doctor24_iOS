@@ -9,5 +9,5 @@
 import RxSwift
 
 public protocol MockUseCase {
-    func mockAPI() -> Observable<Result<Model.MockData, Error>>
+    func mockAPI() -> Observable<Result<Model.MockData, APIError<MockError>>>
 }

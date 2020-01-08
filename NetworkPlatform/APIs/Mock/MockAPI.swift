@@ -28,18 +28,4 @@ extension API.Mock: APIConfigWithError {
     func parse(_ input: Data) throws -> Model.MockData {
         return try input.parse()
     }
-    
-    func catchError(_ error: APIError<MockError>) -> FailStatus? {
-        switch error.code {
-        case .unknownError:
-            return nil
-        default:
-            return nil
-        }
-    }
-    
-    enum FailStatus: Error {
-        case updateError(String?)
-    }
-    
 }

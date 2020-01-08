@@ -1,8 +1,8 @@
 //
 //  APIError.Code.swift
-//  NetworkPlatform
+//  Domain
 //
-//  Created by gabriel.jeong on 07/01/2020.
+//  Created by gabriel.jeong on 08/01/2020.
 //  Copyright © 2020 JHH. All rights reserved.
 //
 

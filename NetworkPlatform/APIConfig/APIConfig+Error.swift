@@ -6,21 +6,18 @@
 //  Copyright © 2020 JHH. All rights reserved.
 //
 
+import Domain
 import RxSwift
 
-protocol APIConfigWithError: APIConfig {
-    associatedtype APISepecifiedError: Error
-    func catchError(_: APIError<ServiceError>) -> APISepecifiedError?
-}
+protocol APIConfigWithError: APIConfig { }
 
 extension APIConfigWithError {
-    func requestWithCatch() -> Observable<Result<Response, APISepecifiedError>> {
-        return self.makeRequest().map(Result<Response, APISepecifiedError>.success)
-            .catchError { error -> Observable<Result<Response, APISepecifiedError>> in
+    func requestWithCatch() -> Observable<Result<Response, APIError<ServiceError>>> {
+        return self.makeRequest().map(Result<Response, APIError<ServiceError>>.success)
+            .catchError { error -> Observable<Result<Response, APIError<ServiceError>>> in
                 guard let apiError = error as? APIError<ServiceError> else { throw error }
-                guard let serviceError = self.catchError(apiError) else { throw error }
                 
-                return Observable.just(.failure(serviceError))
+                return Observable.just(.failure(apiError))
         }
     }
 }
