@@ -35,6 +35,8 @@
 		6F90443B23C481EE00A5EFC5 /* MockUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F90443A23C481EE00A5EFC5 /* MockUseCase.swift */; };
 		6F90443E23C48AF000A5EFC5 /* UseCaseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F90443D23C48AF000A5EFC5 /* UseCaseProvider.swift */; };
 		6F90444023C48B6F00A5EFC5 /* MockAPIUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F90443F23C48B6F00A5EFC5 /* MockAPIUseCase.swift */; };
+		6FC1B2F423C719D900BCC9ED /* Rx+NMFMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1B2F323C719D900BCC9ED /* Rx+NMFMapView.swift */; };
+		6FC1B2F723C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1B2F623C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift */; };
 		6FFA3DBF23C5CE5400AFF69C /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA3DBE23C5CE5400AFF69C /* APIError.swift */; };
 		6FFA3DC123C5CE8700AFF69C /* APIError.Code.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA3DC023C5CE8700AFF69C /* APIError.Code.swift */; };
 		6FFA3DC323C5CEC000AFF69C /* MockError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFA3DC223C5CEC000AFF69C /* MockError.swift */; };
@@ -165,6 +167,8 @@
 		6F90443A23C481EE00A5EFC5 /* MockUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUseCase.swift; sourceTree = "<group>"; };
 		6F90443D23C48AF000A5EFC5 /* UseCaseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UseCaseProvider.swift; sourceTree = "<group>"; };
 		6F90443F23C48B6F00A5EFC5 /* MockAPIUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIUseCase.swift; sourceTree = "<group>"; };
+		6FC1B2F323C719D900BCC9ED /* Rx+NMFMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+NMFMapView.swift"; sourceTree = "<group>"; };
+		6FC1B2F623C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxNMFMapViewDelegateProxy.swift; sourceTree = "<group>"; };
 		6FFA3DBE23C5CE5400AFF69C /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		6FFA3DC023C5CE8700AFF69C /* APIError.Code.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.Code.swift; sourceTree = "<group>"; };
 		6FFA3DC223C5CEC000AFF69C /* MockError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockError.swift; sourceTree = "<group>"; };
@@ -261,6 +265,7 @@
 		6F6FDA6923C7084800B091DF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6FC1B2F523C71A1D00BCC9ED /* DelegateProxy */,
 				6F6FDA7523C70ABC00B091DF /* Extension */,
 				6F6FDA6E23C70A2300B091DF /* Transition */,
 			);
@@ -298,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				6F6FDA7323C70AB700B091DF /* NSObject+Custom.swift */,
+				6FC1B2F323C719D900BCC9ED /* Rx+NMFMapView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -398,6 +404,14 @@
 				6F90443F23C48B6F00A5EFC5 /* MockAPIUseCase.swift */,
 			);
 			path = UseCases;
+			sourceTree = "<group>";
+		};
+		6FC1B2F523C71A1D00BCC9ED /* DelegateProxy */ = {
+			isa = PBXGroup;
+			children = (
+				6FC1B2F623C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift */,
+			);
+			path = DelegateProxy;
 			sourceTree = "<group>";
 		};
 		6FFA3DBD23C5CE4600AFF69C /* Error */ = {
@@ -1012,8 +1026,10 @@
 				6F6FDA7423C70AB700B091DF /* NSObject+Custom.swift in Sources */,
 				6F6FDA7223C70A3800B091DF /* Scene.swift in Sources */,
 				A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */,
+				6FC1B2F423C719D900BCC9ED /* Rx+NMFMapView.swift in Sources */,
 				A1F19D3A23C219A200FE4D6C /* SceneDelegate.swift in Sources */,
 				6F6FDA7023C70A3200B091DF /* ViewTransition.swift in Sources */,
+				6FC1B2F723C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
