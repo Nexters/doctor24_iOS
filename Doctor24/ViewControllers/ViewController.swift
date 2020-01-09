@@ -6,19 +6,26 @@
 //  Copyright © 2020 JHH. All rights reserved.
 //
 import Domain
-import NetworkPlatform
 
 import UIKit
-
 import NMapsMap
 import SnapKit
 import RxSwift
 import RxCocoa
 
 
-class ViewController: UIViewController {
-    private var services: Domain.UseCaseProvider?
+final class ViewController: UIViewController {
+    private var service: Domain.UseCaseProvider?
     private let disposeBag = DisposeBag()
+    
+    init(service: UseCaseProvider) {
+        self.service = service
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,17 +39,15 @@ class ViewController: UIViewController {
         view.addSubview(mapView)
         view.addSubview(mockAPIButton)
         
-        
         mockAPIButton.snp.makeConstraints{
             $0.center.equalToSuperview()
             $0.width.equalTo(200)
             $0.height.equalTo(200)
         }
         
-        self.services = NetworkPlatform.UseCaseProvider()
-        let api = self.services?.makeMockAPIUseCase()
+        let api = self.service?.makeMockAPIUseCase()
         
-        mockAPIButton.rx.tap.flatMapLatest{ _ in
+        mockAPIButton.rx.tap.flatMapLatest{
             api!.mockAPI()
         }.subscribe(onNext:{ result in
             switch result {
@@ -52,7 +57,5 @@ class ViewController: UIViewController {
                 print("result error: \(error)")
             }
         }).disposed(by: self.disposeBag)
-        
     }
 }
-
