@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SnapKit
 
 protocol ViewDraggable where Self: BaseView {
     var contentViewHeight : CGFloat? { get }
