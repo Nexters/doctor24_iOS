@@ -17,7 +17,7 @@ class BaseView: UIView {
         vc = viewController
         super.init(frame: UIScreen.main.bounds)
         setupUI()
-        setupBinding()
+        setBind()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -28,7 +28,7 @@ class BaseView: UIView {
         // Override
     }
     
-    func setupBinding() {
+    func setBind() {
         // Override
     }
     

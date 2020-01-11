@@ -22,7 +22,7 @@ extension Scene {
         switch self {
         case .main:
             let networkService = NetworkPlatform.UseCaseProvider()
-            let vc = ViewController(service: networkService)
+            let vc = HomeViewController(service: networkService)
             return vc
         }
     }

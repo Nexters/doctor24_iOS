@@ -8,15 +8,16 @@
 import Domain
 
 import UIKit
-import NMapsMap
-import SnapKit
 import RxSwift
 import RxCocoa
 
-
-final class ViewController: UIViewController {
+final class HomeViewController: BaseViewController {
+    // MARK: Properties
     private var service: Domain.UseCaseProvider?
     private let disposeBag = DisposeBag()
+
+    // MARK: UI Componenet
+    private lazy var homeView = HomeView(controlBy: self)
     
     init(service: UseCaseProvider) {
         self.service = service
@@ -27,16 +28,16 @@ final class ViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView(){
+        self.view = self.homeView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let mapView = NMFMapView(frame: view.frame)
-        mapView.mapType = .navi
-        mapView.isNightModeEnabled = true
         
         let mockAPIButton = UIButton()
         mockAPIButton.backgroundColor = .red
-        
-        view.addSubview(mapView)
+
         view.addSubview(mockAPIButton)
         
         mockAPIButton.snp.makeConstraints{
