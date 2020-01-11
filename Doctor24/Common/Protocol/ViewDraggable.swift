@@ -12,30 +12,14 @@ import SnapKit
 protocol ViewDraggable where Self: BaseView {
     var contentViewHeight : CGFloat! { get }
     var contentView       : UIView!  { get set }
-//    var backgroundView    : UIView?  { get set }
     
     func setupBaseView()
     func onDragContentView(_ gesture : UIGestureRecognizer)
 }
 
-
 extension ViewDraggable{
     func setupBaseView(){
-//        self.addSubview(backgroundView)
         self.addSubview(contentView)
-//
-//        let gesture = UITapGestureRecognizer(target: self, action: #selector(pressedBackView(_:)))
-//        gesture.numberOfTapsRequired = 1
-//
-//        backgroundView.addGestureRecognizer(gesture)
-//
-//        backgroundView.snp.makeConstraints {
-//            $0.top.equalToSuperview()
-//            $0.left.equalToSuperview()
-//            $0.right.equalToSuperview()
-//            $0.bottom.equalToSuperview()
-//        }
-        
         self.contentView.snp.makeConstraints {
             $0.left.equalToSuperview()
             $0.right.equalToSuperview()
@@ -62,10 +46,18 @@ extension ViewDraggable{
         }else if gesture.state == .ended {
             
             UIView.animate(withDuration: 0.3) {
-                self.contentView.snp.updateConstraints({ [weak self] make in
-                    guard let self = self else { return }
-                    make.height.equalTo(self.contentViewHeight)
+                
+                var height: CGFloat = 0.0
+                if point.y <= self.vc.view.frame.height/2 {
+                    height = self.vc.view.frame.height
+                } else {
+                    height = self.contentViewHeight
+                }
+                
+                self.contentView.snp.updateConstraints({ make in
+                    make.height.equalTo(height)
                 })
+                
                 self.layoutIfNeeded()
             }
         }
