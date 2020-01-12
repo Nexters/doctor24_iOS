@@ -9,11 +9,7 @@
 import UIKit
 import SnapKit
 
-protocol ViewDraggable where Self: BaseView {
-    var contentViewHeight : CGFloat! { get }
-    var contentView       : UIView!  { get set }
-    
-    func setupBaseView()
+protocol ViewDraggable: ViewMenuable where Self: BaseView {
     func onDragContentView(_ gesture : UIGestureRecognizer)
 }
 
