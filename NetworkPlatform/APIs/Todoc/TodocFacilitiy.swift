@@ -11,7 +11,7 @@ import Domain
 
 extension API {
     struct Facility{
-    
+        let medicalType: Model.Todoc.MedicalType
     }
 }
 
@@ -19,7 +19,7 @@ extension API.Facility {
     static let domainConfig = TodocDomain.self
     static let serviceError = MockError.self
     
-    var path: String { return "/1.0/new" }
+    var path: String { return "/api/v1/medicals/\(self.medicalType.rawValue)/facilities" }
     var method: HTTPMethod { return .get }
     var parameters: API.Parameter? { return .map(nil) }
     

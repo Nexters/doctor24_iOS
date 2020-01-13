@@ -50,6 +50,7 @@
 		A1AEAE5623CB0B6A002B5AB2 /* ViewMenuSeletable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE5523CB0B6A002B5AB2 /* ViewMenuSeletable.swift */; };
 		A1AEAE5923CCA72B002B5AB2 /* TodocDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE5823CCA72B002B5AB2 /* TodocDomain.swift */; };
 		A1AEAE5B23CCA7A0002B5AB2 /* TodocFacilitiy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE5A23CCA7A0002B5AB2 /* TodocFacilitiy.swift */; };
+		A1AEAE5F23CCABDD002B5AB2 /* Model.Todoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE5E23CCABDD002B5AB2 /* Model.Todoc.swift */; };
 		A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3723C219A200FE4D6C /* AppDelegate.swift */; };
 		A1F19D3A23C219A200FE4D6C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3923C219A200FE4D6C /* SceneDelegate.swift */; };
 		A1F19D3C23C219A200FE4D6C /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D3B23C219A200FE4D6C /* HomeViewController.swift */; };
@@ -193,6 +194,7 @@
 		A1AEAE5523CB0B6A002B5AB2 /* ViewMenuSeletable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMenuSeletable.swift; sourceTree = "<group>"; };
 		A1AEAE5823CCA72B002B5AB2 /* TodocDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocDomain.swift; sourceTree = "<group>"; };
 		A1AEAE5A23CCA7A0002B5AB2 /* TodocFacilitiy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocFacilitiy.swift; sourceTree = "<group>"; };
+		A1AEAE5E23CCABDD002B5AB2 /* Model.Todoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.Todoc.swift; sourceTree = "<group>"; };
 		A1F19D3423C219A200FE4D6C /* Doctor24.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doctor24.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1F19D3723C219A200FE4D6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A1F19D3923C219A200FE4D6C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -411,9 +413,9 @@
 		6F90442323C4714B00A5EFC5 /* Entries */ = {
 			isa = PBXGroup;
 			children = (
+				A1AEAE5D23CCAB4C002B5AB2 /* Todoc */,
+				A1AEAE5C23CCA86B002B5AB2 /* Mock */,
 				6FFA3DBD23C5CE4600AFF69C /* Error */,
-				6F90442423C4715D00A5EFC5 /* MockData.swift */,
-				6FFA3DC223C5CEC000AFF69C /* MockError.swift */,
 				6F90442723C4717D00A5EFC5 /* Model.swift */,
 			);
 			path = Entries;
@@ -478,6 +480,23 @@
 			children = (
 				A1AEAE5823CCA72B002B5AB2 /* TodocDomain.swift */,
 				A1AEAE5A23CCA7A0002B5AB2 /* TodocFacilitiy.swift */,
+			);
+			path = Todoc;
+			sourceTree = "<group>";
+		};
+		A1AEAE5C23CCA86B002B5AB2 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				6F90442423C4715D00A5EFC5 /* MockData.swift */,
+				6FFA3DC223C5CEC000AFF69C /* MockError.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		A1AEAE5D23CCAB4C002B5AB2 /* Todoc */ = {
+			isa = PBXGroup;
+			children = (
+				A1AEAE5E23CCABDD002B5AB2 /* Model.Todoc.swift */,
 			);
 			path = Todoc;
 			sourceTree = "<group>";
@@ -1042,6 +1061,7 @@
 				6F90442823C4717D00A5EFC5 /* Model.swift in Sources */,
 				6FFA3DBF23C5CE5400AFF69C /* APIError.swift in Sources */,
 				6F90443B23C481EE00A5EFC5 /* MockUseCase.swift in Sources */,
+				A1AEAE5F23CCABDD002B5AB2 /* Model.Todoc.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
