@@ -13,13 +13,13 @@ extension Model {
 }
 
 extension Model.Todoc {
-    public enum MedicalType: String {
+    public enum MedicalType: String, Codable {
         case hospital
         case pharmacy
         case animal
     }
     
-    public enum DayOfWeek: String {
+    public enum DayOfWeek: String, Codable {
         case Monday
         case Tuesday
         case Wednesday
@@ -31,13 +31,13 @@ extension Model.Todoc {
 }
 
 extension Model.Todoc {
-    public struct Day {
+    public struct Day: Codable {
         public let dayOfWeek: Model.Todoc.DayOfWeek
         public let startTime: LocalTime
         public let endTime  : LocalTime
     }
     
-    public struct Facility {
+    public struct Facility: Codable {
         let name: String
         let latitude: Double
         let longitude: Double
@@ -47,7 +47,7 @@ extension Model.Todoc {
         let address: String
     }
     
-    public struct LocalTime {
+    public struct LocalTime: Codable {
         public let hour  : Int
         public let minute: Int
         public let second: Int

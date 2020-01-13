@@ -23,7 +23,7 @@ extension API.Facility {
     var method: HTTPMethod { return .get }
     var parameters: API.Parameter? { return .map(nil) }
     
-    func parse(_ input: Data) throws -> Model.MockData {
+    func parse(_ input: Data) throws -> Model.Todoc.Facility {
         return try input.parse()
     }
 }
