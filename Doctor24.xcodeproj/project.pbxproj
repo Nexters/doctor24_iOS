@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2792EEE3EDD5911AD5917C98 /* Pods_Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AD93DDEC784F82BED4827F2 /* Pods_Domain.framework */; };
 		622AD305644569D976A7854B /* Pods_Doctor24UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B252508438D9F20B77BC21CC /* Pods_Doctor24UITests.framework */; };
+		6F41E49E23CD6FEE00FB7157 /* FadeModalTransitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F41E49D23CD6FEE00FB7157 /* FadeModalTransitionViewController.swift */; };
+		6F41E4A123CD703E00FB7157 /* TransitionSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F41E4A023CD703E00FB7157 /* TransitionSetting.swift */; };
 		6F67164B23C7F9F7000EE7F0 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F67164A23C7F9F7000EE7F0 /* BaseView.swift */; };
 		6F67164D23C7FA2A000EE7F0 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F67164C23C7FA2A000EE7F0 /* BaseViewController.swift */; };
 		6F67165023C7FC41000EE7F0 /* ViewDraggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F67164F23C7FC41000EE7F0 /* ViewDraggable.swift */; };
@@ -149,6 +151,8 @@
 		4AD93DDEC784F82BED4827F2 /* Pods_Domain.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Domain.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		512C29127C18D70CA531A822 /* Pods-Doctor24Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24Tests.release.xcconfig"; path = "Target Support Files/Pods-Doctor24Tests/Pods-Doctor24Tests.release.xcconfig"; sourceTree = "<group>"; };
 		6C80C22098E024C05229F00B /* Pods-DomainTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DomainTests.debug.xcconfig"; path = "Target Support Files/Pods-DomainTests/Pods-DomainTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6F41E49D23CD6FEE00FB7157 /* FadeModalTransitionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeModalTransitionViewController.swift; sourceTree = "<group>"; };
+		6F41E4A023CD703E00FB7157 /* TransitionSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionSetting.swift; sourceTree = "<group>"; };
 		6F67164A23C7F9F7000EE7F0 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		6F67164C23C7FA2A000EE7F0 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		6F67164F23C7FC41000EE7F0 /* ViewDraggable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewDraggable.swift; sourceTree = "<group>"; };
@@ -282,6 +286,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F41E49F23CD702600FB7157 /* FadeModalTransition */ = {
+			isa = PBXGroup;
+			children = (
+				6F41E49D23CD6FEE00FB7157 /* FadeModalTransitionViewController.swift */,
+			);
+			path = FadeModalTransition;
+			sourceTree = "<group>";
+		};
 		6F67164923C7F9EF000EE7F0 /* Base */ = {
 			isa = PBXGroup;
 			children = (
@@ -336,6 +348,8 @@
 			children = (
 				6F6FDA6F23C70A3200B091DF /* ViewTransition.swift */,
 				6F6FDA7123C70A3800B091DF /* Scene.swift */,
+				6F41E4A023CD703E00FB7157 /* TransitionSetting.swift */,
+				6F41E49F23CD702600FB7157 /* FadeModalTransition */,
 			);
 			path = Transition;
 			sourceTree = "<group>";
@@ -1102,8 +1116,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F41E49E23CD6FEE00FB7157 /* FadeModalTransitionViewController.swift in Sources */,
 				6F6FDA6D23C7092A00B091DF /* CompositionRoot.swift in Sources */,
 				A1AEAE4E23C9A115002B5AB2 /* MainView.swift in Sources */,
+				6F41E4A123CD703E00FB7157 /* TransitionSetting.swift in Sources */,
 				A1F19D3C23C219A200FE4D6C /* HomeViewController.swift in Sources */,
 				A1AEAE5623CB0B6A002B5AB2 /* ViewMenuSeletable.swift in Sources */,
 				6F67164D23C7FA2A000EE7F0 /* BaseViewController.swift in Sources */,
