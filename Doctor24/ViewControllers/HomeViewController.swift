@@ -46,10 +46,10 @@ final class HomeViewController: BaseViewController {
             $0.height.equalTo(200)
         }
         
-        let api = self.service?.makeMockAPIUseCase()
-        
+        let api = self.service?.makeFacilitiesUseCase()
+
         mockAPIButton.rx.tap.flatMapLatest{
-            api!.mockAPI()
+            api!.facilities(.hospital, latitude: 37.5153968360202, longitude: 127.10745719189502)
         }.subscribe(onNext:{ result in
             switch result {
             case .success(let books):

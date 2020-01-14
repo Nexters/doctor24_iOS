@@ -19,22 +19,23 @@ extension Model.Todoc {
         case animal
     }
     
-    public enum DayOfWeek: String, Codable {
-        case Monday
-        case Tuesday
-        case Wednesday
-        case Thursday
-        case Friday
-        case Saturday
-        case Sunday
+    public enum DayType: String, Codable {
+        case MONDAY
+        case TUESDAY
+        case WEDNESDAY
+        case THURSDAY
+        case FRIDAY
+        case SATURDAY
+        case SUNDAY
+        case HOLIDAY
     }
 }
 
 extension Model.Todoc {
     public struct Day: Codable {
-        public let dayOfWeek: Model.Todoc.DayOfWeek
-        public let startTime: LocalTime
-        public let endTime  : LocalTime
+        public let dayType  : Model.Todoc.DayType
+        public let startTime: String
+        public let endTime  : String
     }
     
     public struct Facility: Codable {

@@ -9,7 +9,7 @@
 import Alamofire
 
 struct TodocDomain: DomainConfig {
-    static let domain: String = "http://27.96.130.44:8080/"
+    static let domain: String = "http://27.96.130.44:8080"
     static let manager: SessionManager = {
         return Alamofire.SessionManager(configuration: .default, serverTrustPolicyManager: ServerTrustPolicyManager(policies: [:]))
     }()

@@ -10,4 +10,5 @@ import Foundation
 
 public protocol UseCaseProvider {
     func makeMockAPIUseCase() -> MockUseCase
+    func makeFacilitiesUseCase() -> FacilitiesUseCase
 }

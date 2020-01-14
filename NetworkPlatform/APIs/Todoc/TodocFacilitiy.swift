@@ -12,16 +12,19 @@ import Domain
 extension API {
     struct Facility{
         let medicalType: Model.Todoc.MedicalType
+        let latitude : Double
+        let longitude: Double
     }
 }
 
-extension API.Facility {
+extension API.Facility: APIConfigWithError  {
     static let domainConfig = TodocDomain.self
     static let serviceError = MockError.self
     
     var path: String { return "/api/v1/medicals/\(self.medicalType.rawValue)/facilities" }
     var method: HTTPMethod { return .get }
-    var parameters: API.Parameter? { return .map(nil) }
+    var parameters: API.Parameter? { return .map(["latitude":self.latitude,
+                                                  "longitude":self.longitude]) }
     
     func parse(_ input: Data) throws -> Model.Todoc.Facility {
         return try input.parse()

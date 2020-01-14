@@ -14,5 +14,9 @@ public final class UseCaseProvider: Domain.UseCaseProvider {
     public func makeMockAPIUseCase() -> Domain.MockUseCase {
         return MockUseCase()
     }
+    
+    public func makeFacilitiesUseCase() -> Domain.FacilitiesUseCase {
+        return FacilitiesUseCase()
+    }
 }
 
