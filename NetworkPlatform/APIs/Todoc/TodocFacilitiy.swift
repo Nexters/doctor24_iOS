@@ -26,7 +26,7 @@ extension API.Facility: APIConfigWithError  {
     var parameters: API.Parameter? { return .map(["latitude":self.latitude,
                                                   "longitude":self.longitude]) }
     
-    func parse(_ input: Data) throws -> Model.Todoc.Facility {
+    func parse(_ input: Data) throws -> [Model.Todoc.Facility] {
         return try input.parse()
     }
 }

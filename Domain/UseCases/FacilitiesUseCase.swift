@@ -11,5 +11,5 @@ import RxSwift
 public protocol FacilitiesUseCase {
     func facilities(_ type: Model.Todoc.MedicalType,
                     latitude: Double,
-                    longitude: Double) -> Observable<Result<Model.Todoc.Facility, APIError<MockError>>>
+                    longitude: Double) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>>
 }

@@ -13,7 +13,7 @@ import RxSwift
 final class FacilitiesUseCase: Domain.FacilitiesUseCase {
     func facilities(_ type: Model.Todoc.MedicalType,
                     latitude: Double,
-                    longitude: Double) -> Observable<Result<Model.Todoc.Facility, APIError<MockError>>> {
+                    longitude: Double) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>> {
         return API.Facility(medicalType: type, latitude: latitude, longitude: longitude).requestWithCatch()
     }
 }
