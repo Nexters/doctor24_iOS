@@ -8,20 +8,23 @@
 import Domain
 
 import UIKit
+import ReactorKit
 import RxSwift
 import RxCocoa
 
-final class HomeViewController: BaseViewController {
+final class HomeViewController: BaseViewController, View {
+    typealias Reactor = HomeViewReactor
+    
     // MARK: Properties
-    private var service: Domain.UseCaseProvider?
-    private let disposeBag = DisposeBag()
-
+    var disposeBag: DisposeBag = DisposeBag()
+    private let viewDidLoadSignal = PublishSubject<Void>()
+    
     // MARK: UI Componenet
     private lazy var homeView = HomeView(controlBy: self)
     
-    init(service: UseCaseProvider) {
-        self.service = service
+    init(reactor: HomeViewReactor) {
         super.init(nibName: nil, bundle: nil)
+        self.reactor = reactor
     }
     
     required init?(coder: NSCoder) {
@@ -34,29 +37,20 @@ final class HomeViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewDidLoadSignal.onNext(())
+    }
+    
+    func bind(reactor: HomeViewReactor) {
+        self.viewDidLoadSignal
+            .debug("jhh viewDidLoadSignal")
+            .map { HomeViewReactor.Action.viewDidLoad(latitude: 37.5153968360202, longitude: 127.10745719189502) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
         
-        let mockAPIButton = UIButton()
-        mockAPIButton.backgroundColor = .red
-
-        view.addSubview(mockAPIButton)
-        
-        mockAPIButton.snp.makeConstraints{
-            $0.center.equalToSuperview()
-            $0.width.equalTo(200)
-            $0.height.equalTo(200)
-        }
-        
-        let api = self.service?.makeFacilitiesUseCase()
-
-        mockAPIButton.rx.tap.flatMapLatest{
-            api!.facilities(.hospital, latitude: 37.5153968360202, longitude: 127.10745719189502)
-        }.subscribe(onNext:{ result in
-            switch result {
-            case .success(let books):
-                print("result books: \(books)")
-            case .failure(let error):
-                print("result error: \(error)")
-            }
-        }).disposed(by: self.disposeBag)
+        reactor.state.asObservable()
+            .map{ $0.pins }
+            .subscribe(onNext: { pins in
+                print("jhh pins: \(pins)")
+            }).disposed(by: self.disposeBag)
     }
 }

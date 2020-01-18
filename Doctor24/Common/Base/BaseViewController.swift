@@ -17,9 +17,4 @@ class BaseViewController: UIViewController {
         //override
         
     }
-    
-    func setupBind(){
-        //override
-        
-    }
 }
