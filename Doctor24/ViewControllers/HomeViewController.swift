@@ -17,7 +17,6 @@ final class HomeViewController: BaseViewController, View {
     
     // MARK: Properties
     var disposeBag: DisposeBag = DisposeBag()
-    private let viewDidLoadSignal = PublishSubject<Void>()
     
     // MARK: UI Componenet
     private lazy var homeView = HomeView(controlBy: self)
@@ -37,11 +36,10 @@ final class HomeViewController: BaseViewController, View {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewDidLoadSignal.onNext(())
     }
     
     func bind(reactor: HomeViewReactor) {
-        self.viewDidLoadSignal
+        self.rx.viewDidload
             .debug("jhh viewDidLoadSignal")
             .map { HomeViewReactor.Action.viewDidLoad(latitude: 37.5153968360202, longitude: 127.10745719189502) }
             .bind(to: reactor.action)
