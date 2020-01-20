@@ -20,6 +20,7 @@ final class HomeViewController: BaseViewController, View {
     
     // MARK: UI Componenet
     private lazy var homeView = HomeView(controlBy: self)
+    private let facilities = PublishSubject<[Model.Todoc.Facility]>()
     
     init(reactor: HomeViewReactor) {
         super.init(nibName: nil, bundle: nil)
@@ -40,15 +41,18 @@ final class HomeViewController: BaseViewController, View {
     
     func bind(reactor: HomeViewReactor) {
         self.rx.viewDidload
-            .debug("jhh viewDidLoadSignal")
             .map { HomeViewReactor.Action.viewDidLoad(latitude: 37.5153968360202, longitude: 127.10745719189502) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         reactor.state.asObservable()
             .map{ $0.pins }
-            .subscribe(onNext: { pins in
-                print("jhh pins: \(pins)")
+            .bind(to: self.facilities)
+            .disposed(by: self.disposeBag)
+        
+        self.facilities
+            .subscribe(onNext:{ [weak self] facilities in
+                self?.homeView.drawPins(facilities: facilities)
             }).disposed(by: self.disposeBag)
     }
 }

@@ -5,6 +5,7 @@
 //  Created by Haehyeon Jeong on 2020/01/11.
 //  Copyright © 2020 JHH. All rights reserved.
 //
+import Domain
 
 import UIKit
 
@@ -40,6 +41,17 @@ final class HomeView: BaseView {
     
     override func setBind() {
         
+    }
+}
+
+// MARK: Public Function
+extension HomeView {
+    func drawPins(facilities: [Model.Todoc.Facility]) {
+        facilities.forEach { [weak self] facility in
+            let marker = NMFMarker()
+            marker.position = NMGLatLng(lat: facility.latitude, lng: facility.longitude)
+            marker.mapView = self?.mapView
+        }
     }
 }
 
