@@ -36,6 +36,11 @@ final class HomeView: BaseView {
         return mapView
     }()
     
+    private lazy var operatingView: OperatingHoursSetView = {
+        let view = OperatingHoursSetView(controlBy: vc)
+        return view
+    }()
+    
     private lazy var lookAroundView: LookAroundView = {
         let view = LookAroundView(controlBy: vc)
         return view
@@ -75,17 +80,16 @@ extension HomeView {
             $0.bottom.equalToSuperview()
         }
         
-        
-//        self.lookAroundView.snp.makeConstraints {
-//            $0.top.equalToSuperview()
-//            $0.left.equalToSuperview()
-//            $0.bottom.equalToSuperview()
-//            $0.right.equalToSuperview()
-//        }
+        self.operatingView.snp.makeConstraints {
+            $0.bottom.equalToSuperview()
+            $0.left.equalToSuperview()
+            $0.right.equalToSuperview()
+            $0.height.equalTo(102 + bottomSafeAreaInset)
+        }
     }
 
     private func addSubViews() {
         self.addSubview(self.mapControlView)
-//        self.addSubview(self.lookAroundView)
+        self.addSubview(self.operatingView)
     }
 }
