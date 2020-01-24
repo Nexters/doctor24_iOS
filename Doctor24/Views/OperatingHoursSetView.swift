@@ -12,6 +12,9 @@ import RxSwift
 import RxCocoa
 
 final class OperatingHoursSetView: BaseView {
+    // MARK: Properties
+    private let disposeBag = DisposeBag()
+    
     // MARK: UI Componenet
     private let contentView: UIView = {
         let view = UIView()
@@ -59,6 +62,18 @@ final class OperatingHoursSetView: BaseView {
         self.backgroundColor = .clear
         self.addSubviews()
         self.setLayout()
+    }
+    
+    override func setBind() {
+        self.startView.startTimeButton.rx.tap
+            .subscribe(onNext: {
+                ViewTransition.shared.execute(scene: .timePick)
+            }).disposed(by: self.disposeBag)
+        
+        self.endView.endTimeButton.rx.tap
+            .subscribe(onNext: {
+                ViewTransition.shared.execute(scene: .timePick)
+            }).disposed(by: self.disposeBag)
     }
 }
 

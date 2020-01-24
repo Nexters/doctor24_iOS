@@ -49,8 +49,16 @@ extension OperatingHoursSetView {
         
         private func setupUI() {
             self.addSubview(self.startStackView)
+            self.addSubview(self.startTimeButton)
             self.startStackView.addArrangedSubview(self.startTimeLabel)
             self.startStackView.addArrangedSubview(self.startAMPMLabel)
+            
+            self.startTimeButton.snp.makeConstraints {
+                $0.top.equalToSuperview()
+                $0.left.equalToSuperview()
+                $0.right.equalToSuperview()
+                $0.bottom.equalToSuperview()
+            }
             
             self.startStackView.snp.makeConstraints{
                 $0.top.equalToSuperview()

@@ -10,11 +10,15 @@ import UIKit
 
 class BaseViewController: UIViewController {
     override func viewDidLoad() {
-        
+        self.setupUI()
+        self.setBind()
     }
     
     func setupUI(){
-        //override
-        
+        // override
+    }
+    
+    func setBind() {
+        // override
     }
 }
