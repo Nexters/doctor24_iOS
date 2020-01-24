@@ -11,7 +11,7 @@ import NetworkPlatform
 
 enum Scene {
     case main
-    case timePick
+    case timePick(type: TimePickViewController.Operating)
 }
 
 extension Scene {
@@ -27,8 +27,8 @@ extension Scene {
             let vc = HomeViewController(reactor: homeReactor)
 
             return vc
-        case .timePick:
-            let vc = TimePickViewController()
+        case .timePick(let type):
+            let vc = TimePickViewController(operatingType: type)
             return vc
         }
     }

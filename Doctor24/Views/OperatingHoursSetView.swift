@@ -67,12 +67,12 @@ final class OperatingHoursSetView: BaseView {
     override func setBind() {
         self.startView.startTimeButton.rx.tap
             .subscribe(onNext: {
-                ViewTransition.shared.execute(scene: .timePick)
+                ViewTransition.shared.execute(scene: .timePick(type: .start))
             }).disposed(by: self.disposeBag)
         
         self.endView.endTimeButton.rx.tap
             .subscribe(onNext: {
-                ViewTransition.shared.execute(scene: .timePick)
+                ViewTransition.shared.execute(scene: .timePick(type: .end))
             }).disposed(by: self.disposeBag)
     }
 }

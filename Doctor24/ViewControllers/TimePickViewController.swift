@@ -13,6 +13,7 @@ import RxCocoa
 
 final class TimePickViewController: FadeModalTransitionViewController {
     // MARK: Properties
+    private let operatingType: Operating
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
@@ -48,7 +49,8 @@ final class TimePickViewController: FadeModalTransitionViewController {
         super.viewDidLoad()
     }
     
-    init() {
+    init(operatingType: Operating) {
+        self.operatingType = operatingType
         super.init()
         self.modalPresentationStyle = .overCurrentContext
     }
@@ -129,5 +131,12 @@ final class TimePickViewController: FadeModalTransitionViewController {
         contentView.snp.updateConstraints { (make) in
             make.height.equalTo(0)
         }
+    }
+}
+
+extension TimePickViewController {
+    enum Operating {
+        case start
+        case end
     }
 }
