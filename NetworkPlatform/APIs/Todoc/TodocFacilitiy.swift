@@ -12,8 +12,10 @@ import Domain
 extension API {
     struct Facility{
         let medicalType: Model.Todoc.MedicalType
-        let latitude : Double
-        let longitude: Double
+        let latitude     : Double
+        let longitude    : Double
+        let operatingTime: Model.Todoc.Day?
+        let category     : Model.Todoc.MedicalType.Category?
     }
 }
 
@@ -23,8 +25,23 @@ extension API.Facility: APIConfigWithError  {
     
     var path: String { return "/api/v1/medicals/\(self.medicalType.rawValue)/facilities" }
     var method: HTTPMethod { return .get }
-    var parameters: API.Parameter? { return .map(["latitude":self.latitude,
-                                                  "longitude":self.longitude]) }
+    var parameters: API.Parameter? {
+        var params = [String:Any]()
+        params = ["latitude": self.latitude,
+                  "longitude":self.longitude]
+        
+        if let time = self.operatingTime {
+            params = ["operatingHours.day"      : time.dayType,
+                      "operatingHours.startTime": time.startTime,
+                      "operatingHours.endTime"  : time.endTime]
+        }
+        
+        if let category = self.category {
+            params = ["category": category]
+        }
+        
+        return .map(params)
+    }
     
     func parse(_ input: Data) throws -> [Model.Todoc.Facility] {
         return try input.parse()

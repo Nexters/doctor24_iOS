@@ -40,7 +40,9 @@ final class HomeViewReactor: Reactor {
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
         case .viewDidLoad(let latitude, let longitude):
-            return self.service.facilities(.hospital, latitude: latitude, longitude: longitude)
+            return self.service.facilities(.hospital,
+                                           latitude: latitude,
+                                           longitude: longitude)
                 .map{ result in
                     switch result {
                     case .success(let facilities):

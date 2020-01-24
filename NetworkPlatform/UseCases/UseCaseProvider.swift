@@ -10,10 +10,6 @@ import Foundation
 
 public final class UseCaseProvider: Domain.UseCaseProvider {
     public init() { }
-
-    public func makeMockAPIUseCase() -> Domain.MockUseCase {
-        return MockUseCase()
-    }
     
     public func makeFacilitiesUseCase() -> Domain.FacilitiesUseCase {
         return FacilitiesUseCase()

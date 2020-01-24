@@ -56,4 +56,9 @@ extension Model.Todoc {
     }
 }
 
-
+extension Model.Todoc.MedicalType {
+    public enum Category: String {
+        case 내과
+        case 외과
+    }
+}

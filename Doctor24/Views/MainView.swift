@@ -66,16 +66,16 @@ extension HomeView {
             $0.bottom.equalToSuperview()
         }
         
-        self.lookAroundView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.left.equalToSuperview()
-            $0.bottom.equalToSuperview()
-            $0.right.equalToSuperview()
-        }
+//        self.lookAroundView.snp.makeConstraints {
+//            $0.top.equalToSuperview()
+//            $0.left.equalToSuperview()
+//            $0.bottom.equalToSuperview()
+//            $0.right.equalToSuperview()
+//        }
     }
 
     private func addSubViews() {
         self.addSubview(self.mapView)
-        self.addSubview(self.lookAroundView)
+//        self.addSubview(self.lookAroundView)
     }
 }
