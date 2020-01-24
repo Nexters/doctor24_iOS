@@ -15,6 +15,10 @@ import NMapsMap
 import SnapKit
 
 final class HomeView: BaseView {
+    // MARK: Property
+    let regionDidChanging = PublishRelay<Int>()
+    private let disposeBag = DisposeBag()
+    
     // MARK: UI Componenet
     private let optionView: UIView = {
         let view = UIView()
@@ -22,10 +26,13 @@ final class HomeView: BaseView {
         return view
     }()
     
-    private let mapView: NMFMapView = {
-        let mapView = NMFMapView()
-        mapView.mapType = .navi
-        mapView.isNightModeEnabled = true
+    private let mapControlView: NMFNaverMapView = {
+        let mapView = NMFNaverMapView(frame: CGRect.zero)
+        mapView.mapView.mapType = .navi
+        mapView.mapView.isNightModeEnabled = true
+        mapView.showLocationButton = true
+        mapView.showZoomControls = false
+        mapView.positionMode = .direction
         return mapView
     }()
     
@@ -40,7 +47,10 @@ final class HomeView: BaseView {
     }
     
     override func setBind() {
-        
+        self.mapControlView.mapView
+            .rx.mapViewRegionDidChanging
+            .bind(to: self.regionDidChanging)
+            .disposed(by: self.disposeBag)
     }
 }
 
@@ -50,21 +60,21 @@ extension HomeView {
         facilities.forEach { [weak self] facility in
             let marker = NMFMarker()
             marker.position = NMGLatLng(lat: facility.latitude, lng: facility.longitude)
-            marker.mapView = self?.mapView
+            marker.mapView = self?.mapControlView.mapView
         }
     }
 }
 
-
 // MARK: Private Function
 extension HomeView {
     private func setLayout() {
-        self.mapView.snp.makeConstraints {
+        self.mapControlView.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.left.equalToSuperview()
             $0.right.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+        
         
 //        self.lookAroundView.snp.makeConstraints {
 //            $0.top.equalToSuperview()
@@ -75,7 +85,7 @@ extension HomeView {
     }
 
     private func addSubViews() {
-        self.addSubview(self.mapView)
+        self.addSubview(self.mapControlView)
 //        self.addSubview(self.lookAroundView)
     }
 }

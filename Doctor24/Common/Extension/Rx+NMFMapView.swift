@@ -20,4 +20,10 @@ extension Reactive where Base: NMFMapView {
             return parameters[1] as? Int ?? 0
         }
     }
+    
+    var mapViewRegionDidChanging: Observable<Int> {
+        return delegate.methodInvoked(#selector(NMFMapViewDelegate.mapView(_:regionDidChangeAnimated:byReason:))).map { parameters in
+            return parameters[2] as? Int ?? 0
+        }
+    }
 }

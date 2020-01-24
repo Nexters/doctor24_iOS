@@ -54,5 +54,9 @@ final class HomeViewController: BaseViewController, View {
             .subscribe(onNext:{ [weak self] facilities in
                 self?.homeView.drawPins(facilities: facilities)
             }).disposed(by: self.disposeBag)
+        
+        self.homeView.regionDidChanging.subscribe(onNext: { id in
+            print("jhh id: \(id)")
+        }).disposed(by: self.disposeBag)
     }
 }
