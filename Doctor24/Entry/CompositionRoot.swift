@@ -23,6 +23,7 @@ enum CompositionRoot {
         navigationController.navigationBar.prefersLargeTitles = true
         ViewTransition.shared.root = navigationController
         ViewTransition.shared.execute(scene: .main)
+        TodocInfo.shared
         
         let window = UIWindow(windowScene: scene)
         window.backgroundColor = .white
