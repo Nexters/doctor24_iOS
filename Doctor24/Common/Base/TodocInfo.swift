@@ -25,15 +25,14 @@ final class TodocInfo {
         self.locationManager.rx
             .didUpdateLocations
             .map{ $0[0].coordinate }
-            .debug("locationManager")
             .bind(to: currentLocation)
             .disposed(by: self.disposeBag)
     }
     
-    private func locationManagerInit() {
+    func locationManagerInit() {
         self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
-        
+
         if CLLocationManager.locationServicesEnabled() {
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             self.locationManager.startUpdatingLocation()

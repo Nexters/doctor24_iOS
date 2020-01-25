@@ -17,6 +17,7 @@ import SnapKit
 final class HomeView: BaseView {
     // MARK: Property
     let regionDidChanging = PublishRelay<Int>()
+    private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
@@ -32,8 +33,13 @@ final class HomeView: BaseView {
         mapView.mapView.isNightModeEnabled = true
         mapView.showLocationButton = true
         mapView.showZoomControls = false
-        mapView.positionMode = .direction
         return mapView
+    }()
+    
+    private let cameraButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .red
+        return button
     }()
     
     private lazy var operatingView: OperatingHoursSetView = {
@@ -52,6 +58,26 @@ final class HomeView: BaseView {
     }
     
     override func setBind() {
+        self.cameraType
+            .subscribe(onNext: { [weak self] type in
+                self?.mapControlView.positionMode = type
+            }).disposed(by: self.disposeBag)
+        
+        self.cameraButton.rx.tap.withLatestFrom(self.cameraType)
+            .map { type -> NMFMyPositionMode in
+                switch type {
+                case .normal:
+                    return .direction
+                case .direction:
+                    return .compass
+                case .compass:
+                    return .normal
+                default:
+                    return .normal
+                }}
+            .bind(to: self.cameraType)
+            .disposed(by: self.disposeBag)
+        
         self.mapControlView.mapView
             .rx.mapViewRegionDidChanging
             .bind(to: self.regionDidChanging)
@@ -86,10 +112,18 @@ extension HomeView {
             $0.right.equalToSuperview()
             $0.height.equalTo(102 + bottomSafeAreaInset)
         }
+        
+        self.cameraButton.snp.makeConstraints {
+            $0.bottom.equalTo(self.operatingView.snp.top).offset(-10)
+            $0.right.equalTo(-10)
+            $0.width.equalTo(30)
+            $0.height.equalTo(30)
+        }
     }
 
     private func addSubViews() {
         self.addSubview(self.mapControlView)
         self.addSubview(self.operatingView)
+        self.addSubview(self.cameraButton)
     }
 }

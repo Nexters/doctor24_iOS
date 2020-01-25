@@ -40,17 +40,12 @@ final class HomeViewController: BaseViewController, View {
     }
     
     func bind(reactor: HomeViewReactor) {
-//        self.rx.viewDidload
-//            .map { HomeViewReactor.Action.viewDidLoad(latitude: 37.5153968360202, longitude: 127.10745719189502) }
-//            .bind(to: reactor.action)
-//            .disposed(by: self.disposeBag)
         TodocInfo.shared.currentLocation
             .filter { $0.isValid() }
             .take(1)
             .map { HomeViewReactor.Action.viewDidLoad(location: $0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
-            
         
         reactor.state.asObservable()
             .map{ $0.pins }
@@ -65,9 +60,5 @@ final class HomeViewController: BaseViewController, View {
             .subscribe(onNext:{ [weak self] facilities in
                 self?.homeView.drawPins(facilities: facilities)
             }).disposed(by: self.disposeBag)
-        
-//        self.homeView.regionDidChanging.subscribe(onNext: { id in
-//            print("jhh id: \(id)")
-//        }).disposed(by: self.disposeBag)
     }
 }
