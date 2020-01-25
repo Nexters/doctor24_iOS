@@ -69,7 +69,15 @@ final class TimePickViewController: FadeModalTransitionViewController {
     
     override func setBind() {
         self.confirmButton.rx.tap.subscribe(onNext: { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
+            guard let self = self else { return }
+            switch self.operatingType {
+            case .start:
+                TodocInfo.shared.startTimeFilter.onNext(self.pickerDate.date)
+            case .end:
+                TodocInfo.shared.endTimeFilter.onNext(self.pickerDate.date)
+            }
+            
+            self.dismiss(animated: true, completion: nil)
         }).disposed(by: self.disposeBag)
     }
     

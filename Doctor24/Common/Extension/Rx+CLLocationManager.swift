@@ -20,3 +20,13 @@ extension Reactive where Base: CLLocationManager {
         return RxCLLocationManagerDelegateProxy.proxy(for: base).didUpdateLocationsSubject.asObservable()
     }
 }
+
+extension CLLocationCoordinate2D {
+    func isValid() -> Bool {
+        if self.latitude == 0.0 && self.longitude == 0.0 {
+            return false
+        }
+        
+        return true
+    }
+}

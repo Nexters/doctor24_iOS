@@ -11,6 +11,7 @@ import Foundation
 import ReactorKit
 import RxCocoa
 import RxSwift
+import CoreLocation
 
 final class HomeViewReactor: Reactor {
     private let service: FacilitiesUseCase
@@ -18,7 +19,7 @@ final class HomeViewReactor: Reactor {
     var initialState: State = State()
     
     enum Action {
-        case viewDidLoad(latitude: Double, longitude: Double)
+        case viewDidLoad(location: CLLocationCoordinate2D)
     }
     
     // represent state changes
@@ -39,10 +40,10 @@ final class HomeViewReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .viewDidLoad(let latitude, let longitude):
+        case .viewDidLoad(let location):
             return self.service.facilities(.hospital,
-                                           latitude: latitude,
-                                           longitude: longitude)
+                                           latitude: location.latitude,
+                                           longitude: location.longitude)
                 .map{ result in
                     switch result {
                     case .success(let facilities):
