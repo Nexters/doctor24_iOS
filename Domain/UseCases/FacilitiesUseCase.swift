@@ -24,3 +24,26 @@ public protocol FacilitiesUseCase {
                     operatingTime: Model.Todoc.Day,
                     category: Model.Todoc.MedicalType.Category) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>>
 }
+
+public protocol NightFacilitiesUseCase {
+    func facilities(_ type    : Model.Todoc.MedicalType,
+                    xLatitude : Double,
+                    xLongitude: Double,
+                    zLatitude : Double,
+                    zLongitude: Double) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>>
+    
+    func facilities(_ type: Model.Todoc.MedicalType,
+                    xLatitude : Double,
+                    xLongitude: Double,
+                    zLatitude : Double,
+                    zLongitude: Double,
+                    operatingTime: Model.Todoc.Day) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>>
+    
+    func facilities(_ type: Model.Todoc.MedicalType,
+                    xLatitude : Double,
+                    xLongitude: Double,
+                    zLatitude : Double,
+                    zLongitude: Double,
+                    operatingTime: Model.Todoc.Day,
+                    category: Model.Todoc.MedicalType.Category) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>>
+}

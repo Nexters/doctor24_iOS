@@ -15,6 +15,7 @@ import CoreLocation
 
 final class HomeViewReactor: Reactor {
     private let service: FacilitiesUseCase
+    private let nightService: NightFacilitiesUseCase
     
     var initialState: State = State()
     
@@ -34,8 +35,10 @@ final class HomeViewReactor: Reactor {
         var errorMessage = ""
     }
     
-    init(service: FacilitiesUseCase) {
-        self.service = service
+    init(service: FacilitiesUseCase,
+         nightService: NightFacilitiesUseCase) {
+        self.service      = service
+        self.nightService = nightService
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
