@@ -20,6 +20,7 @@ final class HomeView: BaseView {
     let panGestureMap: PublishRelay<Void> = PublishRelay<Void>()
     private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     private let disposeBag = DisposeBag()
+    private var markers = [NMFMarker]()
     private var panGestureRecognizer: UIPanGestureRecognizer!
     
     // MARK: UI Componenet
@@ -27,8 +28,10 @@ final class HomeView: BaseView {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
         mapView.mapView.mapType = .navi
         mapView.mapView.isNightModeEnabled = true
-        mapView.showLocationButton = true
+        mapView.showLocationButton = false
+        mapView.showCompass = false
         mapView.showZoomControls = false
+        mapView.mapView.logoAlign = .rightTop
         return mapView
     }()
     
@@ -39,7 +42,7 @@ final class HomeView: BaseView {
         return button
     }()
     
-    private lazy var medicalSelectView: MedicalSelectView = {
+    lazy var medicalSelectView: MedicalSelectView = {
         let view = MedicalSelectView(controlBy: vc)
         view.backgroundColor = .white
         view.clipsToBounds = true
@@ -100,10 +103,16 @@ final class HomeView: BaseView {
 // MARK: Public Function
 extension HomeView {
     func drawPins(facilities: [Model.Todoc.Facility]) {
+        self.markers.forEach { marker in
+            marker.mapView = nil
+        }
+        self.markers.removeAll()
+        
         facilities.forEach { [weak self] facility in
             let marker = NMFMarker()
             marker.position = NMGLatLng(lat: facility.latitude, lng: facility.longitude)
             marker.mapView = self?.mapControlView.mapView
+            self?.markers.append(marker)
         }
     }
 }

@@ -5,6 +5,7 @@
 //  Created by Haehyeon Jeong on 2020/01/26.
 //  Copyright © 2020 JHH. All rights reserved.
 //
+import Domain
 
 import UIKit
 import RxSwift
@@ -12,6 +13,7 @@ import RxCocoa
 
 final class MedicalSelectView: BaseView {
     // MARK: Properties
+    let medicalType = BehaviorRelay<Model.Todoc.MedicalType>(value: .hospital)
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
@@ -64,13 +66,20 @@ final class MedicalSelectView: BaseView {
     }
     
     override func setBind() {
-        self.hospital.rx.tap.subscribe(onNext: { [weak self] in
-            self?.animateSelectHospital()
-        }).disposed(by: self.disposeBag)
+        self.hospital.rx.tap.do(onNext: { [weak self] in
+                self?.animateSelectHospital()
+            })
+            .map { Model.Todoc.MedicalType.hospital }
+            .bind(to: self.medicalType)
+            .disposed(by: self.disposeBag)
         
-        self.pharmacy.rx.tap.subscribe(onNext: { [weak self] in
-            self?.animateSelectPharmacy()
-        }).disposed(by: self.disposeBag)
+        self.pharmacy.rx.tap
+            .do(onNext: { [weak self] in
+                self?.animateSelectPharmacy()
+            })
+            .map { Model.Todoc.MedicalType.pharmacy }
+            .bind(to: self.medicalType)
+            .disposed(by: self.disposeBag)
     }
 }
 

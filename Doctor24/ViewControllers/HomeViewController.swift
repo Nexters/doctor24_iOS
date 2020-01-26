@@ -45,6 +45,13 @@ final class HomeViewController: BaseViewController, View {
 //                print("self?.homeView.mapControlView.mapView.contentBounds: \(self?.homeView.mapControlView.mapView.contentBounds)")
             }).disposed(by: self.disposeBag)
         
+        self.homeView.medicalSelectView.medicalType
+            .withLatestFrom(TodocInfo.shared.currentLocation) { ($0,$1) }
+            .skip(1)
+            .map { HomeViewReactor.Action.facilites(type: $0, location: $1) }
+            .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
         TodocInfo.shared.currentLocation
             .filter { $0.isValid() }
             .take(1)

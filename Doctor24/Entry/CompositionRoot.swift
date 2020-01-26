@@ -20,7 +20,10 @@ enum CompositionRoot {
         
         //root view controller
         let navigationController = UINavigationController()
-        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController.navigationBar.shadowImage = UIImage()
+        navigationController.navigationBar.isTranslucent = true
+        
         ViewTransition.shared.root = navigationController
         ViewTransition.shared.execute(scene: .main)
         TodocInfo.shared.locationManagerInit()
@@ -35,7 +38,10 @@ enum CompositionRoot {
     
     static func resolve(window: UIWindow) -> AppDependency {
         let navigationController = UINavigationController()
-        navigationController.navigationBar.prefersLargeTitles = true
+        navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController.navigationBar.shadowImage = UIImage()
+        navigationController.navigationBar.isTranslucent = true
+        
         ViewTransition.shared.root = navigationController
         ViewTransition.shared.execute(scene: .main)
         

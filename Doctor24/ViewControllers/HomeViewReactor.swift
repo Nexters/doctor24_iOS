@@ -21,6 +21,7 @@ final class HomeViewReactor: Reactor {
     
     enum Action {
         case viewDidLoad(location: CLLocationCoordinate2D)
+        case facilites(type: Model.Todoc.MedicalType, location: CLLocationCoordinate2D)
     }
     
     // represent state changes
@@ -48,6 +49,18 @@ final class HomeViewReactor: Reactor {
                                            latitude: location.latitude,
                                            longitude: location.longitude)
                 .map{ result in
+                    switch result {
+                    case .success(let facilities):
+                        return .setPins(facilities)
+                    case .failure(let error):
+                        return .setError(error)
+                    }
+            }
+        case .facilites(let type, let location):
+            return self.service.facilities(type,
+                                           latitude: location.latitude,
+                                           longitude: location.longitude)
+                .map  { result in
                     switch result {
                     case .success(let facilities):
                         return .setPins(facilities)
