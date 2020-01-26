@@ -20,3 +20,9 @@ extension Reactive where Base: UIViewController{
         return ControlEvent(events: source)
     }
 }
+
+extension ObservableType {
+    func unwrap<Result>() -> Observable<Result> where Element == Result? {
+        return self.compactMap { $0 }
+    }
+}

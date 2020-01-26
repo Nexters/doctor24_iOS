@@ -17,3 +17,21 @@ extension NSObject {
         return String(describing: type(of: self).className)
     }
 }
+
+extension Date {
+    var convertDate: String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "h:mm a"
+        let date = dateformatter.string(from: self)
+        
+        return date
+    }
+    
+    var convertParam: String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "HH:mm:ss"
+        let date = dateformatter.string(from: self)
+        
+        return date
+    }
+}

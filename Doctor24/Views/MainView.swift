@@ -39,6 +39,7 @@ final class HomeView: BaseView {
     private let cameraButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .red
+        button.setTitle("카메라", for: .normal)
         return button
     }()
     
@@ -116,8 +117,7 @@ extension HomeView {
         self.cameraButton.snp.makeConstraints {
             $0.bottom.equalTo(self.operatingView.snp.top).offset(-10)
             $0.right.equalTo(-10)
-            $0.width.equalTo(30)
-            $0.height.equalTo(30)
+            $0.size.equalTo(50)
         }
     }
 

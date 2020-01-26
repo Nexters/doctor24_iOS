@@ -65,6 +65,20 @@ final class OperatingHoursSetView: BaseView {
     }
     
     override func setBind() {
+        TodocInfo.shared.startTimeFilter
+            .unwrap()
+            .map { $0.convertDate }
+            .subscribe(onNext: { [weak self] str in
+                self?.startView.startTimeLabel.text = str
+            }).disposed(by: self.disposeBag)
+        
+        TodocInfo.shared.endTimeFilter
+            .unwrap()
+            .map { $0.convertDate }
+            .subscribe(onNext: { [weak self] str in
+                self?.endView.endTimeLabel.text = str
+            }).disposed(by: self.disposeBag)
+        
         self.startView.startTimeButton.rx.tap
             .subscribe(onNext: {
                 ViewTransition.shared.execute(scene: .timePick(type: .start))
