@@ -23,12 +23,10 @@ extension API.Facility: APIConfigWithError  {
     static let domainConfig = TodocDomain.self
     static let serviceError = MockError.self
     
-    var path: String { return "/api/v1/medicals/\(self.medicalType.rawValue)/facilities" }
+    var path: String { return "/api/v1/medicals/\(self.medicalType.rawValue)/latitudes/\(self.latitude)/longitudes/\(self.longitude)/facilities" }
     var method: HTTPMethod { return .get }
     var parameters: API.Parameter? {
         var params = [String:Any]()
-        params = ["latitude": self.latitude,
-                  "longitude":self.longitude]
         
         if let time = self.operatingTime {
             params = ["operatingHours.day"      : time.dayType,

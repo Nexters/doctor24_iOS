@@ -40,6 +40,11 @@ final class HomeViewController: BaseViewController, View {
     }
     
     func bind(reactor: HomeViewReactor) {
+        self.homeView.panGestureMap
+            .subscribe(onNext: { [weak self] _ in
+//                print("self?.homeView.mapControlView.mapView.contentBounds: \(self?.homeView.mapControlView.mapView.contentBounds)")
+            }).disposed(by: self.disposeBag)
+        
         TodocInfo.shared.currentLocation
             .filter { $0.isValid() }
             .take(1)

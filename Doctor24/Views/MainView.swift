@@ -17,17 +17,13 @@ import SnapKit
 final class HomeView: BaseView {
     // MARK: Property
     let regionDidChanging = PublishRelay<Int>()
+    let panGestureMap: PublishRelay<Void> = PublishRelay<Void>()
     private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     private let disposeBag = DisposeBag()
+    private var panGestureRecognizer: UIPanGestureRecognizer!
     
     // MARK: UI Componenet
-    private let optionView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    
-    private let mapControlView: NMFNaverMapView = {
+    let mapControlView: NMFNaverMapView = {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
         mapView.mapView.mapType = .navi
         mapView.mapView.isNightModeEnabled = true
@@ -53,18 +49,26 @@ final class HomeView: BaseView {
         return view
     }()
     
+    deinit {
+        self.removeGesture()
+    }
+    
     override func setupUI() {
         self.addSubViews()
         self.setLayout()
     }
     
     override func setBind() {
+        self.addGesture()
+        
         self.cameraType
+            .debug("jhh type")
             .subscribe(onNext: { [weak self] type in
                 self?.mapControlView.positionMode = type
             }).disposed(by: self.disposeBag)
         
-        self.cameraButton.rx.tap.withLatestFrom(self.cameraType)
+        self.cameraButton.rx.tap.debug("jhh tap")
+            .withLatestFrom(self.cameraType)
             .map { type -> NMFMyPositionMode in
                 switch type {
                 case .normal:
@@ -125,5 +129,26 @@ extension HomeView {
         self.addSubview(self.mapControlView)
         self.addSubview(self.operatingView)
         self.addSubview(self.cameraButton)
+    }
+    
+    private func addGesture() {
+        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(triggerTouchAction))
+        self.panGestureRecognizer.delegate = self
+        self.mapControlView.mapView.addGestureRecognizer(self.panGestureRecognizer)
+    }
+    
+    private func removeGesture() {
+        self.mapControlView.mapView.removeGestureRecognizer(self.panGestureRecognizer)
+    }
+    
+    @objc
+    private func triggerTouchAction(){
+        self.panGestureMap.accept(())
+    }
+}
+
+extension HomeView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }

@@ -26,4 +26,10 @@ extension Reactive where Base: NMFMapView {
             return parameters[2] as? Int ?? 0
         }
     }
+    
+    var didTapMapView: Observable<Void> {
+        return delegate.methodInvoked(#selector(NMFMapViewDelegate.didTapMapView(_:latLng:))).map { _ in
+            return ()
+        }
+    }
 }
