@@ -8,6 +8,7 @@
 import Domain
 
 import UIKit
+import CoreLocation
 import ReactorKit
 import RxSwift
 import RxCocoa
@@ -57,6 +58,19 @@ final class HomeViewController: BaseViewController, View {
             .take(1)
             .map { HomeViewReactor.Action.viewDidLoad(location: $0) }
             .bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
+        self.homeView.searchButton.rx.tap
+            .withLatestFrom(self.homeView.medicalSelectView.medicalType)
+            .do(onNext: { [weak self] _ in
+                self?.homeView.searchButton.isEnabled = false
+            }).map{ [weak self] type in
+                let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
+                let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
+                let loc = CLLocationCoordinate2D(latitude: lat,
+                                                 longitude: lng)
+                return HomeViewReactor.Action.facilites(type: type, location: loc)
+            }.bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         reactor.state.asObservable()

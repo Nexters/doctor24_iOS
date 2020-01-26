@@ -17,7 +17,7 @@ import SnapKit
 final class HomeView: BaseView {
     // MARK: Property
     let regionDidChanging = PublishRelay<Int>()
-    let panGestureMap: PublishRelay<Void> = PublishRelay<Void>()
+    let panGestureMap     = PublishRelay<Void>()
     private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     private let disposeBag = DisposeBag()
     private var markers = [NMFMarker]()
@@ -33,6 +33,15 @@ final class HomeView: BaseView {
         mapView.showZoomControls = false
         mapView.mapView.logoAlign = .rightTop
         return mapView
+    }()
+    
+    let searchButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .red
+        button.setTitle("검색", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.gray, for: .disabled)
+        return button
     }()
     
     private let cameraButton: UIButton = {
@@ -71,6 +80,10 @@ final class HomeView: BaseView {
     
     override func setBind() {
         self.addGesture()
+        
+        self.panGestureMap.subscribe(onNext:{ [weak self] in
+            self?.searchButton.isEnabled = true
+        }).disposed(by: self.disposeBag)
         
         self.cameraType
             .subscribe(onNext: { [weak self] type in
@@ -146,6 +159,12 @@ extension HomeView {
             $0.width.equalTo(192)
             $0.height.equalTo(58)
         }
+        
+        self.searchButton.snp.makeConstraints {
+            $0.right.equalTo(-10)
+            $0.size.equalTo(50)
+            $0.bottom.equalTo(self.cameraButton.snp.top).offset(-10)
+        }
     }
 
     private func addSubViews() {
@@ -153,6 +172,7 @@ extension HomeView {
         self.addSubview(self.operatingView)
         self.addSubview(self.cameraButton)
         self.addSubview(self.medicalSelectView)
+        self.addSubview(self.searchButton)
     }
     
     private func addGesture() {
