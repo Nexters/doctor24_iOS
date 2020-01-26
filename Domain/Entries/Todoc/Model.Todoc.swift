@@ -33,7 +33,7 @@ extension Model.Todoc {
 
 extension Model.Todoc {
     public struct Day: Codable {
-        public let dayType  : Model.Todoc.DayType
+        public let dayType  : Model.Todoc.DayType?
         public let startTime: String
         public let endTime  : String
     }

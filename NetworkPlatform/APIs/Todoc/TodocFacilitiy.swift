@@ -29,8 +29,7 @@ extension API.Facility: APIConfigWithError  {
         var params = [String:Any]()
         
         if let time = self.operatingTime {
-            params = ["operatingHours.day"      : time.dayType,
-                      "operatingHours.startTime": time.startTime,
+            params = ["operatingHours.startTime": time.startTime,
                       "operatingHours.endTime"  : time.endTime]
         }
         

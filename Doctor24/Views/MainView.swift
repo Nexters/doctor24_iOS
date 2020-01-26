@@ -39,6 +39,14 @@ final class HomeView: BaseView {
         return button
     }()
     
+    private lazy var medicalSelectView: MedicalSelectView = {
+        let view = MedicalSelectView(controlBy: vc)
+        view.backgroundColor = .white
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 28.5
+        return view
+    }()
+    
     private lazy var operatingView: OperatingHoursSetView = {
         let view = OperatingHoursSetView(controlBy: vc)
         return view
@@ -62,12 +70,11 @@ final class HomeView: BaseView {
         self.addGesture()
         
         self.cameraType
-            .debug("jhh type")
             .subscribe(onNext: { [weak self] type in
                 self?.mapControlView.positionMode = type
             }).disposed(by: self.disposeBag)
         
-        self.cameraButton.rx.tap.debug("jhh tap")
+        self.cameraButton.rx.tap
             .withLatestFrom(self.cameraType)
             .map { type -> NMFMyPositionMode in
                 switch type {
@@ -123,12 +130,20 @@ extension HomeView {
             $0.right.equalTo(-10)
             $0.size.equalTo(50)
         }
+        
+        self.medicalSelectView.snp.makeConstraints {
+            $0.top.equalTo(self.safeArea.top)
+            $0.left.equalToSuperview().offset(24)
+            $0.width.equalTo(192)
+            $0.height.equalTo(58)
+        }
     }
 
     private func addSubViews() {
         self.addSubview(self.mapControlView)
         self.addSubview(self.operatingView)
         self.addSubview(self.cameraButton)
+        self.addSubview(self.medicalSelectView)
     }
     
     private func addGesture() {
