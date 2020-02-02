@@ -11,7 +11,7 @@ import SnapKit
 
 extension HomeView {
     @objc
-    func dragView(_ gesture : UIGestureRecognizer){
+    func operatingDragView(_ gesture : UIGestureRecognizer){
         var maxHeight: CGFloat = 0.0
         var originHeight:CGFloat = 0.0
         

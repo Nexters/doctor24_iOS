@@ -61,8 +61,7 @@ final class HomeView: BaseView {
     
     private lazy var operatingView: OperatingHoursSetView = {
         let view = OperatingHoursSetView(controlBy: vc)
-        let gesture = UIPanGestureRecognizer(target: self, action: #selector(dragView(_:)))
-        view.tag = 340
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(operatingDragView(_:)))
         view.addGestureRecognizer(gesture)
         
         return view
