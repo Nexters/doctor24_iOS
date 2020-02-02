@@ -20,7 +20,8 @@ final class MedicalSelectView: BaseView {
     private let hospital: UIButton = {
         let button = UIButton()
         button.setTitle("병원", for: .normal)
-        button.setTitleColor(.gray, for: .normal)
+        button.titleLabel?.font = UIFont.bold(size:16)
+        button.setTitleColor(.grey3(), for: .normal)
         button.backgroundColor = .clear
         return button
     }()
@@ -28,7 +29,8 @@ final class MedicalSelectView: BaseView {
     private let pharmacy: UIButton = {
         let button = UIButton()
         button.setTitle("약국", for: .normal)
-        button.setTitleColor(.gray, for: .normal)
+        button.titleLabel?.font = UIFont.bold(size:16)
+        button.setTitleColor(.grey3(), for: .normal)
         button.backgroundColor = .clear
         return button
     }()
@@ -42,16 +44,22 @@ final class MedicalSelectView: BaseView {
     
     private let selectedView: UIView = {
         let view = UIView()
-        view.backgroundColor = .purple
+        view.backgroundColor = .blue()
         view.clipsToBounds = true
         view.layer.cornerRadius = 22
+        view.layer.shadowOffset = CGSize(width: 0, height: 1)
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 1
+        view.layer.shadowRadius = 5
+        view.layer.masksToBounds = false
         return view
     }()
     
     private let selectedLabel: UILabel = {
         let label = UILabel()
         label.text = "병원"
-        label.textColor = .black
+        label.textColor = .white()
+        label.font = UIFont.bold(size:16)
         return label
     }()
     
