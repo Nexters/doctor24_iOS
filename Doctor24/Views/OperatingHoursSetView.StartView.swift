@@ -26,15 +26,9 @@ extension OperatingHoursSetView {
         
         let startTimeLabel: UILabel = {
             let label = UILabel()
-            label.text = "09:00"
-            label.textColor = .black
-            return label
-        }()
-        
-        let startAMPMLabel: UILabel = {
-            let label = UILabel()
-            label.text = "AM"
-            label.textColor = .black
+            label.text = "오전 09:00"
+            label.font = .bold(size: 22)
+            label.textColor = .black()
             return label
         }()
         
@@ -51,7 +45,6 @@ extension OperatingHoursSetView {
             self.addSubview(self.startStackView)
             self.addSubview(self.startTimeButton)
             self.startStackView.addArrangedSubview(self.startTimeLabel)
-            self.startStackView.addArrangedSubview(self.startAMPMLabel)
             
             self.startTimeButton.snp.makeConstraints {
                 $0.top.equalToSuperview()

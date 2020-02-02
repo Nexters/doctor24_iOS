@@ -23,7 +23,6 @@ final class OperatingHoursSetView: BaseView {
         view.clipsToBounds = true
         view.layer.cornerRadius = 10
         view.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
-        
         return view
     }()
     
@@ -50,11 +49,24 @@ final class OperatingHoursSetView: BaseView {
     
     private let operatingStackView: UIStackView = {
         let stkView = UIStackView()
-        stkView.spacing = 8
+        stkView.spacing = 22
         stkView.axis = .horizontal
         stkView.alignment = .center
         stkView.backgroundColor = .red
         return stkView
+    }()
+    
+    private let operatingBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .grey4()
+        view.layer.cornerRadius = 8
+        return view
+    }()
+    
+    private let pickerView: PickerView = {
+        let view = PickerView()
+        view.backgroundColor = .black()
+        return view
     }()
     
     private let startView: StartView = {
@@ -70,10 +82,10 @@ final class OperatingHoursSetView: BaseView {
     private let spacingLabel: UILabel = {
         let label = UILabel()
         label.text = "-"
-        label.textColor = .black
+        label.font = .bold(size: 22)
+        label.textColor = .black()
         return label
     }()
-    
     
     required init(controlBy viewController: BaseViewController) {
         super.init(controlBy: viewController)
@@ -128,7 +140,9 @@ extension OperatingHoursSetView {
         self.contentView.addSubview(self.lineView)
         self.contentView.addSubview(self.closeButton)
         self.contentView.addSubview(self.titleLabel)
+        self.contentView.addSubview(self.operatingBackgroundView)
         self.contentView.addSubview(self.operatingStackView)
+        self.contentView.addSubview(self.pickerView)
     }
     
     private func setLayout() {
@@ -157,9 +171,22 @@ extension OperatingHoursSetView {
             $0.centerX.equalToSuperview()
         }
         
-        self.operatingStackView.snp.makeConstraints{
+        self.operatingBackgroundView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalTo(self.safeArea.bottom).offset(-18)
+            $0.top.equalTo(self.closeButton.snp.bottom).offset(11)
+            $0.width.equalTo(327)
+            $0.height.equalTo(52)
+        }
+        
+        self.operatingStackView.snp.makeConstraints{
+            $0.center.equalTo(self.operatingBackgroundView)
+        }
+        
+        self.pickerView.snp.makeConstraints {
+            $0.top.equalTo(self.operatingBackgroundView.snp.bottom).offset(20)
+            $0.left.equalToSuperview()
+            $0.right.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
 }

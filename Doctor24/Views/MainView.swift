@@ -145,8 +145,7 @@ extension HomeView {
         }
         
         self.operatingView.snp.makeConstraints {
-//            $0.bottom.equalToSuperview()
-            $0.top.equalToSuperview().offset(self.frame.height - 132)
+            $0.top.equalToSuperview().offset(self.frame.height - 132 - self.bottomSafeAreaInset)
             $0.left.equalToSuperview()
             $0.right.equalToSuperview()
             $0.height.equalTo(340)
@@ -201,7 +200,7 @@ extension HomeView {
         var originHeight:CGFloat = 0.0
         
         if gesture.view is OperatingHoursSetView {
-            originHeight = 102 + bottomSafeAreaInset
+            originHeight = 132 + bottomSafeAreaInset
             maxHeight = 340
         }
         
@@ -212,8 +211,8 @@ extension HomeView {
             if point.y >= 0 && self.frame.height - point.y <= maxHeight{
                 let differ = (height - originHeight) - point.y
                 if differ + originHeight > originHeight {
-                    gesture.view?.snp.updateConstraints { (make) in
-                        make.top.equalToSuperview().offset(self.frame.height - (differ + originHeight))
+                    gesture.view?.snp.updateConstraints {
+                        $0.top.equalToSuperview().offset(self.frame.height - (differ + originHeight))
                     }
                 }
             }
@@ -226,9 +225,9 @@ extension HomeView {
                     height = originHeight
                 }
                 
-                gesture.view?.snp.updateConstraints({ make in
-                    make.top.equalToSuperview().offset(self.frame.height - height)
-                })
+                gesture.view?.snp.updateConstraints {
+                    $0.top.equalToSuperview().offset(self.frame.height - height)
+                }
                 
                 self.layoutIfNeeded()
             }

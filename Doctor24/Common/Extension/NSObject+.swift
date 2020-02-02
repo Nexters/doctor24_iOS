@@ -21,7 +21,8 @@ extension NSObject {
 extension Date {
     var convertDate: String {
         let dateformatter = DateFormatter()
-        dateformatter.dateFormat = "h:mm a"
+        dateformatter.dateFormat = "a h:mm"
+        dateformatter.locale = Locale(identifier: "ko_KR")
         let date = dateformatter.string(from: self)
         
         return date
