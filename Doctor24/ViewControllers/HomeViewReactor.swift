@@ -20,19 +20,19 @@ final class HomeViewReactor: Reactor {
     var initialState: State = State()
     
     enum Action {
-        case viewDidLoad(location: CLLocationCoordinate2D)
-        case facilites(type: Model.Todoc.MedicalType, location: CLLocationCoordinate2D)
+        case viewDidLoad(location: CLLocationCoordinate2D, zoomLevel: Int)
+        case facilites(type: Model.Todoc.MedicalType, location: CLLocationCoordinate2D, zoomLevel: Int)
     }
     
     // represent state changes
     enum Mutation {
-        case setPins([Model.Todoc.Facility])
+        case setPins([Model.Todoc.Facilities])
         case setError(Error)
     }
     
     // represents the current view state
     struct State {
-        var pins: [Model.Todoc.Facility] = [Model.Todoc.Facility]()
+        var pins: [Model.Todoc.Facilities] = [Model.Todoc.Facilities]()
         var errorMessage = ""
     }
     
@@ -44,10 +44,11 @@ final class HomeViewReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .viewDidLoad(let location):
+        case .viewDidLoad(let location, let zoomLevel):
             return self.service.facilities(.hospital,
                                            latitude: location.latitude,
-                                           longitude: location.longitude)
+                                           longitude: location.longitude,
+                                           zoomLevel: zoomLevel)
                 .map{ result in
                     switch result {
                     case .success(let facilities):
@@ -56,10 +57,11 @@ final class HomeViewReactor: Reactor {
                         return .setError(error)
                     }
             }
-        case .facilites(let type, let location):
+        case .facilites(let type, let location, let zoomLevel):
             return self.service.facilities(type,
                                            latitude: location.latitude,
-                                           longitude: location.longitude)
+                                           longitude: location.longitude,
+                                           zoomLevel: zoomLevel)
                 .map  { result in
                     switch result {
                     case .success(let facilities):

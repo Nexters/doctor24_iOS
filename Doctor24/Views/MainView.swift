@@ -115,7 +115,7 @@ final class HomeView: BaseView {
 
 // MARK: Public Function
 extension HomeView {
-    func drawPins(facilities: [Model.Todoc.Facility]) {
+    func drawPins(facilities: [Model.Todoc.Facilities]) {
         self.markers.forEach { marker in
             marker.mapView = nil
         }

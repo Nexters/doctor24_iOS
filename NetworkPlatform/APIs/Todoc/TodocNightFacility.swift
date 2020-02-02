@@ -33,8 +33,7 @@ extension API.NightFacility: APIConfigWithError  {
         var params = [String:Any]()
         
         if let time = self.operatingTime {
-            params = ["operatingHours.day"      : time.dayType,
-                      "operatingHours.startTime": time.startTime,
+            params = ["operatingHours.startTime": time.startTime,
                       "operatingHours.endTime"  : time.endTime]
         }
         
@@ -45,7 +44,7 @@ extension API.NightFacility: APIConfigWithError  {
         return .map(params)
     }
     
-    func parse(_ input: Data) throws -> [Model.Todoc.Facility] {
+    func parse(_ input: Data) throws -> [Model.Todoc.Facilities] {
         return try input.parse()
     }
 }

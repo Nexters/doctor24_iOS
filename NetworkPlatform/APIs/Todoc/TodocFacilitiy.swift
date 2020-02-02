@@ -16,6 +16,7 @@ extension API {
         let longitude    : Double
         let operatingTime: Model.Todoc.Day?
         let category     : Model.Todoc.MedicalType.Category?
+        let zoomLevel    : Int
     }
 }
 
@@ -27,6 +28,7 @@ extension API.Facility: APIConfigWithError  {
     var method: HTTPMethod { return .get }
     var parameters: API.Parameter? {
         var params = [String:Any]()
+        params = ["radiusLevel": zoomLevel]
         
         if let time = self.operatingTime {
             params = ["operatingHours.startTime": time.startTime,
@@ -40,7 +42,7 @@ extension API.Facility: APIConfigWithError  {
         return .map(params)
     }
     
-    func parse(_ input: Data) throws -> [Model.Todoc.Facility] {
+    func parse(_ input: Data) throws -> [Model.Todoc.Facilities] {
         return try input.parse()
     }
 }

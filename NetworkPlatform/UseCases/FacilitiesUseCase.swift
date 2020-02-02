@@ -13,34 +13,40 @@ import RxSwift
 final class FacilitiesUseCase: Domain.FacilitiesUseCase {
     func facilities(_ type: Model.Todoc.MedicalType,
                     latitude: Double,
-                    longitude: Double) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>>{
+                    longitude: Double,
+                    zoomLevel: Int) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>>{
         return API.Facility(medicalType: type,
                             latitude: latitude,
                             longitude: longitude,
                             operatingTime: nil,
-                            category: nil).requestWithCatch()
-    }
-    
-    func facilities(_ type: Model.Todoc.MedicalType,
-                    latitude: Double,
-                    longitude: Double,
-                    operatingTime: Model.Todoc.Day) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>> {
-        return API.Facility(medicalType: type,
-                            latitude: latitude,
-                            longitude: longitude,
-                            operatingTime: operatingTime,
-                            category: nil).requestWithCatch()
+                            category: nil,
+                            zoomLevel: zoomLevel).requestWithCatch()
     }
     
     func facilities(_ type: Model.Todoc.MedicalType,
                     latitude: Double,
                     longitude: Double,
                     operatingTime: Model.Todoc.Day,
-                    category: Model.Todoc.MedicalType.Category) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>> {
+                    zoomLevel: Int) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>> {
         return API.Facility(medicalType: type,
                             latitude: latitude,
                             longitude: longitude,
                             operatingTime: operatingTime,
-                            category: category).requestWithCatch()
+                            category: nil,
+                            zoomLevel: zoomLevel).requestWithCatch()
+    }
+    
+    func facilities(_ type: Model.Todoc.MedicalType,
+                    latitude: Double,
+                    longitude: Double,
+                    operatingTime: Model.Todoc.Day,
+                    category: Model.Todoc.MedicalType.Category,
+                    zoomLevel: Int) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>> {
+        return API.Facility(medicalType: type,
+                            latitude: latitude,
+                            longitude: longitude,
+                            operatingTime: operatingTime,
+                            category: category,
+                            zoomLevel: zoomLevel).requestWithCatch()
     }
 }

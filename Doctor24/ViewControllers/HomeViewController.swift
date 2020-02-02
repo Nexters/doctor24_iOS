@@ -18,7 +18,17 @@ final class HomeViewController: BaseViewController, View {
     
     // MARK: Properties
     var disposeBag: DisposeBag = DisposeBag()
-    private let facilities = PublishSubject<[Model.Todoc.Facility]>()
+    private let facilities = PublishSubject<[Model.Todoc.Facilities]>()
+    private var zoomLevel: Int {
+        get {
+            if self.homeView.mapControlView.mapView.zoomLevel < 14 {
+                return 1
+            } else if self.homeView.mapControlView.mapView.zoomLevel >= 14 {
+                return 2
+            }
+            return 1
+        }
+    }
     
     // MARK: UI Componenet
     private lazy var homeView = HomeView(controlBy: self)
@@ -43,20 +53,24 @@ final class HomeViewController: BaseViewController, View {
     func bind(reactor: HomeViewReactor) {
         self.homeView.panGestureMap
             .subscribe(onNext: { [weak self] _ in
+//                print("jhh zoomLevel: \(self?.homeView.mapControlView.mapView.zoomLevel)")
 //                print("self?.homeView.mapControlView.mapView.contentBounds: \(self?.homeView.mapControlView.mapView.contentBounds)")
             }).disposed(by: self.disposeBag)
         
         self.homeView.medicalSelectView.medicalType
             .withLatestFrom(TodocInfo.shared.currentLocation) { ($0,$1) }
             .skip(1)
-            .map { HomeViewReactor.Action.facilites(type: $0, location: $1) }
+            .map { [weak self] (type, location) in
+                HomeViewReactor.Action.facilites(type: type, location: location, zoomLevel: self?.zoomLevel ?? 0) }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         TodocInfo.shared.currentLocation
             .filter { $0.isValid() }
             .take(1)
-            .map { HomeViewReactor.Action.viewDidLoad(location: $0) }
+            .map { [weak self] location in
+                return HomeViewReactor.Action.viewDidLoad(location: location, zoomLevel: self?.zoomLevel ?? 0)
+            }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
@@ -69,7 +83,7 @@ final class HomeViewController: BaseViewController, View {
                 let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
                 let loc = CLLocationCoordinate2D(latitude: lat,
                                                  longitude: lng)
-                return HomeViewReactor.Action.facilites(type: type, location: loc)
+                return HomeViewReactor.Action.facilites(type: type, location: loc, zoomLevel: self?.zoomLevel ?? 0)
             }.bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         

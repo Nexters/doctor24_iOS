@@ -15,7 +15,7 @@ final class NightFacilitiesUseCase: Domain.NightFacilitiesUseCase {
                     xLatitude: Double,
                     xLongitude: Double,
                     zLatitude: Double,
-                    zLongitude: Double) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>> {
+                    zLongitude: Double) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>> {
         return API.NightFacility(medicalType: type,
                                  xLatitude: xLatitude,
                                  xLongitude: xLongitude,
@@ -30,7 +30,7 @@ final class NightFacilitiesUseCase: Domain.NightFacilitiesUseCase {
                     xLongitude: Double,
                     zLatitude: Double,
                     zLongitude: Double,
-                    operatingTime: Model.Todoc.Day) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>> {
+                    operatingTime: Model.Todoc.Day) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>> {
         return API.NightFacility(medicalType: type,
                                  xLatitude: xLatitude,
                                  xLongitude: xLongitude,
@@ -46,7 +46,7 @@ final class NightFacilitiesUseCase: Domain.NightFacilitiesUseCase {
                     zLatitude: Double,
                     zLongitude: Double,
                     operatingTime: Model.Todoc.Day,
-                    category: Model.Todoc.MedicalType.Category) -> Observable<Result<[Model.Todoc.Facility], APIError<MockError>>> {
+                    category: Model.Todoc.MedicalType.Category) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>> {
         return API.NightFacility(medicalType: type,
                                  xLatitude: xLatitude,
                                  xLongitude: xLongitude,

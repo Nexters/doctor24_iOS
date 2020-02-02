@@ -39,13 +39,16 @@ extension Model.Todoc {
     }
     
     public struct Facility: Codable {
-        public let name: String
-        public let latitude: Double
+        public let id       : String
+        public let name     : String
+        public let latitude : Double
         public let longitude: Double
         public let medicalType: Model.Todoc.MedicalType
-        public let days: [Day]
-        public let phone: String
-        public let address: String
+        public let days     : [Day]
+        public let phone    : String
+        public let address  : String
+        public let emergency: Bool
+        public let nightTimeServe: Bool
     }
     
     public struct LocalTime: Codable {
@@ -53,6 +56,13 @@ extension Model.Todoc {
         public let minute: Int
         public let second: Int
         public let nano  : Int
+    }
+    
+    public struct Facilities: Codable {
+        public let latitude  : Double
+        public let longitude : Double
+        public let facilities: [Facility]
+        public let total     : Int
     }
 }
 
