@@ -61,6 +61,10 @@ final class HomeView: BaseView {
     
     private lazy var operatingView: OperatingHoursSetView = {
         let view = OperatingHoursSetView(controlBy: vc)
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(dragView(_:)))
+        view.tag = 340
+        view.addGestureRecognizer(gesture)
+        
         return view
     }()
     
@@ -188,6 +192,45 @@ extension HomeView {
     @objc
     private func triggerTouchAction(){
         self.panGestureMap.accept(())
+    }
+    
+    @objc
+    private func dragView(_ gesture : UIGestureRecognizer){
+        self.layoutIfNeeded()
+        let maxHeight = CGFloat(gesture.view?.tag ?? 0)
+        let originHeight = CGFloat(gesture.view?.frame.height ?? 0)
+        
+        let point  = gesture.location(in: self)
+        let height = self.frame.height
+        
+        if gesture.state == .changed {
+            print("postion : \(gesture.location(in: self))")
+            if point.y >= 0 && point.y <= height{
+                let differ = (height - originHeight) - point.y
+                if differ > 0 && differ + originHeight < maxHeight{
+                    gesture.view?.snp.updateConstraints { (make) in
+                        make.height.equalTo(differ + originHeight)
+                        print("differ: \(differ + originHeight)")
+                    }
+                }
+            }
+        }else if gesture.state == .ended {
+            
+            UIView.animate(withDuration: 0.3) {
+                var height: CGFloat = 0.0
+                if point.y <= maxHeight / 2 {
+                    height = maxHeight
+                } else {
+                    height = originHeight
+                }
+                
+                gesture.view?.snp.updateConstraints({ make in
+                    make.height.equalTo(height)
+                })
+                
+                self.layoutIfNeeded()
+            }
+        }
     }
 }
 

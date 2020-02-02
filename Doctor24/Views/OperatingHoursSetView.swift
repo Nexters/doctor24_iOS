@@ -12,6 +12,7 @@ import RxSwift
 import RxCocoa
 
 final class OperatingHoursSetView: BaseView {
+    
     // MARK: Properties
     private let disposeBag = DisposeBag()
     
@@ -57,6 +58,17 @@ final class OperatingHoursSetView: BaseView {
         label.textColor = .black
         return label
     }()
+    
+    
+    required init(controlBy viewController: BaseViewController) {
+        super.init(controlBy: viewController)
+        self.setupUI()
+        self.setBind()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func setupUI() {
         self.backgroundColor = .clear

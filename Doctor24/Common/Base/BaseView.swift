@@ -16,7 +16,6 @@ class BaseView: UIView {
     required init(controlBy viewController: BaseViewController) {
         vc = viewController
         super.init(frame: UIScreen.main.bounds)
-        setBind()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -32,7 +31,7 @@ class BaseView: UIView {
     }
     
     override func layoutSubviews() {
-        setupUI()
+        
     }
     
     @objc func pressedBackView(_ gestureRecognizer: UIPanGestureRecognizer){

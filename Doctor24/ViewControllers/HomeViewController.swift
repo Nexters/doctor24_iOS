@@ -48,6 +48,8 @@ final class HomeViewController: BaseViewController, View {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.homeView.setupUI()
+        self.homeView.setBind()
     }
     
     func bind(reactor: HomeViewReactor) {

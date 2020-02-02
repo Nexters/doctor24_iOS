@@ -57,12 +57,17 @@ final class MedicalSelectView: BaseView {
     
     required init(controlBy viewController: BaseViewController) {
         super.init(controlBy: viewController)
-        self.addSubviews()
-        self.setLayout()
+        self.setupUI()
+        self.setBind()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setupUI() {
+        self.addSubviews()
+        self.setLayout()
     }
     
     override func setBind() {
