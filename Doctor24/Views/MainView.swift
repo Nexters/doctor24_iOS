@@ -145,10 +145,11 @@ extension HomeView {
         }
         
         self.operatingView.snp.makeConstraints {
-            $0.bottom.equalToSuperview()
+//            $0.bottom.equalToSuperview()
+            $0.top.equalToSuperview().offset(self.frame.height - 132)
             $0.left.equalToSuperview()
             $0.right.equalToSuperview()
-            $0.height.equalTo(102 + bottomSafeAreaInset)
+            $0.height.equalTo(340)
         }
         
         self.cameraButton.snp.makeConstraints {
@@ -196,36 +197,37 @@ extension HomeView {
     
     @objc
     private func dragView(_ gesture : UIGestureRecognizer){
-        self.layoutIfNeeded()
-        let maxHeight = CGFloat(gesture.view?.tag ?? 0)
-        let originHeight = CGFloat(gesture.view?.frame.height ?? 0)
+        var maxHeight: CGFloat = 0.0
+        var originHeight:CGFloat = 0.0
+        
+        if gesture.view is OperatingHoursSetView {
+            originHeight = 102 + bottomSafeAreaInset
+            maxHeight = 340
+        }
         
         let point  = gesture.location(in: self)
         let height = self.frame.height
         
         if gesture.state == .changed {
-            print("postion : \(gesture.location(in: self))")
-            if point.y >= 0 && point.y <= height{
+            if point.y >= 0 && point.y >= maxHeight{
                 let differ = (height - originHeight) - point.y
-                if differ > 0 && differ + originHeight < maxHeight{
+                if differ + originHeight > originHeight {
                     gesture.view?.snp.updateConstraints { (make) in
-                        make.height.equalTo(differ + originHeight)
-                        print("differ: \(differ + originHeight)")
+                        make.top.equalToSuperview().offset(self.frame.height - (differ + originHeight))
                     }
                 }
             }
-        }else if gesture.state == .ended {
-            
+        } else if gesture.state == .ended {
             UIView.animate(withDuration: 0.3) {
                 var height: CGFloat = 0.0
-                if point.y <= maxHeight / 2 {
+                if (point.y - self.frame.height / 2) <= maxHeight / 2 {
                     height = maxHeight
                 } else {
                     height = originHeight
                 }
                 
                 gesture.view?.snp.updateConstraints({ make in
-                    make.height.equalTo(height)
+                    make.top.equalToSuperview().offset(self.frame.height - height)
                 })
                 
                 self.layoutIfNeeded()
