@@ -17,6 +17,13 @@ final class OperatingHoursSetView: BaseView {
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
+    let pickerView: PickerView = {
+        let view = PickerView()
+        view.backgroundColor = .black()
+        view.alpha = 0.0
+        return view
+    }()
+    
     private let contentView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
@@ -60,12 +67,6 @@ final class OperatingHoursSetView: BaseView {
         let view = UIView()
         view.backgroundColor = .grey4()
         view.layer.cornerRadius = 8
-        return view
-    }()
-    
-    private let pickerView: PickerView = {
-        let view = PickerView()
-        view.backgroundColor = .black()
         return view
     }()
     

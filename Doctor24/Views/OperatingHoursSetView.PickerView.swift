@@ -43,13 +43,13 @@ extension OperatingHoursSetView {
                 $0.left.equalToSuperview()
                 $0.right.equalToSuperview()
                 $0.top.equalToSuperview()
-                $0.bottom.equalTo(self.confirmButton.snp.top)
+                $0.height.equalTo(198)
             }
             
             self.confirmButton.snp.makeConstraints {
                 $0.left.equalToSuperview()
                 $0.right.equalToSuperview()
-                $0.height.equalTo(56)
+                $0.top.equalTo(self.pickerDate.snp.bottom)
                 $0.bottom.equalToSuperview()
             }
         }

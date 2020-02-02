@@ -148,7 +148,7 @@ extension HomeView {
             $0.top.equalToSuperview().offset(self.frame.height - 132 - self.bottomSafeAreaInset)
             $0.left.equalToSuperview()
             $0.right.equalToSuperview()
-            $0.height.equalTo(340)
+            $0.height.equalTo(396 + bottomSafeAreaInset)
         }
         
         self.cameraButton.snp.makeConstraints {
@@ -201,7 +201,7 @@ extension HomeView {
         
         if gesture.view is OperatingHoursSetView {
             originHeight = 132 + bottomSafeAreaInset
-            maxHeight = 340
+            maxHeight = 396 + bottomSafeAreaInset
         }
         
         let point  = gesture.location(in: self)
@@ -214,21 +214,27 @@ extension HomeView {
                     gesture.view?.snp.updateConstraints {
                         $0.top.equalToSuperview().offset(self.frame.height - (differ + originHeight))
                     }
+                    
+                    (gesture.view as! OperatingHoursSetView).pickerView.alpha = differ / 200
                 }
             }
         } else if gesture.state == .ended {
+            var height: CGFloat = 0.0
+            var alpha : CGFloat = 0.0
+            if (point.y - self.frame.height / 2) <= maxHeight / 2 {
+                height = maxHeight
+                alpha  = 1.0
+            } else {
+                height = originHeight
+                alpha  = 0.0
+            }
+            
             UIView.animate(withDuration: 0.3) {
-                var height: CGFloat = 0.0
-                if (point.y - self.frame.height / 2) <= maxHeight / 2 {
-                    height = maxHeight
-                } else {
-                    height = originHeight
-                }
-                
                 gesture.view?.snp.updateConstraints {
                     $0.top.equalToSuperview().offset(self.frame.height - height)
                 }
                 
+                (gesture.view as! OperatingHoursSetView).pickerView.alpha = alpha
                 self.layoutIfNeeded()
             }
         }
