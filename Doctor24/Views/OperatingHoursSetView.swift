@@ -27,11 +27,25 @@ final class OperatingHoursSetView: BaseView {
         return view
     }()
     
+    private let lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.grey3()
+        view.layer.cornerRadius = 2
+        return view
+    }()
+    
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "진료시간"
-        label.textColor = .black
+        label.font = .bold(size: 14)
+        label.textColor = .grey1()
         return label
+    }()
+    
+    private let closeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "rectangle"), for: .normal)
+        return button
     }()
     
     private let operatingStackView: UIStackView = {
@@ -39,6 +53,7 @@ final class OperatingHoursSetView: BaseView {
         stkView.spacing = 8
         stkView.axis = .horizontal
         stkView.alignment = .center
+        stkView.backgroundColor = .red
         return stkView
     }()
     
@@ -110,11 +125,26 @@ extension OperatingHoursSetView {
         self.operatingStackView.addArrangedSubview(self.startView)
         self.operatingStackView.addArrangedSubview(self.spacingLabel)
         self.operatingStackView.addArrangedSubview(self.endView)
+        self.contentView.addSubview(self.lineView)
+        self.contentView.addSubview(self.closeButton)
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.operatingStackView)
     }
     
     private func setLayout() {
+        self.lineView.snp.makeConstraints {
+            $0.width.equalTo(28)
+            $0.height.equalTo(4)
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(12)
+        }
+        
+        self.closeButton.snp.makeConstraints {
+            $0.size.equalTo(26)
+            $0.left.equalToSuperview().offset(24)
+            $0.top.equalToSuperview().offset(23)
+        }
+        
         self.contentView.snp.makeConstraints{
             $0.top.equalToSuperview()
             $0.left.equalToSuperview()
@@ -123,7 +153,7 @@ extension OperatingHoursSetView {
         }
         
         self.titleLabel.snp.makeConstraints{
-            $0.top.equalToSuperview().offset(18)
+            $0.top.equalTo(self.lineView.snp.bottom).offset(12)
             $0.centerX.equalToSuperview()
         }
         

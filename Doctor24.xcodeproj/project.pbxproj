@@ -46,6 +46,8 @@
 		A12C34A023DD77A100BF4D06 /* TodocNightFacility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12C349F23DD77A100BF4D06 /* TodocNightFacility.swift */; };
 		A12C34A223DD7A4400BF4D06 /* NightFacilitiesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12C34A123DD7A4400BF4D06 /* NightFacilitiesUseCase.swift */; };
 		A12C34A423DD99C100BF4D06 /* MedicalSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12C34A323DD99C100BF4D06 /* MedicalSelectView.swift */; };
+		A17F84BA23E706BF009EC3D7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84B923E706BF009EC3D7 /* UIColor+.swift */; };
+		A17F84BC23E7087D009EC3D7 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84BB23E7087D009EC3D7 /* UIFont+.swift */; };
 		A1AEAE4E23C9A115002B5AB2 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE4D23C9A115002B5AB2 /* MainView.swift */; };
 		A1AEAE5123C9A6C8002B5AB2 /* LookAroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE5023C9A6C8002B5AB2 /* LookAroundView.swift */; };
 		A1AEAE5423CB0AF6002B5AB2 /* ViewMenuable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE5323CB0AF6002B5AB2 /* ViewMenuable.swift */; };
@@ -202,6 +204,8 @@
 		A12C349F23DD77A100BF4D06 /* TodocNightFacility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocNightFacility.swift; sourceTree = "<group>"; };
 		A12C34A123DD7A4400BF4D06 /* NightFacilitiesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightFacilitiesUseCase.swift; sourceTree = "<group>"; };
 		A12C34A323DD99C100BF4D06 /* MedicalSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalSelectView.swift; sourceTree = "<group>"; };
+		A17F84B923E706BF009EC3D7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
+		A17F84BB23E7087D009EC3D7 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		A1AEAE4D23C9A115002B5AB2 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		A1AEAE5023C9A6C8002B5AB2 /* LookAroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookAroundView.swift; sourceTree = "<group>"; };
 		A1AEAE5323CB0AF6002B5AB2 /* ViewMenuable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewMenuable.swift; sourceTree = "<group>"; };
@@ -385,6 +389,8 @@
 				A1C3702B23DC1C90001E60C8 /* Rx+CLLocationManager.swift */,
 				6FE7DD6723D2DD6A00B33BE3 /* Rx+.swift */,
 				A1D52F1523DAE55100C2ED3D /* UIView+.swift */,
+				A17F84B923E706BF009EC3D7 /* UIColor+.swift */,
+				A17F84BB23E7087D009EC3D7 /* UIFont+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1151,6 +1157,7 @@
 				6F6FDA7223C70A3800B091DF /* Scene.swift in Sources */,
 				A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */,
 				A1D52F1623DAE55100C2ED3D /* UIView+.swift in Sources */,
+				A17F84BC23E7087D009EC3D7 /* UIFont+.swift in Sources */,
 				6FE7DD6623D2D79A00B33BE3 /* HomeViewReactor.swift in Sources */,
 				6F67165023C7FC41000EE7F0 /* ViewDraggable.swift in Sources */,
 				A12C34A423DD99C100BF4D06 /* MedicalSelectView.swift in Sources */,
@@ -1166,6 +1173,7 @@
 				6F6FDA7023C70A3200B091DF /* ViewTransition.swift in Sources */,
 				A1AEAE5423CB0AF6002B5AB2 /* ViewMenuable.swift in Sources */,
 				6FC1B2F723C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift in Sources */,
+				A17F84BA23E706BF009EC3D7 /* UIColor+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

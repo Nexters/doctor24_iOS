@@ -209,7 +209,7 @@ extension HomeView {
         let height = self.frame.height
         
         if gesture.state == .changed {
-            if point.y >= 0 && point.y >= maxHeight{
+            if point.y >= 0 && self.frame.height - point.y <= maxHeight{
                 let differ = (height - originHeight) - point.y
                 if differ + originHeight > originHeight {
                     gesture.view?.snp.updateConstraints { (make) in
