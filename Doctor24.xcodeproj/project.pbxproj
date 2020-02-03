@@ -62,6 +62,7 @@
 		A1C3702A23DC1C2B001E60C8 /* RxCLLocationManagerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3702923DC1C2B001E60C8 /* RxCLLocationManagerDelegateProxy.swift */; };
 		A1C3702C23DC1C90001E60C8 /* Rx+CLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3702B23DC1C90001E60C8 /* Rx+CLLocationManager.swift */; };
 		A1C3702E23DC1D14001E60C8 /* TodocInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3702D23DC1D14001E60C8 /* TodocInfo.swift */; };
+		A1CCA66E23E870F3000DE602 /* HomeView+Markers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CCA66D23E870F3000DE602 /* HomeView+Markers.swift */; };
 		A1D52F1023DADBD000C2ED3D /* OperatingHoursSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D52F0F23DADBD000C2ED3D /* OperatingHoursSetView.swift */; };
 		A1D52F1223DAE17600C2ED3D /* OperatingHoursSetView.StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D52F1123DAE17600C2ED3D /* OperatingHoursSetView.StartView.swift */; };
 		A1D52F1423DAE19D00C2ED3D /* OperatingHoursSetView.EndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D52F1323DAE19D00C2ED3D /* OperatingHoursSetView.EndView.swift */; };
@@ -222,6 +223,7 @@
 		A1C3702923DC1C2B001E60C8 /* RxCLLocationManagerDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxCLLocationManagerDelegateProxy.swift; sourceTree = "<group>"; };
 		A1C3702B23DC1C90001E60C8 /* Rx+CLLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+CLLocationManager.swift"; sourceTree = "<group>"; };
 		A1C3702D23DC1D14001E60C8 /* TodocInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocInfo.swift; sourceTree = "<group>"; };
+		A1CCA66D23E870F3000DE602 /* HomeView+Markers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeView+Markers.swift"; sourceTree = "<group>"; };
 		A1D52F0F23DADBD000C2ED3D /* OperatingHoursSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatingHoursSetView.swift; sourceTree = "<group>"; };
 		A1D52F1123DAE17600C2ED3D /* OperatingHoursSetView.StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatingHoursSetView.StartView.swift; sourceTree = "<group>"; };
 		A1D52F1323DAE19D00C2ED3D /* OperatingHoursSetView.EndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatingHoursSetView.EndView.swift; sourceTree = "<group>"; };
@@ -513,6 +515,7 @@
 			children = (
 				A1AEAE4D23C9A115002B5AB2 /* HomeView.swift */,
 				A17F84C323E72180009EC3D7 /* HomeView+Gesture.swift */,
+				A1CCA66D23E870F3000DE602 /* HomeView+Markers.swift */,
 			);
 			path = HomeView;
 			sourceTree = "<group>";
@@ -1194,6 +1197,7 @@
 				A1D52F1223DAE17600C2ED3D /* OperatingHoursSetView.StartView.swift in Sources */,
 				A1F19D3A23C219A200FE4D6C /* SceneDelegate.swift in Sources */,
 				6F67164B23C7F9F7000EE7F0 /* BaseView.swift in Sources */,
+				A1CCA66E23E870F3000DE602 /* HomeView+Markers.swift in Sources */,
 				6F6FDA7023C70A3200B091DF /* ViewTransition.swift in Sources */,
 				A1AEAE5423CB0AF6002B5AB2 /* ViewMenuable.swift in Sources */,
 				6FC1B2F723C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift in Sources */,
