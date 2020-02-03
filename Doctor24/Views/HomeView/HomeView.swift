@@ -117,11 +117,7 @@ final class HomeView: BaseView {
                 if facilities.facilities.count > 1 {
                     
                 } else if let facility = facilities.facilities.first {
-                    if facility.medicalType == .hospital {
-                        marker.iconImage = NMFOverlayImage(name: "detailHospital")
-                    } else {
-                        marker.iconImage = NMFOverlayImage(name: "detailDrugStore")
-                    }
+                    marker.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
                 }
             }).disposed(by: self.disposeBag)
         

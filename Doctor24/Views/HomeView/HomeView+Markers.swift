@@ -79,4 +79,33 @@ extension HomeView {
         
         return NMFOverlayImage(image: container.asImage())
     }
+    
+    func detailPin(name: String, medicalType: Model.Todoc.MedicalType) -> NMFOverlayImage {
+        let container     = UIView()
+        let detailImg     = medicalType == .hospital ? UIImage(named: "detailHospital") : UIImage(named: "detailDrugStore")
+        let detailImgView = UIImageView(image: detailImg)
+        let titleLabel    = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 14))
+        let titleBack     = UIView()
+        
+        titleLabel.text = name
+        titleLabel.sizeToFit()
+        titleLabel.font = UIFont.regular(size: 12)
+        titleLabel.textColor = .grey1()
+        titleLabel.textAlignment = .center
+        
+        titleBack.backgroundColor    = .white()
+        titleBack.layer.cornerRadius = 8
+        
+        container.frame = CGRect(x: 0, y: 0, width: titleLabel.frame.width - 20, height: 82)
+        titleBack.frame = CGRect(x: 0, y: 82 - 22, width: titleLabel.frame.width - 20, height: 22)
+        detailImgView.frame = CGRect(x: 0, y: 0, width: 54, height: 54)
+        detailImgView.center = CGPoint(x: container.center.x, y: detailImgView.center.y)
+        titleLabel.center = titleBack.center
+        
+        container.addSubview(detailImgView)
+        container.addSubview(titleBack)
+        container.addSubview(titleLabel)
+        
+        return NMFOverlayImage(image: container.asImage())
+    }
 }
