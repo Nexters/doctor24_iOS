@@ -13,6 +13,7 @@ import NMapsMap
 // MARK: Draw Pins
 extension HomeView {
     func drawPins(facilities: [Model.Todoc.Facilities]) {
+        self.markerSignal.accept(nil)
         self.markers.forEach { marker in
             marker.mapView = nil
         }

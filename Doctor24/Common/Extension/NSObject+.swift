@@ -36,3 +36,12 @@ extension Date {
         return date
     }
 }
+
+extension String {
+    var convertDate: String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "HH:mm:ss"
+        let date = dateformatter.date(from: self)
+        return date?.convertDate ?? ""
+    }
+}

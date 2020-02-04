@@ -5,11 +5,16 @@
 //  Created by Haehyeon Jeong on 2020/02/04.
 //  Copyright © 2020 JHH. All rights reserved.
 //
+import Domain
 
 import UIKit
 import SnapKit
+import CoreLocation
 
 final class PreviewFacilityView: BaseView {
+    // MARK: Property
+    private var phoneNumber: String = ""
+    
     // MARK: UI Componenet
     private let contentView: UIView = {
         let view = UIView()
@@ -116,6 +121,14 @@ final class PreviewFacilityView: BaseView {
     override func setBind() {
         
     }
+    
+    public func setData(facility: Model.Todoc.PreviewFacility) {
+        self.titleLabel.text = facility.name
+        self.timeLabel.text  = "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
+        self.addreeLabel.text = facility.address
+        self.phoneNumber     = facility.phone
+        self.distanceLabel.text = self.distance(lat: facility.latitude, long: facility.longitude)
+    }
 }
 
 extension PreviewFacilityView {
@@ -152,7 +165,6 @@ extension PreviewFacilityView {
             $0.left.equalToSuperview().offset(24)
             $0.top.equalTo(self.bottomView.snp.bottom).offset(16)
             $0.right.equalTo(self.navigationButton.snp.left).offset(10)
-            $0.height.equalTo(52)
         }
         
         self.navigationButton.snp.makeConstraints {
@@ -192,13 +204,28 @@ extension PreviewFacilityView {
         self.addreeLabel.snp.makeConstraints {
             $0.left.equalTo(self.distanceLabel.snp.left)
             $0.top.equalTo(self.distanceLabel.snp.bottom).offset(4)
+            $0.right.equalToSuperview().offset(-24)
         }
         
         self.callButton.snp.makeConstraints {
             $0.height.equalTo(56)
             $0.left.equalToSuperview().offset(16)
             $0.right.equalToSuperview().offset(-16)
-            $0.bottom.equalTo(self.safeArea.bottom).offset(16)
+            $0.bottom.equalTo(self.safeArea.bottom).offset(-16)
         }
+    }
+}
+
+
+extension PreviewFacilityView {
+    private func distance(lat: Double, long: Double) -> String {
+        if let current = try? TodocInfo.shared.currentLocation.value() {
+            let currentLoc = CLLocation(latitude: current.latitude, longitude: current.longitude)
+            let distance = currentLoc.distance(from: CLLocation(latitude: lat, longitude: long))
+            
+            return "\(Int(distance) / 1000)km"
+        }
+        
+        return "km"
     }
 }

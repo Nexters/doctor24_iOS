@@ -55,4 +55,40 @@ extension HomeView {
             }
         }
     }
+    
+    @objc
+    func previewDragView(_ gesture : UIGestureRecognizer){
+        let point  = gesture.location(in: self)
+        let height = self.frame.height
+        let contentViewHeight:CGFloat = 279.0 + bottomSafeAreaInset
+        let preview = gesture.view as! PreviewFacilityView
+        
+        if gesture.state == .changed {
+            if point.y >= 0 && point.y <= height{
+                let differ = (height - contentViewHeight) - point.y
+                if differ > 0 {
+                    preview.snp.updateConstraints { (make) in
+                        make.height.equalTo(differ + contentViewHeight)
+                    }
+                }
+            }
+        }else if gesture.state == .ended {
+            
+            UIView.animate(withDuration: 0.3) {
+                
+                var height: CGFloat = 0.0
+                if point.y <= self.vc.view.frame.height/2 {
+                    height = self.vc.view.frame.height
+                } else {
+                    height = contentViewHeight
+                }
+                
+                preview.snp.updateConstraints({ make in
+                    make.height.equalTo(height)
+                })
+                
+                self.layoutIfNeeded()
+            }
+        }
+    }
 }

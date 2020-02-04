@@ -63,6 +63,8 @@ final class HomeView: BaseView {
     
     private lazy var preview: PreviewFacilityView = {
         let view = PreviewFacilityView(controlBy: vc)
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(previewDragView(_:)))
+        view.addGestureRecognizer(gesture)
         return view
     }()
     
@@ -116,6 +118,17 @@ final class HomeView: BaseView {
             .bind(to: self.cameraType)
             .disposed(by: self.disposeBag)
         
+        self.mapControlView.mapView.rx
+            .didTapMapView
+            .map { nil }
+            .bind(to: self.markerSignal)
+            .disposed(by: self.disposeBag)
+        
+        self.mapControlView.mapView
+            .rx.mapViewRegionDidChanging
+            .bind(to: self.regionDidChanging)
+            .disposed(by: self.disposeBag)
+        
         self.markerSignal
             .subscribe(onNext: { [weak self] overlay in
                 guard let self = self else { return }
@@ -127,7 +140,7 @@ final class HomeView: BaseView {
                     } else if let facility = facilities.facilities.first {
                         selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
                         self.selectedMarker.insert(selected)
-                        self.onPreview()
+                        self.onPreview(with: facility)
                     }
                 } else {
                     if !self.selectedMarker.isEmpty {
@@ -140,18 +153,6 @@ final class HomeView: BaseView {
                     }
                 }
             }).disposed(by: self.disposeBag)
-        
-        self.mapControlView.mapView.rx
-            .didTapMapView
-            .map { nil }
-            .debug("tap")
-            .bind(to: self.markerSignal)
-            .disposed(by: self.disposeBag)
-        
-        self.mapControlView.mapView
-            .rx.mapViewRegionDidChanging
-            .bind(to: self.regionDidChanging)
-            .disposed(by: self.disposeBag)
     }
 }
 
@@ -223,7 +224,11 @@ extension HomeView {
         self.panGestureMap.accept(())
     }
     
-    private func onPreview() {
+    private func onPreview(with facility: Model.Todoc.PreviewFacility) {
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
+        self.mapControlView.mapView.moveCamera(cameraUpdate)
+        self.preview.setData(facility: facility)
+        
         UIView.animate(withDuration: 0.3) {
             self.preview.snp.updateConstraints {
                 $0.height.equalTo(279 + self.bottomSafeAreaInset)
