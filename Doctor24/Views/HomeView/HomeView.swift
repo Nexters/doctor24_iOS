@@ -61,6 +61,11 @@ final class HomeView: BaseView {
         return view
     }()
     
+    private lazy var preview: PreviewFacilityView = {
+        let view = PreviewFacilityView(controlBy: vc)
+        return view
+    }()
+    
     private lazy var operatingView: OperatingHoursSetView = {
         let view = OperatingHoursSetView(controlBy: vc)
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(operatingDragView(_:)))
@@ -122,6 +127,7 @@ final class HomeView: BaseView {
                     } else if let facility = facilities.facilities.first {
                         selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
                         self.selectedMarker.insert(selected)
+                        self.onPreview()
                     }
                 } else {
                     if !self.selectedMarker.isEmpty {
@@ -129,6 +135,7 @@ final class HomeView: BaseView {
                             let facility = (marker.userInfo["tag"] as! Model.Todoc.Facilities).facilities.first
                             marker.iconImage = self.pin(facility: facility!)
                         }
+                        self.dismissPreview()
                         self.selectedMarker.removeAll()
                     }
                 }
@@ -183,6 +190,13 @@ extension HomeView {
             $0.size.equalTo(50)
             $0.bottom.equalTo(self.cameraButton.snp.top).offset(-10)
         }
+        
+        self.preview.snp.makeConstraints {
+            $0.left.equalToSuperview()
+            $0.right.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(0)
+        }
     }
 
     private func addSubViews() {
@@ -191,6 +205,7 @@ extension HomeView {
         self.addSubview(self.cameraButton)
         self.addSubview(self.medicalSelectView)
         self.addSubview(self.searchButton)
+        self.addSubview(self.preview)
     }
     
     private func addGesture() {
@@ -206,6 +221,24 @@ extension HomeView {
     @objc
     private func triggerTouchAction(){
         self.panGestureMap.accept(())
+    }
+    
+    private func onPreview() {
+        UIView.animate(withDuration: 0.3) {
+            self.preview.snp.updateConstraints {
+                $0.height.equalTo(279 + self.bottomSafeAreaInset)
+            }
+            self.layoutIfNeeded()
+        }
+    }
+    
+    private func dismissPreview() {
+        UIView.animate(withDuration: 0.3) {
+            self.preview.snp.updateConstraints {
+                $0.height.equalTo(0)
+            }
+            self.layoutIfNeeded()
+        }
     }
 }
 
