@@ -8,8 +8,23 @@
 
 import Foundation
 
+public protocol Facility {
+    var id       : String { get }
+    var name     : String { get }
+    var latitude : Double { get }
+    var longitude: Double { get }
+    var medicalType: Model.Todoc.MedicalType { get }
+    var phone    : String { get }
+    var address  : String { get }
+    var emergency: Bool   { get }
+    var nightTimeServe: Bool { get }
+}
+
 extension Model {
     public struct Todoc { }
+}
+
+extension Model.Todoc {
 }
 
 extension Model.Todoc {
@@ -38,13 +53,26 @@ extension Model.Todoc {
         public let endTime  : String
     }
     
-    public struct Facility: Codable {
+    public struct DetailFacility: Codable, Facility {
         public let id       : String
         public let name     : String
         public let latitude : Double
         public let longitude: Double
         public let medicalType: Model.Todoc.MedicalType
         public let days     : [Day]
+        public let phone    : String
+        public let address  : String
+        public let emergency: Bool
+        public let nightTimeServe: Bool
+    }
+    
+    public struct PreviewFacility: Codable, Facility {
+        public let id       : String
+        public let name     : String
+        public let latitude : Double
+        public let longitude: Double
+        public let medicalType: Model.Todoc.MedicalType
+        public let day      : Day
         public let phone    : String
         public let address  : String
         public let emergency: Bool
@@ -61,7 +89,7 @@ extension Model.Todoc {
     public struct Facilities: Codable {
         public let latitude  : Double
         public let longitude : Double
-        public let facilities: [Facility]
+        public let facilities: [PreviewFacility]
         public let total     : Int
     }
 }

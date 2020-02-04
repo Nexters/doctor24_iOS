@@ -40,7 +40,7 @@ extension HomeView {
         }
     }
     
-    func pin(facility: Model.Todoc.Facility) -> NMFOverlayImage {
+    func pin(facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage {
         switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy) {
         case (_, _, true):
             //약국
