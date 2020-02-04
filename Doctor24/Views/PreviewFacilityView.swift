@@ -8,12 +8,16 @@
 import Domain
 
 import UIKit
-import SnapKit
 import CoreLocation
+import SnapKit
+import RxSwift
+import RxCocoa
+
 
 final class PreviewFacilityView: BaseView {
     // MARK: Property
     private var phoneNumber: String = ""
+    private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
     private let contentView: UIView = {
@@ -119,7 +123,12 @@ final class PreviewFacilityView: BaseView {
     }
     
     override func setBind() {
-        
+        self.callButton.rx.tap.subscribe(onNext: {
+                guard let url = URL(string: "tel://\(self.phoneNumber.onlyDigits())"),
+                    UIApplication.shared.canOpenURL(url) else { return }
+                
+                UIApplication.shared.open(url)
+            }).disposed(by: self.disposeBag)
     }
     
     public func setData(facility: Model.Todoc.PreviewFacility) {
