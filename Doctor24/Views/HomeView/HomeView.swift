@@ -18,8 +18,9 @@ final class HomeView: BaseView {
     // MARK: Property
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
-    let markerSignal      = PublishRelay<NMFOverlay>()
-    var markers = [NMFMarker]()
+    let markerSignal      = BehaviorRelay<NMFOverlay?>(value: nil)
+    var markers           = [NMFMarker]()
+    private var selectedMarker = Set<NMFMarker>()
     private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     private let disposeBag = DisposeBag()
     private var panGestureRecognizer: UIPanGestureRecognizer!
@@ -111,15 +112,34 @@ final class HomeView: BaseView {
             .disposed(by: self.disposeBag)
         
         self.markerSignal
-            .subscribe(onNext: { overlay in
-                guard let marker = overlay as? NMFMarker else { return }
-                let facilities = overlay.userInfo["tag"] as! Model.Todoc.Facilities
-                if facilities.facilities.count > 1 {
-                    
-                } else if let facility = facilities.facilities.first {
-                    marker.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
+            .subscribe(onNext: { [weak self] overlay in
+                guard let self = self else { return }
+                
+                if let selected = overlay as? NMFMarker {
+                    let facilities = selected.userInfo["tag"] as! Model.Todoc.Facilities
+                    if facilities.facilities.count > 1 {
+                        
+                    } else if let facility = facilities.facilities.first {
+                        selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
+                        self.selectedMarker.insert(selected)
+                    }
+                } else {
+                    if !self.selectedMarker.isEmpty {
+                        self.selectedMarker.forEach { marker in
+                            let facility = (marker.userInfo["tag"] as! Model.Todoc.Facilities).facilities.first
+                            marker.iconImage = self.pin(facility: facility!)
+                        }
+                        self.selectedMarker.removeAll()
+                    }
                 }
             }).disposed(by: self.disposeBag)
+        
+        self.mapControlView.mapView.rx
+            .didTapMapView
+            .map { nil }
+            .debug("tap")
+            .bind(to: self.markerSignal)
+            .disposed(by: self.disposeBag)
         
         self.mapControlView.mapView
             .rx.mapViewRegionDidChanging
