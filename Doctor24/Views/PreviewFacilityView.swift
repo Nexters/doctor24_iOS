@@ -85,7 +85,6 @@ final class PreviewFacilityView: BaseView {
         label.font          = .bold(size: 20)
         label.textColor     = .black()
         label.numberOfLines = 2
-        label.text          = "서울자이청소년과약국서울자이창소년과약국"
         return label
     }()
     
@@ -208,8 +207,14 @@ final class PreviewFacilityView: BaseView {
         self.callButton.rx.tap.subscribe(onNext: {
                 guard let url = URL(string: "tel://\(self.phoneNumber.onlyDigits())"),
                     UIApplication.shared.canOpenURL(url) else { return }
-                
                 UIApplication.shared.open(url)
+        }).disposed(by: self.disposeBag)
+        
+        self.navigationButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                let url = "http://maps.apple.com/maps?daddr=\(self.facility.latitude),\(self.facility.longitude)"
+                UIApplication.shared.open(URL(string: url)!, options: [:], completionHandler: nil)
             }).disposed(by: self.disposeBag)
     }
     

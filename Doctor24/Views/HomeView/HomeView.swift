@@ -19,9 +19,13 @@ final class HomeView: BaseView {
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
     let markerSignal      = BehaviorRelay<NMFOverlay?>(value: nil)
+    let detailFacility    = PublishRelay<Model.Todoc.Facilities>()
+    let previewFullSignal = PublishRelay<Void>()
+    
     var markers           = [NMFMarker]()
     private var selectedMarker = Set<NMFMarker>()
     private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
+    
     private let disposeBag = DisposeBag()
     private var panGestureRecognizer: UIPanGestureRecognizer!
     
@@ -127,6 +131,15 @@ final class HomeView: BaseView {
         self.mapControlView.mapView
             .rx.mapViewRegionDidChanging
             .bind(to: self.regionDidChanging)
+            .disposed(by: self.disposeBag)
+        
+        self.previewFullSignal
+            .do(onNext: { [weak self] in
+                self?.dismissPreview()
+            }).withLatestFrom(self.markerSignal).map{
+                $0?.userInfo["tag"] as? Model.Todoc.Facilities
+            }.unwrap()
+            .bind(to: self.detailFacility)
             .disposed(by: self.disposeBag)
         
         self.markerSignal
@@ -235,21 +248,31 @@ extension HomeView {
             height = 279.0 + self.bottomSafeAreaInset
         }
         
-        UIView.animate(withDuration: 0.3) {
-            self.preview.snp.updateConstraints {
-                $0.height.equalTo(height)
-            }
-            self.layoutIfNeeded()
-        }
+        UIView.animate(withDuration: 0.3,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        self.preview.snp.updateConstraints {
+                            $0.height.equalTo(height)
+                        }
+                        self.layoutIfNeeded()
+        })
     }
     
     private func dismissPreview() {
-        UIView.animate(withDuration: 0.3) {
-            self.preview.snp.updateConstraints {
-                $0.height.equalTo(0)
-            }
-            self.layoutIfNeeded()
-        }
+        UIView.animate(withDuration: 0.3,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        self.preview.snp.updateConstraints {
+                            $0.height.equalTo(0)
+                        }
+                        self.layoutIfNeeded()
+        })
     }
 }
 

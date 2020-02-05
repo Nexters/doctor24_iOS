@@ -45,14 +45,19 @@ extension HomeView {
                 alpha  = 0.0
             }
             
-            UIView.animate(withDuration: 0.3) {
-                gesture.view?.snp.updateConstraints {
-                    $0.top.equalToSuperview().offset(self.frame.height - height)
-                }
-                
-                (gesture.view as! OperatingHoursSetView).pickerView.alpha = alpha
-                self.layoutIfNeeded()
-            }
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0.0,
+                           options: [],
+                           animations: {
+                            gesture.view?.snp.updateConstraints {
+                                $0.top.equalToSuperview().offset(self.frame.height - height)
+                            }
+                            
+                            (gesture.view as! OperatingHoursSetView).pickerView.alpha = alpha
+                            self.layoutIfNeeded() }
+                , completion: nil)
         }
     }
     
@@ -79,21 +84,26 @@ extension HomeView {
             }
         }else if gesture.state == .ended {
             
-            UIView.animate(withDuration: 0.3) {
-                
-                var height: CGFloat = 0.0
-                if point.y <= self.vc.view.frame.height/2 {
-                    height = self.vc.view.frame.height
-                } else {
-                    height = contentViewHeight
-                }
-                
-                preview.snp.updateConstraints({ make in
-                    make.height.equalTo(height)
-                })
-                
-                self.layoutIfNeeded()
-            }
+            UIView.animate(withDuration: 0.3,
+                           delay: 0.0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 0.0,
+                           options: [],
+                           animations: {
+                            var height: CGFloat = 0.0
+                            if point.y <= self.vc.view.frame.height/2 {
+                                height = self.vc.view.frame.height
+                                self.previewFullSignal.accept(())
+                            } else {
+                                height = contentViewHeight
+                            }
+                            
+                            preview.snp.updateConstraints({ make in
+                                make.height.equalTo(height)
+                            })
+                            
+                            self.layoutIfNeeded()
+            })
         }
     }
 }

@@ -89,6 +89,11 @@ final class HomeViewController: BaseViewController, View {
             }.bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
+        self.homeView.detailFacility
+            .subscribe(onNext:{ facilities in
+                
+            }).disposed(by: self.disposeBag)
+        
         reactor.state.asObservable()
             .map{ $0.pins }
             .bind(to: self.facilities)

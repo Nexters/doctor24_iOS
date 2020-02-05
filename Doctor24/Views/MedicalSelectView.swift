@@ -134,10 +134,13 @@ extension MedicalSelectView {
             $0.left.equalToSuperview().offset(6)
         }
         self.selectedLabel.text = "병원"
-        UIView.animate(withDuration: 0.1, animations: {
-            self.selectedView.superview?.layoutIfNeeded()
-        }, completion: { (finished) in
-            
+        UIView.animate(withDuration: 0.3,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        self.selectedView.superview?.layoutIfNeeded()
         })
     }
     
@@ -150,10 +153,14 @@ extension MedicalSelectView {
             $0.left.equalToSuperview().offset(self.frame.width/2)
         }
         self.selectedLabel.text = "약국"
-        UIView.animate(withDuration: 0.1, animations: {
-            self.selectedView.superview?.layoutIfNeeded()
-        }, completion: { (finished) in
-            
+        
+        UIView.animate(withDuration: 0.3,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        self.selectedView.superview?.layoutIfNeeded()
         })
     }
 }
