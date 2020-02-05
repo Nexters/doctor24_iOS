@@ -84,7 +84,7 @@ extension HomeView {
             }
         }else if gesture.state == .ended {
             
-            UIView.animate(withDuration: 0.3,
+            UIView.animate(withDuration: 0.5,
                            delay: 0.0,
                            usingSpringWithDamping: 0.5,
                            initialSpringVelocity: 0.0,

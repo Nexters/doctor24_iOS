@@ -248,7 +248,7 @@ extension HomeView {
             height = 279.0 + self.bottomSafeAreaInset
         }
         
-        UIView.animate(withDuration: 0.3,
+        UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        usingSpringWithDamping: 0.7,
                        initialSpringVelocity: 0.0,
@@ -262,7 +262,7 @@ extension HomeView {
     }
     
     private func dismissPreview() {
-        UIView.animate(withDuration: 0.3,
+        UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        usingSpringWithDamping: 0.5,
                        initialSpringVelocity: 0.0,
