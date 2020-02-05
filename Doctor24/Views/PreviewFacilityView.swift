@@ -16,6 +16,7 @@ import RxCocoa
 
 final class PreviewFacilityView: BaseView {
     // MARK: Property
+    var facility: Model.Todoc.PreviewFacility!
     private var phoneNumber: String = ""
     private let disposeBag = DisposeBag()
     
@@ -172,6 +173,7 @@ final class PreviewFacilityView: BaseView {
         label.text = "서울 강남구 강남대로 102길 38"
         label.font = .regular(size: 16)
         label.textColor = .black()
+        label.numberOfLines = 0
         return label
     }()
     
@@ -212,6 +214,7 @@ final class PreviewFacilityView: BaseView {
     }
     
     public func setData(facility: Model.Todoc.PreviewFacility) {
+        self.facility = facility
         self.titleLabel.text = facility.name
         self.timeLabel.text  = "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
         self.addreeLabel.text = facility.address

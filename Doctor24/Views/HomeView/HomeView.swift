@@ -228,10 +228,16 @@ extension HomeView {
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
         self.mapControlView.mapView.moveCamera(cameraUpdate)
         self.preview.setData(facility: facility)
+        var height: CGFloat = 0
+        if facility.categories?.count ?? 0 > 0 {
+            height = 325.0 + self.bottomSafeAreaInset
+        } else {
+            height = 279.0 + self.bottomSafeAreaInset
+        }
         
         UIView.animate(withDuration: 0.3) {
             self.preview.snp.updateConstraints {
-                $0.height.equalTo(279 + self.bottomSafeAreaInset)
+                $0.height.equalTo(height)
             }
             self.layoutIfNeeded()
         }

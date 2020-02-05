@@ -60,8 +60,13 @@ extension HomeView {
     func previewDragView(_ gesture : UIGestureRecognizer){
         let point  = gesture.location(in: self)
         let height = self.frame.height
-        let contentViewHeight:CGFloat = 279.0 + bottomSafeAreaInset
         let preview = gesture.view as! PreviewFacilityView
+        var contentViewHeight:CGFloat = bottomSafeAreaInset
+        if preview.facility.categories?.count ?? 0 > 0 {
+            contentViewHeight = 325 + bottomSafeAreaInset
+        } else {
+            contentViewHeight = 279.0 + bottomSafeAreaInset
+        }
         
         if gesture.state == .changed {
             if point.y >= 0 && point.y <= height{
