@@ -133,6 +133,15 @@ final class HomeView: BaseView {
             .subscribe(onNext: { [weak self] overlay in
                 guard let self = self else { return }
                 
+                if !self.selectedMarker.isEmpty {
+                    self.selectedMarker.forEach { marker in
+                        let facility = (marker.userInfo["tag"] as! Model.Todoc.Facilities).facilities.first
+                        marker.iconImage = self.pin(facility: facility!)
+                    }
+                    self.dismissPreview()
+                    self.selectedMarker.removeAll()
+                }
+                
                 if let selected = overlay as? NMFMarker {
                     let facilities = selected.userInfo["tag"] as! Model.Todoc.Facilities
                     if facilities.facilities.count > 1 {
@@ -141,15 +150,6 @@ final class HomeView: BaseView {
                         selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
                         self.selectedMarker.insert(selected)
                         self.onPreview(with: facility)
-                    }
-                } else {
-                    if !self.selectedMarker.isEmpty {
-                        self.selectedMarker.forEach { marker in
-                            let facility = (marker.userInfo["tag"] as! Model.Todoc.Facilities).facilities.first
-                            marker.iconImage = self.pin(facility: facility!)
-                        }
-                        self.dismissPreview()
-                        self.selectedMarker.removeAll()
                     }
                 }
             }).disposed(by: self.disposeBag)
