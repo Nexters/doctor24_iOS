@@ -62,6 +62,7 @@ extension Model.Todoc {
         public let days     : [Day]
         public let phone    : String
         public let address  : String
+        public let categories: [String]?
         public let emergency: Bool
         public let nightTimeServe: Bool
     }
@@ -72,9 +73,10 @@ extension Model.Todoc {
         public let latitude : Double
         public let longitude: Double
         public let medicalType: Model.Todoc.MedicalType
-        public let day      : Day
-        public let phone    : String
-        public let address  : String
+        public let day       : Day
+        public let phone     : String
+        public let address   : String
+        public let categories: [String]?
         public let emergency: Bool
         public let nightTimeServe: Bool
     }
@@ -95,8 +97,24 @@ extension Model.Todoc {
 }
 
 extension Model.Todoc.MedicalType {
-    public enum Category: String {
+    public enum Category: String, Codable {
+        case 전체
+        case 소아과
         case 내과
+        case 이비인후과
+        case 피부과
+        case 정형외과
+        case 안과
+        case 치과
+        case 한의원
+        case 산부인과
+        case 비뇨기과
+        case 정신의학과
+        case 성형외과
+        case 가정의학과
         case 외과
+        case 신경외과
+        case 마취통증과
+        case 신경과
     }
 }

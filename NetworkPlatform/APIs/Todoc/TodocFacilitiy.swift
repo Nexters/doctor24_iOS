@@ -30,10 +30,12 @@ extension API.Facility: APIConfigWithError  {
         var params = [String:Any]()
         params = ["radiusLevel": zoomLevel]
         
-        if let time = self.operatingTime {
-            params = ["operatingHours.startTime": time.startTime,
-                      "operatingHours.endTime"  : time.endTime]
-        }
+//        if let time = self.operatingTime {
+            params = ["operatingHours.startTime": "09:00:00",
+                      "operatingHours.endTime"  : "18:00:00"]
+//            params = ["operatingHours.startTime": time.startTime,
+//                      "operatingHours.endTime"  : time.endTime]
+//        }
         
         if let category = self.category {
             params = ["category": category]
