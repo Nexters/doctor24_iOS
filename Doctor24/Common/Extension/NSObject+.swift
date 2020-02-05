@@ -38,6 +38,13 @@ extension Date {
 }
 
 extension String {
+    var currentConvertDate: String{
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "HH:mm:ss"
+        let date = dateformatter.date(from: self)
+        return date?.convertDate ?? ""
+    }
+    
     var convertDate: String {
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "HH:mm:ss"

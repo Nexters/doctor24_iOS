@@ -10,6 +10,14 @@ import UIKit
 
 extension OperatingHoursSetView {
     final class PickerView: UIView {
+        let confirmButton: UIButton = {
+            let button = UIButton()
+            button.setTitle("확인", for: .normal)
+            button.titleLabel?.font = .bold(size: 16)
+            button.backgroundColor = .blue()
+            return button
+        }()
+        
         private let pickerDate: UIDatePicker = {
             let pick = UIDatePicker()
             pick.locale = Locale(identifier: "ko")
@@ -18,13 +26,6 @@ extension OperatingHoursSetView {
             return pick
         }()
 
-        private let confirmButton: UIButton = {
-            let button = UIButton()
-            button.setTitle("확인", for: .normal)
-            button.titleLabel?.font = .bold(size: 16)
-            button.backgroundColor = .blue()
-            return button
-        }()
         
         init() {
             super.init(frame: CGRect.zero)

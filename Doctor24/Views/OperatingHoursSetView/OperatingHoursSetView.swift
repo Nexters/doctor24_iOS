@@ -72,11 +72,13 @@ final class OperatingHoursSetView: BaseView {
     
     private let startView: StartView = {
         let view = StartView()
+        view.able(true)
         return view
     }()
     
     private let endView: EndView = {
         let view = EndView()
+        view.able(false)
         return view
     }()
     
@@ -120,14 +122,26 @@ final class OperatingHoursSetView: BaseView {
             }).disposed(by: self.disposeBag)
         
         self.startView.startTimeButton.rx.tap
-            .subscribe(onNext: {
-                ViewTransition.shared.execute(scene: .timePick(type: .start))
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.startView.able(true)
+                self.endView.able(false)
+                
             }).disposed(by: self.disposeBag)
         
         self.endView.endTimeButton.rx.tap
-            .subscribe(onNext: {
-                ViewTransition.shared.execute(scene: .timePick(type: .end))
+            .subscribe(onNext: {[weak self] in
+                guard let self = self else { return }
+                self.startView.able(false)
+                self.endView.able(true)
+                
             }).disposed(by: self.disposeBag)
+        
+        self.pickerView.confirmButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+            
+        }).disposed(by:self.disposeBag)
     }
 }
 

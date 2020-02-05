@@ -1,6 +1,6 @@
 PODS:
   - Alamofire (4.9.1)
-  - NMapsMap (3.6.1)
+  - NMapsMap (3.7.0)
   - ReactorKit (2.0.1):
     - RxSwift (~> 5.0)
   - RxCocoa (5.0.1):
@@ -31,7 +31,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  NMapsMap: ffdda08491e8ae33a967050b5530f4e9d462394f
+  NMapsMap: 46ce3d48d7976dd10c6ec63cd7eecf655a7dd955
   ReactorKit: a63c5e11e0fd32d59d672e54178b0ed2876b764b
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640

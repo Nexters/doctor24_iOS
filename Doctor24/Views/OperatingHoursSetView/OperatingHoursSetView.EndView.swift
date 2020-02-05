@@ -25,7 +25,7 @@ extension OperatingHoursSetView {
         
         let endTimeLabel: UILabel = {
             let label = UILabel()
-            label.text = "오전 09:00"
+            label.text = Date().addingTimeInterval(TimeInterval(30.0*60.0)).convertDate
             label.font = .bold(size: 22)
             label.textColor = .black()
             return label
@@ -38,6 +38,14 @@ extension OperatingHoursSetView {
         
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+        }
+        
+        func able(_ able: Bool) {
+            if able {
+                endTimeLabel.textColor = .black()
+            } else {
+                endTimeLabel.textColor = .grey3()
+            }
         }
         
         private func setupUI() {
