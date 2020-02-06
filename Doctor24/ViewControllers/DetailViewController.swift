@@ -18,6 +18,7 @@ class DetailViewController: BaseViewController, View {
     typealias Reactor = DetailViewReactor
     
     private let facility: Model.Todoc.PreviewFacility
+    private lazy var detailView = DetailView(controlBy: self)
     var disposeBag: DisposeBag = DisposeBag()
     
     init(facility: Model.Todoc.PreviewFacility,
@@ -32,9 +33,14 @@ class DetailViewController: BaseViewController, View {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        self.view = detailView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.detailView.setupUI()
+        self.detailView.setBind()
     }
     
     override func setupUI() {
