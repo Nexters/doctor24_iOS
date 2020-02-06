@@ -47,6 +47,41 @@ final class DetailView: BaseView {
         return stkView
     }()
     
+    // MARK: Title Stack View
+    private let titleStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis      = .vertical
+        stack.alignment = .leading
+        stack.spacing   = 8
+        return stack
+    }()
+    
+    private let typeView: UIImageView = UIImageView()
+    
+    private let hospitalTitle: UILabel = {
+        let label = UILabel()
+        label.font = .bold(size: 20)
+        label.textColor = .black()
+        label.numberOfLines = 2
+        return label
+    }()
+    
+    private let todayLabel: UILabel = {
+        let label  = UILabel()
+        label.text = "오늘"
+        label.font = .bold(size: 16)
+        label.textColor = .black()
+        return label
+    }()
+    
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.text = "오전 9:00 ~ 오후 7:00"
+        label.font = .regular(size: 16)
+        label.textColor = .black()
+        return label
+    }()
+    
     override func setupUI() {
         self.addSubviews()
         self.setLayout()
