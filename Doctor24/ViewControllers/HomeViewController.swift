@@ -53,12 +53,6 @@ final class HomeViewController: BaseViewController, View {
     }
     
     func bind(reactor: HomeViewReactor) {
-        self.homeView.panGestureMap
-            .subscribe(onNext: { [weak self] _ in
-//                print("jhh zoomLevel: \(self?.homeView.mapControlView.mapView.zoomLevel)")
-//                print("self?.homeView.mapControlView.mapView.contentBounds: \(self?.homeView.mapControlView.mapView.contentBounds)")
-            }).disposed(by: self.disposeBag)
-        
         self.homeView.medicalSelectView.medicalType
             .withLatestFrom(TodocInfo.shared.currentLocation) { ($0,$1) }
             .skip(1)
@@ -89,11 +83,6 @@ final class HomeViewController: BaseViewController, View {
             }.bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
-        self.homeView.detailFacility
-            .subscribe(onNext:{ facilities in
-                
-            }).disposed(by: self.disposeBag)
-        
         reactor.state.asObservable()
             .map{ $0.pins }
             .bind(to: self.facilities)
@@ -103,9 +92,20 @@ final class HomeViewController: BaseViewController, View {
     }
     
     private func bind() {
+        self.homeView.panGestureMap
+                    .subscribe(onNext: { [weak self] _ in
+        //                print("jhh zoomLevel: \(self?.homeView.mapControlView.mapView.zoomLevel)")
+        //                print("self?.homeView.mapControlView.mapView.contentBounds: \(self?.homeView.mapControlView.mapView.contentBounds)")
+                    }).disposed(by: self.disposeBag)
+        
         self.facilities
             .subscribe(onNext:{ [weak self] facilities in
                 self?.homeView.drawPins(facilities: facilities)
+            }).disposed(by: self.disposeBag)
+        
+        self.homeView.detailFacility
+            .subscribe(onNext:{ facility in
+                ViewTransition.shared.execute(scene: .detail(facility: facility))
             }).disposed(by: self.disposeBag)
     }
 }

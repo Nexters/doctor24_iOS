@@ -92,7 +92,10 @@ extension HomeView {
                            animations: {
                             var height: CGFloat = 0.0
                             if point.y <= self.vc.view.frame.height/2 {
-                                height = self.vc.view.frame.height
+                                
+                                if !self.selectedMarker.isEmpty {
+                                    self.unselectPins()
+                                }
                                 self.previewFullSignal.accept(())
                             } else {
                                 height = contentViewHeight

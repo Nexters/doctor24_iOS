@@ -5,13 +5,15 @@
 //  Created by gabriel.jeong on 09/01/2020.
 //  Copyright © 2020 JHH. All rights reserved.
 //
+import Domain
+import NetworkPlatform
 
 import UIKit
-import NetworkPlatform
 
 enum Scene {
     case main
     case timePick(type: TimePickViewController.Operating)
+    case detail(facility: Model.Todoc.PreviewFacility)
 }
 
 extension Scene {
@@ -28,8 +30,16 @@ extension Scene {
             let vc = HomeViewController(reactor: homeReactor)
 
             return vc
+            
         case .timePick(let type):
             let vc = TimePickViewController(operatingType: type)
+            return vc
+            
+        case .detail(let facility):
+            let networkService = NetworkPlatform.UseCaseProvider()
+            let detailReactor  = DetailViewReactor(service: networkService.makeFacilitiesUseCase())
+            let vc = DetailViewController(facility: facility, reactor: detailReactor)
+            
             return vc
         }
     }

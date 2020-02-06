@@ -49,4 +49,9 @@ final class FacilitiesUseCase: Domain.FacilitiesUseCase {
                             category: category,
                             zoomLevel: zoomLevel).requestWithCatch()
     }
+    
+    func detailFacility(_ type: Model.Todoc.MedicalType,
+                        facilityId: String) -> Observable<Result<Model.Todoc.DetailFacility, APIError<MockError>>> {
+        return API.DetailFacility(medicalType: type, facilityID: facilityId).requestWithCatch()
+    }
 }

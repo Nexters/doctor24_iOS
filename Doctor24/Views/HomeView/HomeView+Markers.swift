@@ -109,4 +109,13 @@ extension HomeView {
         
         return NMFOverlayImage(image: container.asImage())
     }
+    
+    func unselectPins() {
+        self.selectedMarker.forEach { marker in
+            let facility = (marker.userInfo["tag"] as! Model.Todoc.Facilities).facilities.first
+            marker.iconImage = self.pin(facility: facility!)
+        }
+        self.dismissPreview()
+        self.selectedMarker.removeAll()
+    }
 }

@@ -26,6 +26,9 @@ public protocol FacilitiesUseCase {
                     operatingTime: Model.Todoc.Day,
                     category: Model.Todoc.MedicalType.Category,
                     zoomLevel: Int) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>>
+    
+    func detailFacility(_ type: Model.Todoc.MedicalType,
+                        facilityId: String) -> Observable<Result<Model.Todoc.DetailFacility, APIError<MockError>>>
 }
 
 public protocol NightFacilitiesUseCase {

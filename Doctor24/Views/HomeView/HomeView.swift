@@ -19,11 +19,11 @@ final class HomeView: BaseView {
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
     let markerSignal      = BehaviorRelay<NMFOverlay?>(value: nil)
-    let detailFacility    = PublishRelay<Model.Todoc.Facilities>()
+    let detailFacility    = PublishRelay<Model.Todoc.PreviewFacility>()
     let previewFullSignal = PublishRelay<Void>()
     
     var markers           = [NMFMarker]()
-    private var selectedMarker = Set<NMFMarker>()
+    var selectedMarker    = Set<NMFMarker>()
     private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     
     private let disposeBag = DisposeBag()
@@ -137,7 +137,7 @@ final class HomeView: BaseView {
             .do(onNext: { [weak self] in
                 self?.dismissPreview()
             }).withLatestFrom(self.markerSignal).map{
-                $0?.userInfo["tag"] as? Model.Todoc.Facilities
+                ($0?.userInfo["tag"] as? Model.Todoc.Facilities)?.facilities.first
             }.unwrap()
             .bind(to: self.detailFacility)
             .disposed(by: self.disposeBag)
@@ -147,12 +147,7 @@ final class HomeView: BaseView {
                 guard let self = self else { return }
                 
                 if !self.selectedMarker.isEmpty {
-                    self.selectedMarker.forEach { marker in
-                        let facility = (marker.userInfo["tag"] as! Model.Todoc.Facilities).facilities.first
-                        marker.iconImage = self.pin(facility: facility!)
-                    }
-                    self.dismissPreview()
-                    self.selectedMarker.removeAll()
+                    self.unselectPins()
                 }
                 
                 if let selected = overlay as? NMFMarker {
@@ -248,29 +243,31 @@ extension HomeView {
             height = 279.0 + self.bottomSafeAreaInset
         }
         
+        self.preview.snp.updateConstraints {
+            $0.height.equalTo(height)
+        }
+        
         UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        usingSpringWithDamping: 0.7,
                        initialSpringVelocity: 0.0,
                        options: [],
                        animations: {
-                        self.preview.snp.updateConstraints {
-                            $0.height.equalTo(height)
-                        }
                         self.layoutIfNeeded()
         })
     }
     
-    private func dismissPreview() {
+    func dismissPreview() {
+        self.preview.snp.updateConstraints {
+            $0.height.equalTo(0)
+        }
+        
         UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        usingSpringWithDamping: 0.5,
                        initialSpringVelocity: 0.0,
                        options: [],
                        animations: {
-                        self.preview.snp.updateConstraints {
-                            $0.height.equalTo(0)
-                        }
                         self.layoutIfNeeded()
         })
     }
