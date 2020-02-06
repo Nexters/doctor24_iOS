@@ -14,7 +14,7 @@ final class DetailView: BaseView {
     // MARK: Property
     
     // MARK: UI Componenet
-    private let topBar: TopBar = TopBar()
+    let topBar: TopBar = TopBar()
     private let mapView: NMFMapView = {
         let mapView = NMFMapView()
         mapView.mapType = .navi
