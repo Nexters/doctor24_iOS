@@ -14,7 +14,7 @@ import RxCocoa
 import NMapsMap
 import SnapKit
 
-final class HomeView: BaseView {
+final class HomeView: BaseView, PinDrawable {
     // MARK: Property
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()

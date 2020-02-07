@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import NMapsMap
 
-final class DetailView: BaseView, FacilityTitleable {
+final class DetailView: BaseView, FacilityTitleable, PinDrawable {
     // MARK: Property
     var facility: Model.Todoc.DetailFacility? {
         didSet{
@@ -42,6 +42,8 @@ final class DetailView: BaseView, FacilityTitleable {
                 self.detailData.append(.distance((self.distance(lat: self.facility?.latitude ?? 0.0, long: self.facility?.longitude ?? 0.0), address)))
             }
             
+            self.topBar.titleLabel.text = self.facility?.name ?? ""
+            self.focusPin()
             self.collectionView.reloadData()
         }
     }
@@ -55,6 +57,12 @@ final class DetailView: BaseView, FacilityTitleable {
         mapView.mapType = .navi
         mapView.isNightModeEnabled = true
         return mapView
+    }()
+    
+    private let blockView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
     }()
     
     private let contentView: UIView = {
@@ -112,6 +120,7 @@ extension DetailView {
     private func addSubviews() {
         self.addSubview(self.topBar)
         self.addSubview(self.mapView)
+        self.addSubview(self.blockView)
         self.addSubview(self.contentView)
         self.contentView.addSubview(self.collectionView)
         self.contentView.addSubview(self.callButton)
@@ -138,6 +147,10 @@ extension DetailView {
             $0.left.bottom.right.equalToSuperview()
         }
         
+        self.blockView.snp.makeConstraints {
+            $0.top.left.right.bottom.equalTo(self.mapView)
+        }
+        
         self.collectionView.snp.makeConstraints {
             $0.top.left.right.equalToSuperview()
             $0.bottom.equalTo(self.callButton.snp.top).offset(-16)
@@ -149,6 +162,16 @@ extension DetailView {
             $0.right.equalToSuperview().offset(-16)
             $0.bottom.equalTo(self.safeArea.bottom).offset(-16)
         }
+    }
+    
+    private func focusPin() {
+        let marker = NMFMarker()
+        marker.position = NMGLatLng(lat: facility!.latitude, lng: facility!.longitude)
+        marker.iconImage = self.detailPin(name: facility!.name, medicalType: facility!.medicalType)
+        marker.mapView = self.mapView
+        
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility!.latitude, lng: facility!.longitude))
+        self.mapView.moveCamera(cameraUpdate)
     }
 }
 
@@ -209,7 +232,6 @@ extension DetailView: UICollectionViewDelegateFlowLayout {
         case .day(_):
             return CGSize(width: (self.collectionView.frame.width / 2) - 1 , height: 50)
         default:
-//            return UICollectionViewFlowLayout.automaticSize
             return CGSize(width: self.collectionView.frame.width, height: 1)
         }
     }
