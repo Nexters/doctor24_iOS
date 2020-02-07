@@ -14,7 +14,7 @@ public protocol Facility {
     var latitude : Double { get }
     var longitude: Double { get }
     var medicalType: Model.Todoc.MedicalType { get }
-    var phone    : String { get }
+    var phone    : String? { get }
     var address  : String { get }
     var categories: [String]? { get }
     var emergency: Bool   { get }
@@ -61,7 +61,7 @@ extension Model.Todoc {
         public let longitude: Double
         public let medicalType: Model.Todoc.MedicalType
         public let days     : [Day]
-        public let phone    : String
+        public let phone    : String?
         public let address  : String
         public let categories: [String]?
         public let emergency: Bool
@@ -76,7 +76,7 @@ extension Model.Todoc {
         public let longitude: Double
         public let medicalType: Model.Todoc.MedicalType
         public let day       : Day
-        public let phone     : String
+        public let phone     : String?
         public let address   : String
         public let categories: [String]?
         public let emergency: Bool
@@ -95,6 +95,64 @@ extension Model.Todoc {
         public let longitude : Double
         public let facilities: [PreviewFacility]
         public let total     : Int
+    }
+}
+
+extension Model.Todoc.DayType {
+    public func convert() -> String {
+        switch self {
+        case .MONDAY:
+            return "월"
+        case .TUESDAY:
+            return "화"
+        case .WEDNESDAY:
+            return "수"
+        case .THURSDAY:
+            return "목"
+        case .FRIDAY:
+            return "금"
+        case .SATURDAY:
+            return "토요일"
+        case .SUNDAY:
+            return "일요일"
+        case .HOLIDAY:
+            return "공휴일"
+        }
+    }
+}
+
+extension Model.Todoc.Day: Hashable {
+    public static func == (lhs: Model.Todoc.Day, rhs: Model.Todoc.Day) -> Bool {
+        return lhs.startTime == rhs.startTime && lhs.endTime == rhs.endTime
+    }
+}
+
+extension Model.Todoc.DetailFacility {
+    public func convertDaysArray() -> [[Model.Todoc.Day]] {
+        var set = [[Model.Todoc.Day]]()
+        var daysTemp = self.days.filter { $0.dayType ?? .MONDAY != .SATURDAY && $0.dayType ?? .MONDAY != .SUNDAY && $0.dayType ?? .MONDAY != .HOLIDAY }
+        
+        for i in 0 ..< daysTemp.count {
+            guard i <= daysTemp.count else { continue }
+            
+            var differArr = [Model.Todoc.Day]()
+            for differ in daysTemp {
+                if daysTemp[i] == differ {
+                    differArr.append(differ)
+                    daysTemp.remove(at: i)
+                }
+            }
+            
+            set.append(differArr)
+        }
+        
+        _ = self.days.filter {
+            $0.dayType ?? .MONDAY == .SATURDAY || $0.dayType ?? .MONDAY == .SUNDAY || $0.dayType ?? .MONDAY == .HOLIDAY
+        }.forEach { day in
+            set.append([day])
+        }
+        
+        return set
     }
 }
 

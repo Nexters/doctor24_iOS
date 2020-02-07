@@ -15,9 +15,38 @@ final class DetailView: BaseView, FacilityTitleable {
     // MARK: Property
     var facility: Model.Todoc.DetailFacility? {
         didSet{
+            if let category = self.category(with: self.facility!) {
+                self.detailData.append(.hospitalType(category))
+            }
+            
+            if self.facility?.convertDaysArray().count ?? 0 > 0 {
+                var result = [(String,String)?]()
+                self.facility?.convertDaysArray().forEach { days in
+                    let day = days.map{ $0.dayType?.convert() ?? "" }.joined(separator: ", ")
+                    let time = days.map { "\($0.startTime.convertTotal) ~ \($0.endTime.convertTotal)" }.first
+                    result.append((day, time ?? ""))
+                }
+                
+                if result.count % 2 != 0 {
+                    result.append(nil)
+                }
+                
+                self.detailData.append(.day(result))
+            }
+            
+            if let phone = self.facility?.phone {
+                self.detailData.append(.phone(phone))
+            }
+            
+            if let address = self.facility?.address {
+                self.detailData.append(.distance((self.distance(lat: self.facility?.latitude ?? 0.0, long: self.facility?.longitude ?? 0.0), address)))
+            }
+            
             self.collectionView.reloadData()
         }
     }
+    
+    private var detailData = [DetailCellType]()
     
     // MARK: UI Componenet
     let topBar: TopBar = TopBar()
@@ -49,8 +78,9 @@ final class DetailView: BaseView, FacilityTitleable {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.headerReferenceSize = CGSize(width: self.frame.width, height: 50)
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-//        flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 11.5, right: 0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 11.5, left: 0, bottom: 11.5, right: 0)
+        flowLayout.minimumLineSpacing = 1
+        flowLayout.minimumInteritemSpacing = 1
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
         cv.dataSource = self
         cv.delegate   = self
@@ -75,6 +105,8 @@ extension DetailView {
         self.collectionView.register(DetailLineHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DetailLineHeader")
         self.collectionView.register(DetailHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DetailHeaderView")
         self.collectionView.register(DetailNormalCell.self, forCellWithReuseIdentifier: "DetailNormalCell")
+        self.collectionView.register(DetailDayCell.self, forCellWithReuseIdentifier: "DetailDayCell")
+        self.collectionView.register(DetailDistanceCell.self, forCellWithReuseIdentifier: "DetailDistanceCell")
     }
     
     private func addSubviews() {
@@ -108,7 +140,7 @@ extension DetailView {
         
         self.collectionView.snp.makeConstraints {
             $0.top.left.right.equalToSuperview()
-            $0.bottom.equalTo(self.callButton.snp.top).offset(16)
+            $0.bottom.equalTo(self.callButton.snp.top).offset(-16)
         }
         
         self.callButton.snp.makeConstraints {
@@ -134,30 +166,52 @@ extension DetailView: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        switch detailData[section] {
+        case .day(let result):
+            return result.count
+        default:
+            return 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let data = self.facility else { return UICollectionViewCell() }
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailNormalCell", for: indexPath) as! DetailNormalCell
-        
-        if indexPath.section == 0 {
-            cell.setData(type: .HospitalType(self.category(with: data) ?? ""))
-        } else {
-            cell.setData(type: .phone(data.phone))
+        switch self.detailData[indexPath.section] {
+        case .hospitalType(let title):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailNormalCell", for: indexPath) as! DetailNormalCell
+            cell.setData(type: .hospitalType(title))
+            return cell
+            
+        case .day(let days):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailDayCell", for: indexPath) as! DetailDayCell
+            cell.setData(day: days[indexPath.row]?.day, time: days[indexPath.row]?.time)
+            return cell
+            
+        case .phone(let phone):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailNormalCell", for: indexPath) as! DetailNormalCell
+            cell.setData(type: .phone(phone))
+            return cell
+            
+        case .distance((let distance, let address)):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailDistanceCell", for: indexPath) as! DetailDistanceCell
+            cell.setData(distance: distance, address: address)
+            return cell
         }
-        
-        return cell
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return self.detailData.count
     }
 }
 
 extension DetailView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.collectionView.frame.width, height: 1)
+        switch detailData[indexPath.section] {
+        case .day(_):
+            return CGSize(width: (self.collectionView.frame.width / 2) - 1 , height: 50)
+        default:
+//            return UICollectionViewFlowLayout.automaticSize
+            return CGSize(width: self.collectionView.frame.width, height: 1)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -173,9 +227,9 @@ extension DetailView: UICollectionViewDelegateFlowLayout {
 
 extension DetailView {
     enum DetailCellType {
-        case HospitalType(String)
-        case day([(day: String,time: String)])
-        case phone(String)
+        case hospitalType(String)
+        case day([(day: String,time: String)?])
+        case phone(String?)
         case distance((distance: String, address: String))
     }
 }

@@ -220,7 +220,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
         self.titleLabel.text = facility.name
         self.timeLabel.text  = "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
         self.addreeLabel.text = facility.address
-        self.phoneNumber     = facility.phone
+        self.phoneNumber     = facility.phone ?? ""
         self.distanceLabel.text = self.distance(lat: facility.latitude, long: facility.longitude)
         
         if let category = self.category(with: facility) {

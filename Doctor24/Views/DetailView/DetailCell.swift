@@ -168,7 +168,7 @@ final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitl
     
     func setData(type: DetailView.DetailCellType) {
         switch type {
-        case .HospitalType(let title):
+        case .hospitalType(let title):
             self.imageView.image = UIImage(named: "hospitalType")
             self.content.text = title
             
@@ -188,7 +188,7 @@ final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitl
         self.imageView.snp.makeConstraints {
             $0.size.equalTo(24)
             $0.left.equalTo(24)
-            $0.top.equalToSuperview().offset(11.5)
+            $0.top.equalToSuperview()
             $0.bottom.equalToSuperview().offset(0)
         }
         
@@ -229,16 +229,29 @@ final class DetailDayCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setData(day: String, time: String) {
-        
+    func setData(day: String?, time: String?) {
+        if let day = day, let time = time {
+            self.imageView.isHidden = false
+            self.dayTitle.isHidden = false
+            self.timeLabel.isHidden = false
+            
+            self.dayTitle.text = day
+            self.timeLabel.text = time
+        } else {
+            self.imageView.isHidden = true
+            self.dayTitle.isHidden = true
+            self.timeLabel.isHidden = true
+        }
     }
     
     private func setupUI() {
+        self.backgroundColor = .yellow
+        self.addSubview(self.imageView)
         self.addSubview(self.dayTitle)
         self.addSubview(self.timeLabel)
         
         self.imageView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(11.5)
+            $0.top.equalToSuperview()
             $0.left.equalToSuperview().offset(24)
             $0.size.equalTo(24)
         }
@@ -246,6 +259,73 @@ final class DetailDayCell: UICollectionViewCell {
         self.dayTitle.snp.makeConstraints {
             $0.centerY.equalTo(self.imageView)
             $0.left.equalTo(self.imageView.snp.right).offset(6)
+        }
+        
+        self.timeLabel.snp.makeConstraints {
+            $0.top.equalTo(self.dayTitle.snp.bottom).offset(4)
+            $0.left.equalTo(self.dayTitle.snp.left)
+            $0.right.equalToSuperview().offset(-28)
+            $0.bottom.equalToSuperview()
+        }
+    }
+}
+
+final class DetailDistanceCell: UICollectionViewCell {
+    private let imageView: UIImageView = {
+        let imgView = UIImageView()
+        imgView.image = UIImage(named: "address")
+        return imgView
+    }()
+    
+    private let distance: UILabel = {
+        let label = UILabel()
+        label.font = .bold(size: 16)
+        label.textColor = .black()
+        return label
+    }()
+    
+    private let address: UILabel = {
+        let label = UILabel()
+        label.font = .regular(size: 16)
+        label.textColor = .black()
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setData(distance: String, address: String) {
+        self.distance.text = distance
+        self.address.text  = address
+    }
+    
+    private func setupUI() {
+        self.backgroundColor = .purple
+        self.addSubview(self.imageView)
+        self.addSubview(self.distance)
+        self.addSubview(self.address)
+        
+        self.imageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.left.equalToSuperview().offset(24)
+            $0.size.equalTo(24)
+        }
+        
+        self.distance.snp.makeConstraints {
+            $0.centerY.equalTo(self.imageView)
+            $0.left.equalTo(self.imageView.snp.right).offset(6)
+        }
+        
+        self.address.snp.makeConstraints {
+            $0.left.equalTo(self.distance)
+            $0.top.equalTo(self.distance.snp.bottom).offset(4)
+            $0.bottom.equalToSuperview()
         }
     }
 }

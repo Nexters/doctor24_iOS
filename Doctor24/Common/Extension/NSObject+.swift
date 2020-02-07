@@ -28,6 +28,15 @@ extension Date {
         return date
     }
     
+    var convertTotal: String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "HH:mm"
+        dateformatter.locale = Locale(identifier: "ko_KR")
+        let date = dateformatter.string(from: self)
+        
+        return date
+    }
+    
     var convertParam: String {
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "HH:mm:ss"
@@ -50,6 +59,13 @@ extension String {
         dateformatter.dateFormat = "HH:mm:ss"
         let date = dateformatter.date(from: self)
         return date?.convertDate ?? ""
+    }
+    
+    var convertTotal: String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "HH:mm:ss"
+        let date = dateformatter.date(from: self)
+        return date?.convertTotal ?? ""
     }
 
     func onlyDigits() -> String {
