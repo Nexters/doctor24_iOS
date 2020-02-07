@@ -5,13 +5,19 @@
 //  Created by Haehyeon Jeong on 2020/02/06.
 //  Copyright © 2020 JHH. All rights reserved.
 //
+import Domain
 
 import UIKit
 import SnapKit
 import NMapsMap
 
-final class DetailView: BaseView {
+final class DetailView: BaseView, FacilityTitleable {
     // MARK: Property
+    var facility: Model.Todoc.DetailFacility? {
+        didSet{
+            self.collectionView.reloadData()
+        }
+    }
     
     // MARK: UI Componenet
     let topBar: TopBar = TopBar()
@@ -39,52 +45,23 @@ final class DetailView: BaseView {
         return button
     }()
     
-    private let scrollView: UIScrollView = UIScrollView()
-    
-    private let contentStackView: UIStackView = {
-        let stkView = UIStackView()
-        stkView.axis = .vertical
-        return stkView
+    private lazy var collectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.headerReferenceSize = CGSize(width: self.frame.width, height: 50)
+        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+//        flowLayout.itemSize = UICollectionViewFlowLayout.automaticSize
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 11.5, right: 0)
+        let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
+        cv.dataSource = self
+        cv.delegate   = self
+        return cv
     }()
     
-    // MARK: Title Stack View
-    private let titleStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis      = .vertical
-        stack.alignment = .leading
-        stack.spacing   = 8
-        return stack
-    }()
-    
-    private let typeView: UIImageView = UIImageView()
-    
-    private let hospitalTitle: UILabel = {
-        let label = UILabel()
-        label.font = .bold(size: 20)
-        label.textColor = .black()
-        label.numberOfLines = 2
-        return label
-    }()
-    
-    private let todayLabel: UILabel = {
-        let label  = UILabel()
-        label.text = "오늘"
-        label.font = .bold(size: 16)
-        label.textColor = .black()
-        return label
-    }()
-    
-    private let timeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "오전 9:00 ~ 오후 7:00"
-        label.font = .regular(size: 16)
-        label.textColor = .black()
-        return label
-    }()
-    
+        
     override func setupUI() {
         self.addSubviews()
         self.setLayout()
+        self.registerCell()
     }
     
     override func setBind() {
@@ -94,29 +71,18 @@ final class DetailView: BaseView {
 
 // MARK: Private
 extension DetailView {
+    private func registerCell() {
+        self.collectionView.register(DetailLineHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DetailLineHeader")
+        self.collectionView.register(DetailHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DetailHeaderView")
+        self.collectionView.register(DetailNormalCell.self, forCellWithReuseIdentifier: "DetailNormalCell")
+    }
+    
     private func addSubviews() {
         self.addSubview(self.topBar)
         self.addSubview(self.mapView)
         self.addSubview(self.contentView)
-        self.addSubview(self.scrollView)
-        self.scrollView.addSubview(self.contentStackView)
-        self.addSubview(self.callButton)
-        
-//
-//        let stackView = UIStackView()
-//        stackView.translatesAutoresizingMaskIntoConstraints = false
-//        stackView.axis = .vertical
-//        scrollView.addSubview(stackView)
-//
-//        stackView.snp.makeConstraints { (make) in
-//            make.edges.equalToSuperview()
-//        }
-//
-//        for _ in 1 ..< 100 {
-//            let vw = UIButton(type: .system)
-//            vw.setTitle("Button", for: [])
-//            stackView.addArrangedSubview(vw)
-//        }
+        self.contentView.addSubview(self.collectionView)
+        self.contentView.addSubview(self.callButton)
     }
     
     private func setLayout() {
@@ -140,14 +106,9 @@ extension DetailView {
             $0.left.bottom.right.equalToSuperview()
         }
         
-        self.scrollView.snp.makeConstraints {
-            $0.top.equalTo(self.contentView.snp.top)
-            $0.bottom.equalTo(self.callButton.snp.top)
-            $0.left.right.equalToSuperview()
-        }
-        
-        self.contentStackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        self.collectionView.snp.makeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.bottom.equalTo(self.callButton.snp.top).offset(16)
         }
         
         self.callButton.snp.makeConstraints {
@@ -156,5 +117,65 @@ extension DetailView {
             $0.right.equalToSuperview().offset(-16)
             $0.bottom.equalTo(self.safeArea.bottom).offset(-16)
         }
+    }
+}
+
+extension DetailView: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if indexPath.section > 0 {
+            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DetailLineHeader", for: indexPath) as! DetailLineHeader
+        }
+        
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "DetailHeaderView", for: indexPath) as! DetailHeaderView
+        if let data = self.facility {
+            header.setData(data: data)
+        }
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let data = self.facility else { return UICollectionViewCell() }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailNormalCell", for: indexPath) as! DetailNormalCell
+        
+        if indexPath.section == 0 {
+            cell.setData(type: .HospitalType(self.category(with: data) ?? ""))
+        } else {
+            cell.setData(type: .phone(data.phone))
+        }
+        
+        return cell
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+}
+
+extension DetailView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.collectionView.frame.width, height: 1)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        guard section == 0  else { return CGSize(width: collectionView.frame.width, height: 1) }
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+
+        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
+                                                  withHorizontalFittingPriority: .required,
+                                                  verticalFittingPriority: .fittingSizeLevel)
+    }
+}
+
+extension DetailView {
+    enum DetailCellType {
+        case HospitalType(String)
+        case day([(day: String,time: String)])
+        case phone(String)
+        case distance((distance: String, address: String))
     }
 }

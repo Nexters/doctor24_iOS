@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 
 
-final class PreviewFacilityView: BaseView {
+final class PreviewFacilityView: BaseView, FacilityTitleable {
     // MARK: Property
     var facility: Model.Todoc.PreviewFacility!
     private var phoneNumber: String = ""
@@ -59,10 +59,7 @@ final class PreviewFacilityView: BaseView {
         return stk
     }()
     
-    private let typeImgView: UIImageView = {
-        let imgView = UIImageView()
-        return imgView
-    }()
+    private let typeImgView: UIImageView = UIImageView()
     
     private let contentView: UIView = {
         let view = UIView()
@@ -369,41 +366,5 @@ extension PreviewFacilityView {
             $0.right.equalToSuperview().offset(-16)
             $0.bottom.equalTo(self.safeArea.bottom).offset(-16)
         }
-    }
-}
-
-
-extension PreviewFacilityView {
-    private func distance(lat: Double, long: Double) -> String {
-        if let current = try? TodocInfo.shared.currentLocation.value() {
-            let currentLoc = CLLocation(latitude: current.latitude, longitude: current.longitude)
-            let distance = currentLoc.distance(from: CLLocation(latitude: lat, longitude: long))
-            
-            return "\(Int(distance) / 1000)km"
-        }
-        
-        return "km"
-    }
-    
-    private func typeImg(with facility: Model.Todoc.PreviewFacility) -> UIImage? {
-        guard facility.medicalType == .hospital else { return nil }
-        switch (facility.nightTimeServe, facility.emergency) {
-        case (true, _):
-            return UIImage(named: "nightType")
-            
-        case (false, true):
-            return UIImage(named: "emergencyType")
-        default:
-            return nil
-        }
-    }
-    
-    private func category(with facility: Model.Todoc.PreviewFacility) -> String? {
-        guard let categories = facility.categories, categories.count > 0 else { return nil }
-        let categoriesNoWhiteSpc = categories.map {
-            $0.trimmingCharacters(in: .whitespaces)
-        }
-        
-        return categoriesNoWhiteSpc.joined(separator: ", ")
     }
 }

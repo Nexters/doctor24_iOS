@@ -18,6 +18,7 @@ class DetailViewController: BaseViewController, View {
     typealias Reactor = DetailViewReactor
     
     private let facility: Model.Todoc.PreviewFacility
+    private let detailFacility = PublishSubject<Model.Todoc.DetailFacility>()
     private lazy var detailView = DetailView(controlBy: self)
     var disposeBag: DisposeBag = DisposeBag()
     
@@ -63,5 +64,15 @@ class DetailViewController: BaseViewController, View {
                                  id: self?.facility.id ?? "")}
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
+        
+        reactor.state.asObservable()
+            .map{ $0.data }
+            .unwrap()
+            .bind(to: self.detailFacility)
+            .disposed(by: self.disposeBag)
+        
+        self.detailFacility.subscribe(onNext: { [weak self] facility in
+            self?.detailView.facility = facility
+        }).disposed(by: self.disposeBag)
     }
 }

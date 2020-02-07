@@ -16,6 +16,7 @@ public protocol Facility {
     var medicalType: Model.Todoc.MedicalType { get }
     var phone    : String { get }
     var address  : String { get }
+    var categories: [String]? { get }
     var emergency: Bool   { get }
     var nightTimeServe: Bool { get }
 }
@@ -65,6 +66,7 @@ extension Model.Todoc {
         public let categories: [String]?
         public let emergency: Bool
         public let nightTimeServe: Bool
+        public let today: Day
     }
     
     public struct PreviewFacility: Codable, Facility {
