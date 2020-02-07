@@ -82,7 +82,6 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable {
     }
     
     private func setupUI(){
-        self.backgroundColor = .red
         self.addSubview(self.titleStackView)
         self.addSubview(self.navigationButton)
         self.addSubview(self.lineView)
@@ -94,7 +93,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable {
         
         self.navigationButton.snp.makeConstraints {
             $0.size.equalTo(54)
-            $0.top.equalToSuperview().offset(35)
+            $0.centerY.equalTo(self.titleStackView)
             $0.right.equalToSuperview().offset(-24)
         }
         
@@ -181,7 +180,6 @@ final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitl
     }
     
     private func setupUI() {
-        self.backgroundColor = .blue
         self.addSubview(self.imageView)
         self.addSubview(self.content)
         
@@ -245,14 +243,13 @@ final class DetailDayCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        self.backgroundColor = .yellow
         self.addSubview(self.imageView)
         self.addSubview(self.dayTitle)
         self.addSubview(self.timeLabel)
         
         self.imageView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.left.equalToSuperview().offset(24)
+            $0.left.equalToSuperview()
             $0.size.equalTo(24)
         }
         
@@ -264,7 +261,7 @@ final class DetailDayCell: UICollectionViewCell {
         self.timeLabel.snp.makeConstraints {
             $0.top.equalTo(self.dayTitle.snp.bottom).offset(4)
             $0.left.equalTo(self.dayTitle.snp.left)
-            $0.right.equalToSuperview().offset(-28)
+            $0.right.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
     }
@@ -306,7 +303,6 @@ final class DetailDistanceCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        self.backgroundColor = .purple
         self.addSubview(self.imageView)
         self.addSubview(self.distance)
         self.addSubview(self.address)

@@ -86,12 +86,13 @@ final class DetailView: BaseView, FacilityTitleable, PinDrawable {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.headerReferenceSize = CGSize(width: self.frame.width, height: 50)
         flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        flowLayout.sectionInset = UIEdgeInsets(top: 11.5, left: 0, bottom: 11.5, right: 0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 11.5, left: 5, bottom: 11.5, right: 5)
         flowLayout.minimumLineSpacing = 1
         flowLayout.minimumInteritemSpacing = 1
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
         cv.dataSource = self
         cv.delegate   = self
+        cv.backgroundColor = .white
         return cv
     }()
     
