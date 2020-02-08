@@ -85,10 +85,10 @@ final class DetailView: BaseView, FacilityTitleable, PinDrawable {
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.headerReferenceSize = CGSize(width: self.frame.width, height: 50)
-        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        flowLayout.sectionInset = UIEdgeInsets(top: 11.5, left: 5, bottom: 11.5, right: 5)
-        flowLayout.minimumLineSpacing = 1
-        flowLayout.minimumInteritemSpacing = 1
+//        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        flowLayout.sectionInset = UIEdgeInsets(top: 11.5, left: 0, bottom: 11.5, right: 0)
+        flowLayout.minimumLineSpacing = 6
+        flowLayout.minimumInteritemSpacing = 0
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
         cv.dataSource = self
         cv.delegate   = self
@@ -208,6 +208,10 @@ extension DetailView: UICollectionViewDataSource {
         case .day(let days):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailDayCell", for: indexPath) as! DetailDayCell
             cell.setData(day: days[indexPath.row]?.day, time: days[indexPath.row]?.time)
+            if indexPath.row > 0 {
+                cell.imageView.isHidden = true
+            }
+            
             return cell
             
         case .phone(let phone):
@@ -229,11 +233,27 @@ extension DetailView: UICollectionViewDataSource {
 
 extension DetailView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        switch detailData[indexPath.section] {
-        case .day(_):
-            return CGSize(width: (self.collectionView.frame.width / 2) - 1 , height: 50)
-        default:
-            return CGSize(width: self.collectionView.frame.width, height: 1)
+        switch self.detailData[indexPath.section] {
+        case .hospitalType(let title):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailNormalCell", for: indexPath) as! DetailNormalCell
+            cell.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 50)
+            cell.setData(type: .hospitalType(title))
+            cell.layoutIfNeeded()
+            
+            return cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        case .phone:
+            return CGSize(width: collectionView.frame.width, height: 18)
+        case .day:
+            return CGSize(width: (collectionView.frame.width / 2) , height: 40)
+            
+        case .distance((let distance, let address)):
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailDistanceCell", for: indexPath) as! DetailDistanceCell
+            cell.frame = CGRect(x: 0, y: 0, width: collectionView.frame.width, height: 50)
+            cell.setData(distance: distance, address: address)
+            cell.layoutIfNeeded()
+            
+            return cell.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         }
     }
     

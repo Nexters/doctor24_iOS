@@ -149,10 +149,11 @@ protocol DetailCellData where Self: UICollectionViewCell {
 
 final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitleable {
     private let imageView = UIImageView()
-    private let content: UILabel = {
+    let content: UILabel = {
         let label = UILabel()
         label.font = .regular(size: 16)
         label.textColor = .black()
+        label.numberOfLines = 3
         return label
     }()
     
@@ -186,19 +187,20 @@ final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitl
         self.imageView.snp.makeConstraints {
             $0.size.equalTo(24)
             $0.left.equalTo(24)
-            $0.top.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(0)
+            $0.centerY.equalToSuperview()
         }
         
         self.content.snp.makeConstraints {
-            $0.centerY.equalTo(self.imageView)
+            $0.top.equalToSuperview()
             $0.left.equalTo(self.imageView.snp.right).offset(6)
+            $0.right.equalToSuperview().offset(-24)
+            $0.bottom.equalToSuperview()
         }
     }
 }
 
 final class DetailDayCell: UICollectionViewCell {
-    private let imageView: UIImageView = {
+    let imageView: UIImageView = {
         let imgView = UIImageView()
         imgView.image = UIImage(named: "time")
         return imgView
@@ -235,6 +237,15 @@ final class DetailDayCell: UICollectionViewCell {
             
             self.dayTitle.text = day
             self.timeLabel.text = time
+            
+            switch day {
+            case "토요일":
+                self.dayTitle.textColor = .blue()
+            case "일요일","공휴일":
+                self.dayTitle.textColor = .red()
+            default:
+                self.dayTitle.textColor = .black()
+            }
         } else {
             self.imageView.isHidden = true
             self.dayTitle.isHidden = true
@@ -249,7 +260,7 @@ final class DetailDayCell: UICollectionViewCell {
         
         self.imageView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.left.equalToSuperview()
+            $0.left.equalToSuperview().offset(24)
             $0.size.equalTo(24)
         }
         
@@ -274,17 +285,18 @@ final class DetailDistanceCell: UICollectionViewCell {
         return imgView
     }()
     
-    private let distance: UILabel = {
+    let distance: UILabel = {
         let label = UILabel()
         label.font = .bold(size: 16)
         label.textColor = .black()
         return label
     }()
     
-    private let address: UILabel = {
+    let address: UILabel = {
         let label = UILabel()
         label.font = .regular(size: 16)
         label.textColor = .black()
+        label.numberOfLines = 2
         return label
     }()
     
@@ -320,6 +332,7 @@ final class DetailDistanceCell: UICollectionViewCell {
         
         self.address.snp.makeConstraints {
             $0.left.equalTo(self.distance)
+            $0.right.equalToSuperview().offset(-24)
             $0.top.equalTo(self.distance.snp.bottom).offset(4)
             $0.bottom.equalToSuperview()
         }

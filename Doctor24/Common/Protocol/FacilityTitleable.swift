@@ -21,7 +21,14 @@ extension FacilityTitleable {
             let currentLoc = CLLocation(latitude: current.latitude, longitude: current.longitude)
             let distance = currentLoc.distance(from: CLLocation(latitude: lat, longitude: long))
             
-            return "\(Int(distance) / 1000)km"
+            let numberFormatter = NumberFormatter()
+            numberFormatter.roundingMode = .floor
+            numberFormatter.minimumSignificantDigits = 2
+            numberFormatter.maximumSignificantDigits = 2
+
+            let newNum = numberFormatter.string(from: NSNumber(value: distance / 1000))
+            
+            return "\(newNum ?? "0")km"
         }
         
         return "km"
