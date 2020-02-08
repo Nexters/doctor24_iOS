@@ -41,15 +41,6 @@ final class HomeView: BaseView, PinDrawable {
         return mapView
     }()
     
-    let searchButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .red
-        button.setTitle("검색", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(.gray, for: .disabled)
-        return button
-    }()
-    
     private let cameraButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .red
@@ -80,8 +71,11 @@ final class HomeView: BaseView, PinDrawable {
         return view
     }()
     
-    private lazy var lookAroundView: LookAroundView = {
-        let view = LookAroundView(controlBy: vc)
+    let retrySearchView: RetrySearchView = {
+        let view = RetrySearchView()
+        view.backgroundColor = .white()
+        view.layer.cornerRadius = 22
+        view.hidden(true)
         return view
     }()
     
@@ -98,7 +92,7 @@ final class HomeView: BaseView, PinDrawable {
         self.addGesture()
         
         self.panGestureMap.subscribe(onNext:{ [weak self] in
-            self?.searchButton.isEnabled = true
+            self?.retrySearchView.hidden(false)
         }).disposed(by: self.disposeBag)
         
         self.cameraType
@@ -194,16 +188,15 @@ extension HomeView {
             $0.height.equalTo(58)
         }
         
-        self.searchButton.snp.makeConstraints {
-            $0.right.equalTo(-10)
-            $0.size.equalTo(50)
-            $0.bottom.equalTo(self.cameraButton.snp.top).offset(-10)
+        self.retrySearchView.snp.makeConstraints {
+            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(34)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(110)
+            $0.height.equalTo(44)
         }
         
         self.preview.snp.makeConstraints {
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.left.right.bottom.equalToSuperview()
             $0.height.equalTo(0)
         }
     }
@@ -213,7 +206,7 @@ extension HomeView {
         self.addSubview(self.operatingView)
         self.addSubview(self.cameraButton)
         self.addSubview(self.medicalSelectView)
-        self.addSubview(self.searchButton)
+        self.addSubview(self.retrySearchView)
         self.addSubview(self.preview)
     }
     

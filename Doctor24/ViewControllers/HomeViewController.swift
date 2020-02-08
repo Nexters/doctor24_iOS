@@ -70,10 +70,10 @@ final class HomeViewController: BaseViewController, View {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
-        self.homeView.searchButton.rx.tap
+        self.homeView.retrySearchView.button.rx.tap
             .withLatestFrom(self.homeView.medicalSelectView.medicalType)
             .do(onNext: { [weak self] _ in
-                self?.homeView.searchButton.isEnabled = false
+                self?.homeView.retrySearchView.hidden(true)
             }).map{ [weak self] type in
                 let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
                 let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
