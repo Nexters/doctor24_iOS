@@ -162,16 +162,12 @@ final class HomeView: BaseView, PinDrawable {
 extension HomeView {
     private func setLayout() {
         self.mapControlView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.top.left.right.bottom.equalToSuperview()
         }
         
         self.operatingView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(self.frame.height - 132 - self.bottomSafeAreaInset)
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
+            $0.left.right.equalToSuperview()
             $0.height.equalTo(396 + bottomSafeAreaInset)
         }
         

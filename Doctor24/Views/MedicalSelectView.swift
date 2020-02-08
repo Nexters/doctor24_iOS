@@ -107,10 +107,7 @@ extension MedicalSelectView {
     
     private func setLayout() {
         self.buttonStackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.top.left.right.bottom.equalToSuperview()
         }
         
         self.selectedView.snp.makeConstraints {

@@ -285,10 +285,7 @@ extension PreviewFacilityView {
         }
         
         self.contentView.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.top.left.right.bottom.equalToSuperview()
         }
         
         self.bottomView.snp.makeConstraints {
@@ -321,32 +318,27 @@ extension PreviewFacilityView {
         }
         
         self.lineView.snp.makeConstraints {
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
+            $0.left.right.equalToSuperview()
             $0.height.equalTo(1)
         }
         
         self.lineView2.snp.makeConstraints {
             $0.height.equalTo(1)
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
+            $0.left.right.equalToSuperview()
         }
         
         self.heightView.snp.makeConstraints {
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
+            $0.left.right.equalToSuperview()
             $0.height.equalTo(11.5)
         }
         
         self.heightView2.snp.makeConstraints {
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
+            $0.left.right.equalToSuperview()
             $0.height.equalTo(11.5)
         }
         
         self.heightView3.snp.makeConstraints {
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
+            $0.left.right.equalToSuperview()
             $0.height.equalTo(11.5)
         }
         
@@ -355,9 +347,8 @@ extension PreviewFacilityView {
         }
         
         self.addreeLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.right.equalToSuperview()
             $0.left.equalTo(30)
-            $0.right.equalToSuperview()
         }
         
         self.callButton.snp.makeConstraints {

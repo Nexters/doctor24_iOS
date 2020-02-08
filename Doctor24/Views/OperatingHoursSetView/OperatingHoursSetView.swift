@@ -175,10 +175,7 @@ extension OperatingHoursSetView {
         }
         
         self.contentView.snp.makeConstraints{
-            $0.top.equalToSuperview()
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.top.left.right.bottom.equalToSuperview()
         }
         
         self.titleLabel.snp.makeConstraints{
@@ -199,9 +196,7 @@ extension OperatingHoursSetView {
         
         self.pickerView.snp.makeConstraints {
             $0.top.equalTo(self.operatingBackgroundView.snp.bottom).offset(20)
-            $0.left.equalToSuperview()
-            $0.right.equalToSuperview()
-            $0.bottom.equalToSuperview()
+            $0.left.right.bottom.equalToSuperview()
         }
     }
 }
