@@ -85,7 +85,6 @@ final class DetailView: BaseView, FacilityTitleable, PinDrawable {
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.headerReferenceSize = CGSize(width: self.frame.width, height: 50)
-//        flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         flowLayout.sectionInset = UIEdgeInsets(top: 11.5, left: 0, bottom: 11.5, right: 0)
         flowLayout.minimumLineSpacing = 6
         flowLayout.minimumInteritemSpacing = 0
