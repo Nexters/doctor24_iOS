@@ -37,11 +37,16 @@ extension ViewTransition {
         case .main:
             let scenes = [scene]
             self.root.setViewControllers(scenes.map { $0.viewController }, animated: false)
+            
         case .timePick:
             self.root.present(scene.viewController, animated: true, completion: nil)
+            
         case .detail:
             let scene = scene
-            self.root.present(scene.viewController, animated: true, completion: nil)
+            self.root.topViewController!.present(scene.viewController, animated: true, completion: nil)
+            
+        case .around:
+            self.root.topViewController!.present(scene.viewController, animated: true, completion: nil)
         }
     }
 }

@@ -72,6 +72,15 @@ final class HomeView: BaseView, PinDrawable {
         return view
     }()
     
+    let aroundListButton: UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(named: "list"), for: .normal)
+        btn.setImage(UIImage(named: "selectedList"), for: .highlighted)
+        btn.backgroundColor = .white()
+        btn.layer.cornerRadius = 30
+        return btn
+    }()
+    
     let retrySearchView: RetrySearchView = {
         let view = RetrySearchView()
         view.backgroundColor = .white()
@@ -205,6 +214,12 @@ extension HomeView {
             $0.left.right.bottom.equalToSuperview()
             $0.height.equalTo(0)
         }
+        
+        self.aroundListButton.snp.makeConstraints {
+            $0.size.equalTo(58)
+            $0.centerY.equalTo(self.medicalSelectView)
+            $0.right.equalToSuperview().offset(-24)
+        }
     }
 
     private func addSubViews() {
@@ -214,6 +229,7 @@ extension HomeView {
         self.addSubview(self.medicalSelectView)
         self.addSubview(self.retrySearchView)
         self.addSubview(self.preview)
+        self.addSubview(self.aroundListButton)
     }
     
     private func addGesture() {

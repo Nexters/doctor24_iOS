@@ -14,6 +14,7 @@ enum Scene {
     case main
     case timePick(type: TimePickViewController.Operating)
     case detail(facility: Model.Todoc.PreviewFacility)
+    case around(facilities: [Model.Todoc.PreviewFacility])
 }
 
 extension Scene {
@@ -40,6 +41,10 @@ extension Scene {
             let detailReactor  = DetailViewReactor(service: networkService.makeFacilitiesUseCase())
             let vc = DetailViewController(facility: facility, reactor: detailReactor)
             
+            return vc
+            
+        case .around(let facilities):
+            let vc = AroundViewController(facilities: facilities)
             return vc
         }
     }

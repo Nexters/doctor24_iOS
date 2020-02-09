@@ -112,5 +112,13 @@ final class HomeViewController: BaseViewController, View {
             .subscribe(onNext:{ facility in
                 ViewTransition.shared.execute(scene: .detail(facility: facility))
             }).disposed(by: self.disposeBag)
+        
+        self.homeView.aroundListButton.rx.tap
+            .withLatestFrom(self.facilities).map {
+                $0.flatMap { $0.facilities }
+            }
+            .subscribe(onNext: { data in
+                ViewTransition.shared.execute(scene: .around(facilities: data))
+            }).disposed(by: self.disposeBag)
     }
 }
