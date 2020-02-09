@@ -138,6 +138,7 @@ extension AroundView: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : AroundCell = tableView.dequeueReusableCell(withIdentifier: "AroundCell", for: indexPath) as! AroundCell
+        cell.selectionStyle = .none
         cell.setData(facility: facilities[indexPath.row])
         return cell
     }
