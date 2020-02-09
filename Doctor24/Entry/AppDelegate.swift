@@ -7,12 +7,23 @@
 //
 
 import UIKit
-
+import NMapsMap
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    var dependency: AppDependency!
+    var window: UIWindow?
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        if #available(iOS 13, *) { print("set in SceneDelegate") }
+        else {
+            NMFAuthManager.shared().clientId = "kmnj0rb8vt"
+            let window = UIWindow(frame: UIScreen.main.bounds)
+            self.dependency = self.dependency ?? CompositionRoot.resolve(window: window)
+            self.window     = self.dependency.window
+            self.window?.makeKeyAndVisible()
+        }
+
         return true
     }
 
