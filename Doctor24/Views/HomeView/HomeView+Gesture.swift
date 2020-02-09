@@ -14,14 +14,20 @@ extension HomeView {
     func operatingDragView(_ gesture : UIGestureRecognizer){
         var maxHeight: CGFloat = 0.0
         var originHeight:CGFloat = 0.0
+        let point  = gesture.location(in: self)
+        let height = self.frame.height
+        let operatingView = (gesture.view as! OperatingHoursSetView)
         
         if gesture.view is OperatingHoursSetView {
             originHeight = 132 + bottomSafeAreaInset
             maxHeight = 396 + bottomSafeAreaInset
         }
         
-        let point  = gesture.location(in: self)
-        let height = self.frame.height
+        let start        = operatingView.startView.startTimeLabel
+        let end          = operatingView.endView.endTimeLabel
+        let spaincg      = operatingView.spacingLabel
+        let pickerView   = operatingView.pickerView
+        let background   = operatingView.operatingBackgroundView
         
         if gesture.state == .changed {
             if point.y >= 0 && self.frame.height - point.y <= maxHeight{
@@ -30,19 +36,31 @@ extension HomeView {
                     gesture.view?.snp.updateConstraints {
                         $0.top.equalToSuperview().offset(self.frame.height - (differ + originHeight))
                     }
-                    
-                    (gesture.view as! OperatingHoursSetView).pickerView.alpha = differ / 200
+                    let transform = CGAffineTransform(scaleX: 1 - (differ / 2000), y: (1 - differ / 2000))
+                    start.transform = transform
+                    end.transform   = transform
+                    spaincg.transform = transform
+                    background.alpha = differ / 200
+                    pickerView.alpha = differ / 200
                 }
             }
         } else if gesture.state == .ended {
             var height: CGFloat = 0.0
             var alpha : CGFloat = 0.0
+            let maxFontSize:CGFloat = 1
+            let minFontSize:CGFloat = 0.87
+            var size:CGFloat = 0.0
+            
             if (point.y - self.frame.height / 2) <= maxHeight / 2 {
                 height = maxHeight
                 alpha  = 1.0
+                size = minFontSize
+                operatingView.viewState.onNext(.open)
             } else {
                 height = originHeight
                 alpha  = 0.0
+                size = maxFontSize
+                operatingView.viewState.onNext(.close)
             }
             
             UIView.animate(withDuration: 0.3,
@@ -54,8 +72,13 @@ extension HomeView {
                             gesture.view?.snp.updateConstraints {
                                 $0.top.equalToSuperview().offset(self.frame.height - height)
                             }
+                            let transform = CGAffineTransform(scaleX: size, y: size)
+                            start.transform = transform
+                            end.transform   = transform
+                            spaincg.transform = transform
                             
-                            (gesture.view as! OperatingHoursSetView).pickerView.alpha = alpha
+                            pickerView.alpha = alpha
+                            background.alpha = alpha
                             self.layoutIfNeeded() }
                 , completion: nil)
         }

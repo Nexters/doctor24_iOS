@@ -26,7 +26,7 @@ extension OperatingHoursSetView {
         let endTimeLabel: UILabel = {
             let label = UILabel()
             label.text = Date().addingTimeInterval(TimeInterval(30.0*60.0)).convertDate
-            label.font = .bold(size: 22)
+            label.font = .bold(size: 26)
             label.textColor = .black()
             return label
         }()

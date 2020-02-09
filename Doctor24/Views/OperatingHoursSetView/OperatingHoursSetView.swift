@@ -15,6 +15,7 @@ final class OperatingHoursSetView: BaseView {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
+    let viewState = BehaviorSubject<FilterViewState>(value: .close)
     
     // MARK: UI Componenet
     let pickerView: PickerView = {
@@ -48,10 +49,12 @@ final class OperatingHoursSetView: BaseView {
         return label
     }()
     
-    private let closeButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "rectangle"), for: .normal)
-        return button
+    private let refreshLabel: UILabel = {
+        let label = UILabel()
+        label.text = "초기화"
+        label.font = .medium(size: 14)
+        label.textColor = .blue()
+        return label
     }()
     
     private let operatingStackView: UIStackView = {
@@ -59,30 +62,30 @@ final class OperatingHoursSetView: BaseView {
         stkView.spacing = 22
         stkView.axis = .horizontal
         stkView.alignment = .center
-        stkView.backgroundColor = .red
         return stkView
     }()
     
-    private let operatingBackgroundView: UIView = {
+    let operatingBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .grey4()
         view.layer.cornerRadius = 8
+        view.alpha = 0
         return view
     }()
     
-    private let startView: StartView = {
+    let startView: StartView = {
         let view = StartView()
         view.able(true)
         return view
     }()
     
-    private let endView: EndView = {
+    let endView: EndView = {
         let view = EndView()
         view.able(false)
         return view
     }()
     
-    private let spacingLabel: UILabel = {
+    let spacingLabel: UILabel = {
         let label = UILabel()
         label.text = "-"
         label.font = .bold(size: 22)
@@ -121,16 +124,16 @@ final class OperatingHoursSetView: BaseView {
                 self?.endView.endTimeLabel.text = str
             }).disposed(by: self.disposeBag)
         
-        self.startView.startTimeButton.rx.tap
-            .subscribe(onNext: { [weak self] in
+        self.startView.startTimeButton.rx.tap.withLatestFrom(self.viewState).filter { $0 == .open }
+            .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.startView.able(true)
                 self.endView.able(false)
                 
             }).disposed(by: self.disposeBag)
         
-        self.endView.endTimeButton.rx.tap
-            .subscribe(onNext: {[weak self] in
+        self.endView.endTimeButton.rx.tap.withLatestFrom(self.viewState).filter { $0 == .open }
+            .subscribe(onNext: {[weak self] _ in
                 guard let self = self else { return }
                 self.startView.able(false)
                 self.endView.able(true)
@@ -142,6 +145,19 @@ final class OperatingHoursSetView: BaseView {
                 guard let self = self else { return }
             
         }).disposed(by:self.disposeBag)
+        
+        self.viewState.subscribe(onNext: { state in
+            switch state {
+            case .open:
+                self.startView.able(true)
+                self.endView.able(false)
+                break
+            case .close:
+                self.startView.able(true)
+                self.endView.able(true)
+                break
+            }
+        }).disposed(by: self.disposeBag)
     }
 }
 
@@ -153,8 +169,8 @@ extension OperatingHoursSetView {
         self.operatingStackView.addArrangedSubview(self.spacingLabel)
         self.operatingStackView.addArrangedSubview(self.endView)
         self.contentView.addSubview(self.lineView)
-        self.contentView.addSubview(self.closeButton)
         self.contentView.addSubview(self.titleLabel)
+        self.contentView.addSubview(self.refreshLabel)
         self.contentView.addSubview(self.operatingBackgroundView)
         self.contentView.addSubview(self.operatingStackView)
         self.contentView.addSubview(self.pickerView)
@@ -168,12 +184,6 @@ extension OperatingHoursSetView {
             $0.top.equalToSuperview().offset(12)
         }
         
-        self.closeButton.snp.makeConstraints {
-            $0.size.equalTo(26)
-            $0.left.equalToSuperview().offset(24)
-            $0.top.equalToSuperview().offset(23)
-        }
-        
         self.contentView.snp.makeConstraints{
             $0.top.left.right.bottom.equalToSuperview()
         }
@@ -183,9 +193,14 @@ extension OperatingHoursSetView {
             $0.centerX.equalToSuperview()
         }
         
+        self.refreshLabel.snp.makeConstraints {
+            $0.centerY.equalTo(self.titleLabel)
+            $0.right.equalToSuperview().offset(-24)
+        }
+        
         self.operatingBackgroundView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(self.closeButton.snp.bottom).offset(11)
+            $0.top.equalTo(self.titleLabel.snp.bottom).offset(16)
             $0.width.equalTo(327)
             $0.height.equalTo(52)
         }
@@ -198,5 +213,12 @@ extension OperatingHoursSetView {
             $0.top.equalTo(self.operatingBackgroundView.snp.bottom).offset(20)
             $0.left.right.bottom.equalToSuperview()
         }
+    }
+}
+
+extension OperatingHoursSetView {
+    enum FilterViewState {
+        case open
+        case close
     }
 }
