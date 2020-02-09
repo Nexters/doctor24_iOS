@@ -42,11 +42,18 @@ extension ViewTransition {
             self.root.present(scene.viewController, animated: true, completion: nil)
             
         case .detail:
-            let scene = scene
-            self.root.topViewController!.present(scene.viewController, animated: true, completion: nil)
+            if let present = self.root.topViewController?.presentedViewController {
+                present.present(scene.viewController, animated: true, completion: nil)
+            } else {
+                self.root.topViewController?.present(scene.viewController, animated: true, completion: nil)
+            }
             
         case .around:
-            self.root.topViewController!.present(scene.viewController, animated: true, completion: nil)
+            if let present = self.root.topViewController?.presentedViewController {
+                present.present(scene.viewController, animated: true, completion: nil)
+            } else {
+                self.root.topViewController?.present(scene.viewController, animated: true, completion: nil)
+            }
         }
     }
 }

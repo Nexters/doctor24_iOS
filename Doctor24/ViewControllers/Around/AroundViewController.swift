@@ -48,5 +48,14 @@ class AroundViewController: BaseViewController {
             .subscribe(onNext: { [weak self] in
                 self?.dismiss(animated: true, completion: nil)
             }).disposed(by: self.disposeBag)
+        
+        self.aroundView.tapFacility.subscribe(onNext: { facility in
+//            let networkService = NetworkPlatform.UseCaseProvider()
+//            let detailReactor  = DetailViewReactor(service: networkService.makeFacilitiesUseCase())
+//            let vc = DetailViewController(facility: facility, reactor: detailReactor)
+//
+//            self.present(vc, animated: true, completion: nil)
+            ViewTransition.shared.execute(scene: .detail(facility: facility))
+        }).disposed(by:self.disposeBag)
     }
 }

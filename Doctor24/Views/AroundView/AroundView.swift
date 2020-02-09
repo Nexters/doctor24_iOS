@@ -9,10 +9,13 @@ import Domain
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class AroundView: BaseView {
     // MARK: Properties
     private let facilities: [Model.Todoc.PreviewFacility]
+    let tapFacility = PublishRelay<Model.Todoc.PreviewFacility>()
     
     // MARK: UI Component
     let topBar: TopBar = {
@@ -120,7 +123,7 @@ final class AroundView: BaseView {
 
 extension AroundView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        ViewTransition.shared.execute(scene: .detail(facility: self.facilities[indexPath.row]))
+        self.tapFacility.accept(self.facilities[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
