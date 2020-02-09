@@ -93,7 +93,11 @@ final class HomeView: BaseView, PinDrawable {
         self.addGesture()
         
         Observable.merge(self.retrySearchView.button.rx.tap.asObservable(),
-                         self.operatingView.pickerView.confirmButton.rx.tap.asObservable())
+                         self.operatingView.pickerView.confirmButton.rx.tap.asObservable(),
+                         self.operatingView.refreshButton.rx.tap.asObservable())
+            .do(onNext:  { [weak self] in
+                self?.dismissOperatingView()
+            })
             .bind(to: self.search)
             .disposed(by: self.disposeBag)
         
@@ -141,11 +145,6 @@ final class HomeView: BaseView, PinDrawable {
             }.unwrap()
             .bind(to: self.detailFacility)
             .disposed(by: self.disposeBag)
-        
-        self.operatingView.pickerView.confirmButton
-            .rx.tap.subscribe(onNext: { [weak self] in
-                self?.dismissOperatingView()
-            }).disposed(by: self.disposeBag)
         
         self.markerSignal
             .subscribe(onNext: { [weak self] overlay in

@@ -54,12 +54,13 @@ final class OperatingHoursSetView: BaseView {
         return label
     }()
     
-    private let refreshLabel: UILabel = {
-        let label = UILabel()
-        label.text = "초기화"
-        label.font = .medium(size: 14)
-        label.textColor = .blue()
-        return label
+    let refreshButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("초기화", for: .normal)
+        button.titleLabel?.font = .medium(size: 14)
+        button.setTitleColor(.blue(), for: .normal)
+        button.isHidden = true
+        return button
     }()
     
     private let operatingStackView: UIStackView = {
@@ -119,6 +120,28 @@ final class OperatingHoursSetView: BaseView {
     override func setBind() {
         self.registerNoti()
         
+        self.refreshButton.rx.tap.subscribe(onNext: {
+            self.refreshButton.isHidden = true
+            let start = Date()
+            let end   = Date().addingTimeInterval(TimeInterval(30.0*60.0))
+            TodocInfo.shared.startTimeFilter.onNext(start)
+            TodocInfo.shared.endTimeFilter.onNext(end)
+            self.startView.startTimeLabel.text = start.convertDate
+            self.endView.endTimeLabel.text     = end.convertDate
+            self.startTime = start
+            self.endTime   = end
+        }).disposed(by: self.disposeBag)
+        
+        self.focusButton.subscribe(onNext: { [weak self] type in
+            guard let self = self else { return }
+            switch type {
+            case .start:
+                self.pickerView.pickerDate.setDate(self.startTime, animated: true)
+            case .end:
+                self.pickerView.pickerDate.setDate(self.endTime, animated: true)
+            }
+        }).disposed(by: self.disposeBag)
+        
         self.startView.startTimeButton.rx.tap
             .withLatestFrom(self.viewState).filter { $0 == .open }
             .do(onNext: { [weak self] _ in
@@ -142,6 +165,7 @@ final class OperatingHoursSetView: BaseView {
         self.pickerView.confirmButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
+                self.refreshButton.isHidden = false
                 TodocInfo.shared.startTimeFilter.onNext(self.startTime)
                 TodocInfo.shared.endTimeFilter.onNext(self.endTime)
         }).disposed(by:self.disposeBag)
@@ -167,6 +191,7 @@ final class OperatingHoursSetView: BaseView {
                 self.startView.able(true)
                 self.endView.able(false)
                 self.pickerView.confirmButton(able: false)
+                self.focusButton.onNext(.start)
             case .close:
                 self.startView.able(true)
                 self.endView.able(true)
@@ -191,7 +216,7 @@ extension OperatingHoursSetView {
         self.operatingStackView.addArrangedSubview(self.endView)
         self.contentView.addSubview(self.lineView)
         self.contentView.addSubview(self.titleLabel)
-        self.contentView.addSubview(self.refreshLabel)
+        self.contentView.addSubview(self.refreshButton)
         self.contentView.addSubview(self.operatingBackgroundView)
         self.contentView.addSubview(self.operatingStackView)
         self.contentView.addSubview(self.pickerView)
@@ -214,9 +239,10 @@ extension OperatingHoursSetView {
             $0.centerX.equalToSuperview()
         }
         
-        self.refreshLabel.snp.makeConstraints {
+        self.refreshButton.snp.makeConstraints {
             $0.centerY.equalTo(self.titleLabel)
             $0.right.equalToSuperview().offset(-24)
+            $0.size.equalTo(50)
         }
         
         self.operatingBackgroundView.snp.makeConstraints {
