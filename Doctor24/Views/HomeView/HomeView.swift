@@ -44,8 +44,17 @@ final class HomeView: BaseView, PinDrawable {
     
     private let cameraButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .red
-        button.setTitle("카메라", for: .normal)
+        button.backgroundColor = .white()
+        button.layer.cornerRadius = 30
+        return button
+    }()
+    
+    private let categoryButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "category"), for: .normal)
+        button.setImage(UIImage(named: "unCategory"), for: .highlighted)
+        button.layer.cornerRadius = 30
+        button.backgroundColor = .white()
         return button
     }()
     
@@ -111,11 +120,23 @@ final class HomeView: BaseView, PinDrawable {
             .disposed(by: self.disposeBag)
         
         self.panGestureMap.subscribe(onNext:{ [weak self] in
+            self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
             self?.retrySearchView.hidden(false)
         }).disposed(by: self.disposeBag)
         
         self.cameraType
             .subscribe(onNext: { [weak self] type in
+                switch type {
+                case .normal:
+                    self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
+                case .direction:
+                    self?.cameraButton.setImage(UIImage(named: "camera2"), for: .normal)
+                case .compass:
+                    self?.cameraButton.setImage(UIImage(named: "camera3"), for: .normal)
+                default:
+                    break
+                }
+                
                 self?.mapControlView.positionMode = type
             }).disposed(by: self.disposeBag)
         
@@ -191,9 +212,15 @@ extension HomeView {
         }
         
         self.cameraButton.snp.makeConstraints {
-            $0.bottom.equalTo(self.operatingView.snp.top).offset(-10)
-            $0.right.equalTo(-10)
-            $0.size.equalTo(50)
+            $0.bottom.equalTo(self.operatingView.snp.top).offset(-24)
+            $0.right.equalTo(-24)
+            $0.size.equalTo(58)
+        }
+        
+        self.categoryButton.snp.makeConstraints {
+            $0.bottom.equalTo(self.operatingView.snp.top).offset(-24)
+            $0.left.equalTo(24)
+            $0.size.equalTo(58)
         }
         
         self.medicalSelectView.snp.makeConstraints {
@@ -226,6 +253,7 @@ extension HomeView {
         self.addSubview(self.mapControlView)
         self.addSubview(self.operatingView)
         self.addSubview(self.cameraButton)
+        self.addSubview(self.categoryButton)
         self.addSubview(self.medicalSelectView)
         self.addSubview(self.retrySearchView)
         self.addSubview(self.preview)
