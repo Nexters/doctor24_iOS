@@ -45,42 +45,11 @@ extension HomeView {
                 }
             }
         } else if gesture.state == .ended {
-            var height: CGFloat = 0.0
-            var alpha : CGFloat = 0.0
-            let maxFontSize:CGFloat = 1
-            let minFontSize:CGFloat = 0.87
-            var size:CGFloat = 0.0
-            
             if (point.y - self.frame.height / 2) <= maxHeight / 2 {
-                height = maxHeight
-                alpha  = 1.0
-                size = minFontSize
-                operatingView.viewState.onNext(.open)
+                self.onOperatingView()
             } else {
-                height = originHeight
-                alpha  = 0.0
-                size = maxFontSize
-                operatingView.viewState.onNext(.close)
+                self.dismissOperatingView()
             }
-            
-            UIView.animate(withDuration: 0.3,
-                           delay: 0.0,
-                           usingSpringWithDamping: 0.5,
-                           initialSpringVelocity: 0.0,
-                           options: [],
-                           animations: {
-                            gesture.view?.snp.updateConstraints {
-                                $0.top.equalToSuperview().offset(self.frame.height - height)
-                            }
-                            let transform = CGAffineTransform(scaleX: size, y: size)
-                            start.transform = transform
-                            end.transform   = transform
-                            spaincg.transform = transform
-                            
-                            pickerView.alpha = alpha
-                            background.alpha = alpha
-                            self.layoutIfNeeded() }
-                , completion: nil)
         }
     }
     

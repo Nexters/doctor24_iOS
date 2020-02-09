@@ -13,12 +13,14 @@ extension OperatingHoursSetView {
         let confirmButton: UIButton = {
             let button = UIButton()
             button.setTitle("확인", for: .normal)
+            button.setTitleColor(.white(), for: .normal)
+            button.setTitleColor(.grey2(), for: .disabled)
             button.titleLabel?.font = .bold(size: 16)
             button.backgroundColor = .blue()
             return button
         }()
         
-        private let pickerDate: UIDatePicker = {
+        let pickerDate: UIDatePicker = {
             let pick = UIDatePicker()
             pick.locale = Locale(identifier: "ko")
             pick.setValue(UIColor.white, forKey: "textColor")
@@ -34,6 +36,15 @@ extension OperatingHoursSetView {
         
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
+        }
+        
+        func confirmButton(able: Bool) {
+            self.confirmButton.isEnabled = able
+            if able {
+                self.confirmButton.backgroundColor = .blue()
+            } else {
+                self.confirmButton.backgroundColor = .grey3()
+            }
         }
         
         private func setupUI() {

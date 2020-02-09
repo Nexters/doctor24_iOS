@@ -54,10 +54,17 @@ final class HomeViewController: BaseViewController, View {
     
     func bind(reactor: HomeViewReactor) {
         self.homeView.medicalSelectView.medicalType
-            .withLatestFrom(TodocInfo.shared.currentLocation) { ($0,$1) }
+            .withLatestFrom(Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
+                                                     TodocInfo.shared.endTimeFilter.unwrap())) { ($0,$1.0,$1.1) }
             .skip(1)
-            .map { [weak self] (type, location) in
-                HomeViewReactor.Action.facilites(type: type, location: location, zoomLevel: self?.zoomLevel ?? 0) }
+            .map { [weak self] (type, startTime, endTime) in
+                let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
+                let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
+                let loc = CLLocationCoordinate2D(latitude: lat,
+                                                 longitude: lng)
+                let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
+                return HomeViewReactor.Action.facilites(type: type, location: loc, zoomLevel: self?.zoomLevel ?? 0, day: day)
+            }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
@@ -70,16 +77,20 @@ final class HomeViewController: BaseViewController, View {
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
-        self.homeView.retrySearchView.button.rx.tap
-            .withLatestFrom(self.homeView.medicalSelectView.medicalType)
+        self.homeView.search
+            .withLatestFrom(Observable.combineLatest(self.homeView.medicalSelectView.medicalType,
+                                                     TodocInfo.shared.startTimeFilter.unwrap(),
+                                                     TodocInfo.shared.endTimeFilter.unwrap()
+            ))
             .do(onNext: { [weak self] _ in
                 self?.homeView.retrySearchView.hidden(true)
-            }).map{ [weak self] type in
+            }).map{ [weak self] type, startTime, endTime in
                 let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
                 let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
                 let loc = CLLocationCoordinate2D(latitude: lat,
                                                  longitude: lng)
-                return HomeViewReactor.Action.facilites(type: type, location: loc, zoomLevel: self?.zoomLevel ?? 0)
+                let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
+                return HomeViewReactor.Action.facilites(type: type, location: loc, zoomLevel: self?.zoomLevel ?? 0, day: day)
             }.bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
@@ -92,12 +103,6 @@ final class HomeViewController: BaseViewController, View {
     }
     
     private func bind() {
-        self.homeView.panGestureMap
-                    .subscribe(onNext: { [weak self] _ in
-        //                print("jhh zoomLevel: \(self?.homeView.mapControlView.mapView.zoomLevel)")
-        //                print("self?.homeView.mapControlView.mapView.contentBounds: \(self?.homeView.mapControlView.mapView.contentBounds)")
-                    }).disposed(by: self.disposeBag)
-        
         self.facilities
             .subscribe(onNext:{ [weak self] facilities in
                 self?.homeView.drawPins(facilities: facilities)

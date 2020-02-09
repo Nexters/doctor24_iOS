@@ -26,9 +26,6 @@ extension Model {
 }
 
 extension Model.Todoc {
-}
-
-extension Model.Todoc {
     public enum MedicalType: String, Codable {
         case hospital
         case pharmacy
@@ -52,6 +49,14 @@ extension Model.Todoc {
         public let dayType  : Model.Todoc.DayType?
         public let startTime: String
         public let endTime  : String
+        
+        public init(dayType: Model.Todoc.DayType? = nil,
+             starTime: String,
+             endTime: String) {
+            self.dayType   = dayType
+            self.startTime = starTime
+            self.endTime   = endTime
+        }
     }
     
     public struct DetailFacility: Codable, Facility {

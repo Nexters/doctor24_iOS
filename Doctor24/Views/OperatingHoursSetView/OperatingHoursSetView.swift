@@ -15,6 +15,10 @@ final class OperatingHoursSetView: BaseView {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
+    private let focusButton = BehaviorSubject<FocusTimeButton>(value: .start)
+    private let changedTime = PublishRelay<(Date, FocusTimeButton)>()
+    private var startTime   = Date()
+    private var endTime     = Date().addingTimeInterval(TimeInterval(30.0*60.0))
     let viewState = BehaviorSubject<FilterViewState>(value: .close)
     
     // MARK: UI Componenet
@@ -22,6 +26,7 @@ final class OperatingHoursSetView: BaseView {
         let view = PickerView()
         view.backgroundColor = .black()
         view.alpha = 0.0
+        view.confirmButton(able: false)
         return view
     }()
     
@@ -95,6 +100,8 @@ final class OperatingHoursSetView: BaseView {
     
     required init(controlBy viewController: BaseViewController) {
         super.init(controlBy: viewController)
+        TodocInfo.shared.startTimeFilter.onNext(self.startTime)
+        TodocInfo.shared.endTimeFilter.onNext(self.endTime)
         self.setupUI()
         self.setBind()
     }
@@ -110,52 +117,66 @@ final class OperatingHoursSetView: BaseView {
     }
     
     override func setBind() {
-        TodocInfo.shared.startTimeFilter
-            .unwrap()
-            .map { $0.convertDate }
-            .subscribe(onNext: { [weak self] str in
-                self?.startView.startTimeLabel.text = str
-            }).disposed(by: self.disposeBag)
+        self.registerNoti()
         
-        TodocInfo.shared.endTimeFilter
-            .unwrap()
-            .map { $0.convertDate }
-            .subscribe(onNext: { [weak self] str in
-                self?.endView.endTimeLabel.text = str
-            }).disposed(by: self.disposeBag)
+        self.startView.startTimeButton.rx.tap
+            .withLatestFrom(self.viewState).filter { $0 == .open }
+            .do(onNext: { [weak self] _ in
+                self?.startView.able(true)
+                self?.endView.able(false)
+            })
+            .map { _ in FocusTimeButton.start }
+            .bind(to: self.focusButton)
+            .disposed(by: self.disposeBag)
         
-        self.startView.startTimeButton.rx.tap.withLatestFrom(self.viewState).filter { $0 == .open }
-            .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                self.startView.able(true)
-                self.endView.able(false)
-                
-            }).disposed(by: self.disposeBag)
-        
-        self.endView.endTimeButton.rx.tap.withLatestFrom(self.viewState).filter { $0 == .open }
-            .subscribe(onNext: {[weak self] _ in
-                guard let self = self else { return }
-                self.startView.able(false)
-                self.endView.able(true)
-                
-            }).disposed(by: self.disposeBag)
+        self.endView.endTimeButton.rx.tap
+            .withLatestFrom(self.viewState).filter { $0 == .open }
+            .do(onNext: { [weak self] _ in
+                self?.startView.able(false)
+                self?.endView.able(true)
+            })
+            .map { _ in FocusTimeButton.end }
+            .bind(to: self.focusButton)
+            .disposed(by: self.disposeBag)
         
         self.pickerView.confirmButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-            
+                TodocInfo.shared.startTimeFilter.onNext(self.startTime)
+                TodocInfo.shared.endTimeFilter.onNext(self.endTime)
         }).disposed(by:self.disposeBag)
         
-        self.viewState.subscribe(onNext: { state in
+        self.changedTime.subscribe(onNext: { [weak self] date, type in
+            guard let self = self else { return }
+            switch type {
+            case .start:
+                self.startView.startTimeLabel.text = date.convertDate
+                self.startTime = date
+                break
+            case .end:
+                self.endView.endTimeLabel.text = date.convertDate
+                self.endTime = date
+                break
+            }
+        }).disposed(by: self.disposeBag)
+        
+        self.viewState.subscribe(onNext: { [weak self] state in
+            guard let self = self else { return }
             switch state {
             case .open:
                 self.startView.able(true)
                 self.endView.able(false)
-                break
+                self.pickerView.confirmButton(able: false)
             case .close:
                 self.startView.able(true)
                 self.endView.able(true)
-                break
+                if let start = try? TodocInfo.shared.startTimeFilter.value(),
+                    let end = try? TodocInfo.shared.endTimeFilter.value() {
+                    self.startView.startTimeLabel.text = start.convertDate
+                    self.endView.endTimeLabel.text     = end.convertDate
+                    self.startTime = start
+                    self.endTime   = end
+                }
             }
         }).disposed(by: self.disposeBag)
     }
@@ -214,11 +235,29 @@ extension OperatingHoursSetView {
             $0.left.right.bottom.equalToSuperview()
         }
     }
+    
+    private func registerNoti(){
+        self.pickerView.pickerDate.addTarget(self, action: #selector(changedDatePikcer), for: .valueChanged)
+    }
+    
+    @objc
+    private func changedDatePikcer() {
+        self.pickerView.confirmButton(able: true)
+        Observable.just(self.pickerView.pickerDate.date)
+            .withLatestFrom(self.focusButton) { ($0,$1) }
+            .bind(to: self.changedTime)
+            .disposed(by: self.disposeBag)
+    }
 }
 
 extension OperatingHoursSetView {
     enum FilterViewState {
         case open
         case close
+    }
+    
+    enum FocusTimeButton {
+        case start
+        case end
     }
 }

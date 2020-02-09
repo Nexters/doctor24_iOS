@@ -21,7 +21,7 @@ final class HomeViewReactor: Reactor {
     
     enum Action {
         case viewDidLoad(location: CLLocationCoordinate2D, zoomLevel: Int)
-        case facilites(type: Model.Todoc.MedicalType, location: CLLocationCoordinate2D, zoomLevel: Int)
+        case facilites(type: Model.Todoc.MedicalType, location: CLLocationCoordinate2D, zoomLevel: Int, day: Model.Todoc.Day)
     }
     
     // represent state changes
@@ -57,10 +57,11 @@ final class HomeViewReactor: Reactor {
                         return .setError(error)
                     }
             }
-        case .facilites(let type, let location, let zoomLevel):
+        case .facilites(let type, let location, let zoomLevel, let day):
             return self.service.facilities(type,
                                            latitude: location.latitude,
                                            longitude: location.longitude,
+                                           operatingTime: day,
                                            zoomLevel: zoomLevel)
                 .map  { result in
                     switch result {

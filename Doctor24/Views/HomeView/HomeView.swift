@@ -16,6 +16,7 @@ import SnapKit
 
 final class HomeView: BaseView, PinDrawable {
     // MARK: Property
+    let search            = PublishRelay<Void>()
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
     let markerSignal      = BehaviorRelay<NMFOverlay?>(value: nil)
@@ -91,6 +92,11 @@ final class HomeView: BaseView, PinDrawable {
     override func setBind() {
         self.addGesture()
         
+        Observable.merge(self.retrySearchView.button.rx.tap.asObservable(),
+                         self.operatingView.pickerView.confirmButton.rx.tap.asObservable())
+            .bind(to: self.search)
+            .disposed(by: self.disposeBag)
+        
         self.panGestureMap.subscribe(onNext:{ [weak self] in
             self?.retrySearchView.hidden(false)
         }).disposed(by: self.disposeBag)
@@ -135,6 +141,11 @@ final class HomeView: BaseView, PinDrawable {
             }.unwrap()
             .bind(to: self.detailFacility)
             .disposed(by: self.disposeBag)
+        
+        self.operatingView.pickerView.confirmButton
+            .rx.tap.subscribe(onNext: { [weak self] in
+                self?.dismissOperatingView()
+            }).disposed(by: self.disposeBag)
         
         self.markerSignal
             .subscribe(onNext: { [weak self] overlay in
@@ -259,6 +270,64 @@ extension HomeView {
                        animations: {
                         self.layoutIfNeeded()
         })
+    }
+    
+    func onOperatingView() {
+        self.operatingView.viewState.onNext(.open)
+        self.operatingView.snp.updateConstraints {
+            $0.top.equalToSuperview().offset(self.frame.height - (396 + bottomSafeAreaInset))
+        }
+        
+        self.animateOpertaingView(show: true)
+    }
+    
+    func dismissOperatingView() {
+        self.operatingView.viewState.onNext(.close)
+        self.operatingView.snp.updateConstraints {
+            $0.top.equalToSuperview().offset(self.frame.height -  (132 + bottomSafeAreaInset))
+        }
+        
+        self.animateOpertaingView(show: false)
+    }
+    
+    func animateOpertaingView(show: Bool) {
+        
+        var alpha : CGFloat = 0.0
+        let maxFontSize:CGFloat = 1
+        let minFontSize:CGFloat = 0.87
+        var size:CGFloat = 0.0
+        
+        let start        = operatingView.startView.startTimeLabel
+        let end          = operatingView.endView.endTimeLabel
+        let spaincg      = operatingView.spacingLabel
+        let pickerView   = operatingView.pickerView
+        let background   = operatingView.operatingBackgroundView
+        
+        if show {
+            alpha  = 1.0
+            size = minFontSize
+        } else {
+            alpha  = 0.0
+            size = maxFontSize
+        }
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.5,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        let transform = CGAffineTransform(scaleX: size, y: size)
+                        start.transform = transform
+                        end.transform   = transform
+                        spaincg.transform = transform
+                        
+                        pickerView.alpha = alpha
+                        background.alpha = alpha
+                        
+                        self.layoutIfNeeded()
+        })
+        
     }
 }
 
