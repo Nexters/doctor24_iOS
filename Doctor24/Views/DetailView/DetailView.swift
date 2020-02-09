@@ -11,7 +11,7 @@ import UIKit
 import SnapKit
 import NMapsMap
 
-final class DetailView: BaseView, FacilityTitleable, PinDrawable {
+final class DetailView: BaseView, FacilityTitleable {
     // MARK: Property
     var facility: Model.Todoc.DetailFacility? {
         didSet{
@@ -43,7 +43,6 @@ final class DetailView: BaseView, FacilityTitleable, PinDrawable {
             }
             
             self.topBar.titleLabel.text = self.facility?.name ?? ""
-            self.focusPin()
             self.collectionView.reloadData()
         }
     }
@@ -51,19 +50,7 @@ final class DetailView: BaseView, FacilityTitleable, PinDrawable {
     private var detailData = [DetailCellType]()
     
     // MARK: UI Componenet
-    let topBar: TopBar = TopBar()
-    private let mapView: NMFMapView = {
-        let mapView = NMFMapView()
-        mapView.mapType = .navi
-        mapView.isNightModeEnabled = true
-        return mapView
-    }()
-    
-    private let blockView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
-    }()
+    let topBar: TopBar = TopBar()    
     
     private let contentView: UIView = {
         let view = UIView()
@@ -115,12 +102,11 @@ extension DetailView {
         self.collectionView.register(DetailNormalCell.self, forCellWithReuseIdentifier: "DetailNormalCell")
         self.collectionView.register(DetailDayCell.self, forCellWithReuseIdentifier: "DetailDayCell")
         self.collectionView.register(DetailDistanceCell.self, forCellWithReuseIdentifier: "DetailDistanceCell")
+        self.collectionView.register(DetailDayEvenCell.self, forCellWithReuseIdentifier: "DetailDayEvenCell")
     }
     
     private func addSubviews() {
         self.addSubview(self.topBar)
-        self.addSubview(self.mapView)
-        self.addSubview(self.blockView)
         self.addSubview(self.contentView)
         self.contentView.addSubview(self.collectionView)
         self.contentView.addSubview(self.callButton)
@@ -136,19 +122,10 @@ extension DetailView {
             }
         }
         
-        self.mapView.snp.makeConstraints {
-            $0.top.equalTo(self.topBar.snp.bottom)
-            $0.left.right.equalToSuperview()
-            $0.height.equalTo(240) //x에서 지도 높이 값 물어보기
-        }
         
         self.contentView.snp.makeConstraints {
-            $0.top.equalTo(self.mapView.snp.bottom)
+            $0.top.equalTo(self.topBar.snp.bottom)
             $0.left.bottom.right.equalToSuperview()
-        }
-        
-        self.blockView.snp.makeConstraints {
-            $0.top.left.right.bottom.equalTo(self.mapView)
         }
         
         self.collectionView.snp.makeConstraints {
@@ -162,16 +139,6 @@ extension DetailView {
             $0.right.equalToSuperview().offset(-16)
             $0.bottom.equalTo(self.safeArea.bottom).offset(-16)
         }
-    }
-    
-    private func focusPin() {
-        let marker = NMFMarker()
-        marker.position = NMGLatLng(lat: facility!.latitude, lng: facility!.longitude)
-        marker.iconImage = self.detailPin(name: facility!.name, medicalType: facility!.medicalType)
-        marker.mapView = self.mapView
-        
-        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility!.latitude, lng: facility!.longitude))
-        self.mapView.moveCamera(cameraUpdate)
     }
 }
 
@@ -205,13 +172,20 @@ extension DetailView: UICollectionViewDataSource {
             return cell
             
         case .day(let days):
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailDayCell", for: indexPath) as! DetailDayCell
-            cell.setData(day: days[indexPath.row]?.day, time: days[indexPath.row]?.time)
-            if indexPath.row > 0 {
-                cell.imageView.isHidden = true
+            if indexPath.row % 2 == 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailDayCell", for: indexPath) as! DetailDayCell
+                cell.setData(day: days[indexPath.row]?.day, time: days[indexPath.row]?.time)
+                if indexPath.row > 0 {
+                    cell.imageView.isHidden = true
+                }
+                
+                return cell
+            } else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailDayEvenCell", for: indexPath) as! DetailDayEvenCell
+                cell.setData(day: days[indexPath.row]?.day, time: days[indexPath.row]?.time)
+                
+                return cell
             }
-            
-            return cell
             
         case .phone(let phone):
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DetailNormalCell", for: indexPath) as! DetailNormalCell

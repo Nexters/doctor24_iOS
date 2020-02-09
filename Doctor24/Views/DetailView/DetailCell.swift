@@ -9,8 +9,22 @@ import Domain
 
 import UIKit
 import SnapKit
+import NMapsMap
 
-final class DetailHeaderView: UICollectionReusableView, FacilityTitleable {
+final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDrawable {
+    private let mapView: NMFMapView = {
+        let mapView = NMFMapView()
+        mapView.mapType = .navi
+        mapView.isNightModeEnabled = true
+        return mapView
+    }()
+    
+    private let blockView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
+    }()
+    
     private let titleStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis      = .vertical
@@ -79,9 +93,12 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable {
         
         self.hospitalTitle.text = data.name
         self.timeLabel.text  = "\(data.today.startTime.convertDate) ~ \(data.today.endTime.convertDate)"
+        self.focusPin(data: data)
     }
     
     private func setupUI(){
+        self.addSubview(self.mapView)
+        self.addSubview(self.blockView)
         self.addSubview(self.titleStackView)
         self.addSubview(self.navigationButton)
         self.addSubview(self.lineView)
@@ -91,6 +108,15 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable {
         self.dateStack.addArrangedSubview(self.todayLabel)
         self.dateStack.addArrangedSubview(self.timeLabel)
         
+        self.mapView.snp.makeConstraints {
+            $0.top.left.right.equalToSuperview()
+            $0.height.equalTo(240)
+        }
+        
+        self.blockView.snp.makeConstraints {
+            $0.top.left.right.bottom.equalTo(self.mapView)
+        }
+        
         self.navigationButton.snp.makeConstraints {
             $0.size.equalTo(54)
             $0.centerY.equalTo(self.titleStackView)
@@ -98,7 +124,8 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable {
         }
         
         self.titleStackView.snp.makeConstraints {
-            $0.top.left.equalToSuperview().offset(24)
+            $0.top.equalTo(self.mapView.snp.bottom).offset(24)
+            $0.left.equalToSuperview().offset(24)
             $0.right.equalToSuperview()
             $0.bottom.equalTo(self.lineView.snp.top).offset(-23.5)
         }
@@ -109,6 +136,16 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable {
             $0.right.equalToSuperview().offset(-24)
             $0.height.equalTo(1)
         }
+    }
+    
+    private func focusPin(data: Model.Todoc.DetailFacility) {
+        let marker = NMFMarker()
+        marker.position = NMGLatLng(lat: data.latitude, lng: data.longitude)
+        marker.iconImage = self.detailPin(name: data.name, medicalType: data.medicalType)
+        marker.mapView = self.mapView
+        
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: data.latitude, lng: data.longitude))
+        self.mapView.moveCamera(cameraUpdate)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -153,7 +190,7 @@ final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitl
         let label = UILabel()
         label.font = .regular(size: 16)
         label.textColor = .black()
-        label.numberOfLines = 3
+        label.numberOfLines = 0
         return label
     }()
     
@@ -278,6 +315,70 @@ final class DetailDayCell: UICollectionViewCell {
     }
 }
 
+final class DetailDayEvenCell: UICollectionViewCell {
+    private let dayTitle: UILabel = {
+        let label = UILabel()
+        label.font = .bold(size: 16)
+        label.textColor = .black()
+        return label
+    }()
+    
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = .regular(size: 16)
+        label.textColor = .black()
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setData(day: String?, time: String?) {
+        if let day = day, let time = time {
+            self.dayTitle.isHidden = false
+            self.timeLabel.isHidden = false
+            
+            self.dayTitle.text = day
+            self.timeLabel.text = time
+            
+            switch day {
+            case "토요일":
+                self.dayTitle.textColor = .blue()
+            case "일요일","공휴일":
+                self.dayTitle.textColor = .red()
+            default:
+                self.dayTitle.textColor = .black()
+            }
+        } else {
+            self.dayTitle.isHidden = true
+            self.timeLabel.isHidden = true
+        }
+    }
+    
+    private func setupUI() {
+        self.addSubview(self.dayTitle)
+        self.addSubview(self.timeLabel)
+        
+        self.dayTitle.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(2)
+            $0.left.equalToSuperview().offset(31)
+        }
+        
+        self.timeLabel.snp.makeConstraints {
+            $0.top.equalTo(self.dayTitle.snp.bottom).offset(4)
+            $0.left.equalTo(self.dayTitle.snp.left)
+            $0.right.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+}
+
 final class DetailDistanceCell: UICollectionViewCell {
     private let imageView: UIImageView = {
         let imgView = UIImageView()
@@ -296,7 +397,7 @@ final class DetailDistanceCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .regular(size: 16)
         label.textColor = .black()
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         return label
     }()
     
@@ -321,7 +422,7 @@ final class DetailDistanceCell: UICollectionViewCell {
         
         self.imageView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.left.equalToSuperview().offset(24)
+            $0.left.equalTo(24)
             $0.size.equalTo(24)
         }
         
@@ -332,7 +433,7 @@ final class DetailDistanceCell: UICollectionViewCell {
         
         self.address.snp.makeConstraints {
             $0.left.equalTo(self.distance)
-            $0.right.equalToSuperview().offset(-24)
+            $0.right.lessThanOrEqualTo(-24)
             $0.top.equalTo(self.distance.snp.bottom).offset(4)
             $0.bottom.equalToSuperview()
         }
