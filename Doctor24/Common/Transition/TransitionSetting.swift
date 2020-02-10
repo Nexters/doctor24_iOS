@@ -16,7 +16,7 @@ struct TransitionSetting {
     }
     
     struct PresentAnimationStyle {
-        public var damping = CGFloat(0.5)
+        public var damping = CGFloat(0.7)
         public var delay = TimeInterval(0.0)
         public var duration = TimeInterval(0.4)
         public var springVelocity = CGFloat(0.0)
@@ -24,7 +24,7 @@ struct TransitionSetting {
     }
     
     struct DismissAnimationStyle {
-        public var damping = CGFloat(1.0)
+        public var damping = CGFloat(0.7)
         public var delay = TimeInterval(0.0)
         public var duration = TimeInterval(0.4)
         public var springVelocity = CGFloat(0.0)
