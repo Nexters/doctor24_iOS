@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "comparisonfamilyEnable.png",
+      "filename" : "dentActive.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "comparisonfamilyEnable@2x.png",
+      "filename" : "dentActive@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "comparisonfamilyEnable@3x.png",
+      "filename" : "dentActive@3x.png",
       "scale" : "3x"
     }
   ],

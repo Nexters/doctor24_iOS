@@ -15,6 +15,7 @@ enum Scene {
     case timePick(type: TimePickViewController.Operating)
     case detail(facility: Model.Todoc.PreviewFacility)
     case around(facilities: [Model.Todoc.PreviewFacility])
+    case category
 }
 
 extension Scene {
@@ -45,6 +46,10 @@ extension Scene {
             
         case .around(let facilities):
             let vc = AroundViewController(facilities: facilities)
+            return vc
+            
+        case .category:
+            let vc = CategoryViewController()
             return vc
         }
     }

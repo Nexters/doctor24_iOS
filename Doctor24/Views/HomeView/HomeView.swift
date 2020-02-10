@@ -176,6 +176,10 @@ final class HomeView: BaseView, PinDrawable {
             .bind(to: self.detailFacility)
             .disposed(by: self.disposeBag)
         
+        self.categoryButton.rx.tap.subscribe(onNext: {
+            ViewTransition.shared.execute(scene: .category)
+        }).disposed(by: self.disposeBag)
+        
         self.markerSignal
             .subscribe(onNext: { [weak self] overlay in
                 guard let self = self else { return }
