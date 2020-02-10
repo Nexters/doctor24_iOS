@@ -40,7 +40,7 @@ final class FacilitiesUseCase: Domain.FacilitiesUseCase {
                     latitude: Double,
                     longitude: Double,
                     operatingTime: Model.Todoc.Day,
-                    category: Model.Todoc.MedicalType.Category,
+                    category: Model.Todoc.MedicalType.Category?,
                     zoomLevel: Int) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>> {
         return API.Facility(medicalType: type,
                             latitude: latitude,

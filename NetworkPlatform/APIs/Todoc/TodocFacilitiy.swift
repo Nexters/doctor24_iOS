@@ -31,14 +31,14 @@ extension API.Facility: APIConfigWithError  {
         params = ["radiusLevel": zoomLevel]
         
         if let time = self.operatingTime {
-            params = ["operatingHours.startTime": time.startTime,
-                      "operatingHours.endTime"  : time.endTime]
+            params["operatingHours.startTime"] = time.startTime
+            params["operatingHours.endTime"]   = time.endTime
         }
         
         if let category = self.category {
-            params = ["category": category]
+            params["category"] = category
         }
-        
+        print("jhh API hi")
         return .map(params)
     }
     

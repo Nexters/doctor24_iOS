@@ -53,20 +53,32 @@ final class HomeViewController: BaseViewController, View {
     }
     
     func bind(reactor: HomeViewReactor) {
-        self.homeView.medicalSelectView.medicalType
-            .withLatestFrom(Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
-                                                     TodocInfo.shared.endTimeFilter.unwrap())) { ($0,$1.0,$1.1) }
+        Observable.combineLatest(self.homeView.medicalSelectView.medicalType,
+                                 Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
+                                                          TodocInfo.shared.endTimeFilter.unwrap()),
+                                 TodocInfo.shared.category,
+                                 self.homeView.search.mapToVoid()
+        ) {($0, $1.0, $1.1, $2, $3) }
+            .debounce(.microseconds(500), scheduler: MainScheduler.instance)
             .skip(1)
-            .map { [weak self] (type, startTime, endTime) in
-                let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
-                let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
-                let loc = CLLocationCoordinate2D(latitude: lat,
-                                                 longitude: lng)
-                let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
-                return HomeViewReactor.Action.facilites(type: type, location: loc, zoomLevel: self?.zoomLevel ?? 0, day: day)
-            }
-            .bind(to: reactor.action)
-            .disposed(by: self.disposeBag)
+            .do(onNext: { [weak self] _ in
+                self?.homeView.retrySearchView.hidden(true)
+            })
+            .map { [weak self] (type, startTime, endTime, category, _) -> HomeViewReactor.Action in
+            let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
+            let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
+            let loc = CLLocationCoordinate2D(latitude: lat,
+                                             longitude: lng)
+            let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
+            
+            return HomeViewReactor.Action.facilites(type: type,
+                                                    location: loc,
+                                                    zoomLevel: self?.zoomLevel ?? 0,
+                                                    day: day,
+                                                    category: type == .pharmacy ? nil : category)
+        }
+        .bind(to: reactor.action)
+        .disposed(by: self.disposeBag)
         
         TodocInfo.shared.currentLocation
             .filter { $0.isValid() }
@@ -75,23 +87,6 @@ final class HomeViewController: BaseViewController, View {
                 return HomeViewReactor.Action.viewDidLoad(location: location, zoomLevel: self?.zoomLevel ?? 0)
             }
             .bind(to: reactor.action)
-            .disposed(by: self.disposeBag)
-        
-        self.homeView.search
-            .withLatestFrom(Observable.combineLatest(self.homeView.medicalSelectView.medicalType,
-                                                     TodocInfo.shared.startTimeFilter.unwrap(),
-                                                     TodocInfo.shared.endTimeFilter.unwrap()
-            ))
-            .do(onNext: { [weak self] _ in
-                self?.homeView.retrySearchView.hidden(true)
-            }).map{ [weak self] type, startTime, endTime in
-                let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
-                let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
-                let loc = CLLocationCoordinate2D(latitude: lat,
-                                                 longitude: lng)
-                let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
-                return HomeViewReactor.Action.facilites(type: type, location: loc, zoomLevel: self?.zoomLevel ?? 0, day: day)
-            }.bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         reactor.state.asObservable()

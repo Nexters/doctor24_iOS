@@ -24,7 +24,7 @@ public protocol FacilitiesUseCase {
                     latitude: Double,
                     longitude: Double,
                     operatingTime: Model.Todoc.Day,
-                    category: Model.Todoc.MedicalType.Category,
+                    category: Model.Todoc.MedicalType.Category?,
                     zoomLevel: Int) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>>
     
     func detailFacility(_ type: Model.Todoc.MedicalType,

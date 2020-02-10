@@ -16,7 +16,7 @@ import SnapKit
 
 final class HomeView: BaseView, PinDrawable {
     // MARK: Property
-    let search            = PublishRelay<Void>()
+    let search            = BehaviorRelay<Void>(value: ())
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
     let markerSignal      = BehaviorRelay<NMFOverlay?>(value: nil)
