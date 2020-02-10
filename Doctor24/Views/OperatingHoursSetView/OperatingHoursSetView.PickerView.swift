@@ -10,13 +10,18 @@ import UIKit
 
 extension OperatingHoursSetView {
     final class PickerView: UIView {
-        let confirmButton: UIButton = {
+        lazy var confirmButton: UIButton = {
             let button = UIButton()
             button.setTitle("확인", for: .normal)
             button.setTitleColor(.white(), for: .normal)
             button.setTitleColor(.grey2(), for: .disabled)
             button.titleLabel?.font = .bold(size: 16)
             button.backgroundColor = .blue()
+            
+            if haveSafeArea {
+                button.layer.cornerRadius = 5
+            }
+            
             return button
         }()
         
@@ -27,7 +32,6 @@ extension OperatingHoursSetView {
             pick.datePickerMode = .time
             return pick
         }()
-
         
         init() {
             super.init(frame: CGRect.zero)
@@ -59,10 +63,15 @@ extension OperatingHoursSetView {
             }
             
             self.confirmButton.snp.makeConstraints {
-                $0.left.equalToSuperview()
-                $0.right.equalToSuperview()
-                $0.top.equalTo(self.pickerDate.snp.bottom)
-                $0.bottom.equalToSuperview()
+                if haveSafeArea {
+                    $0.left.equalToSuperview().offset(24)
+                    $0.right.equalToSuperview().offset(-24)
+                    $0.bottom.equalToSuperview().offset(-(self.bottomSafeAreaInset + 24))
+                    $0.height.equalTo(56)
+                } else {
+                    $0.left.right.bottom.equalToSuperview()
+                    $0.top.equalTo(self.pickerDate.snp.bottom)
+                }
             }
         }
     }
