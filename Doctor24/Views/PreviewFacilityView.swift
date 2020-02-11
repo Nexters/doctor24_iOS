@@ -59,7 +59,16 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
         return stk
     }()
     
-    private let typeImgView: UIImageView = UIImageView()
+    private let typeStack: UIStackView = {
+        let stkView = UIStackView()
+        stkView.axis = .horizontal
+        stkView.spacing = 6
+        return stkView
+    }()
+    
+    private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
+    private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
+    private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
     
     private let contentView: UIView = {
         let view = UIView()
@@ -236,11 +245,33 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
             heightView2.isHidden = true
         }
         
-        if let type = self.typeImg(with: facility) {
-            self.typeImgView.isHidden = false
-            self.typeImgView.image = type
-        } else {
-            self.typeImgView.isHidden = true
+        guard facility.medicalType == .hospital else {
+            self.normal.isHidden = true
+            self.emergency.isHidden = true
+            self.night.isHidden = true
+            return
+        }
+        
+        switch (facility.nightTimeServe, facility.emergency) {
+        case (true, true):
+            self.normal.isHidden = true
+            self.emergency.isHidden = false
+            self.night.isHidden = false
+            
+        case (false, true):
+            self.normal.isHidden = true
+            self.emergency.isHidden = false
+            self.night.isHidden  = true
+            
+        case (true, false):
+            self.normal.isHidden = true
+            self.emergency.isHidden = true
+            self.night.isHidden = false
+            
+        default:
+            self.normal.isHidden = false
+            self.emergency.isHidden = true
+            self.night.isHidden = true
         }
     }
 }
@@ -251,8 +282,10 @@ extension PreviewFacilityView {
         self.contentView.addSubview(bottomView)
         self.contentView.addSubview(titleStack)
         self.contentView.addSubview(self.contentStack)
-        
-        self.titleStack.addArrangedSubview(typeImgView)
+        self.contentView.addSubview(self.typeStack)
+        self.typeStack.addArrangedSubview(self.normal)
+        self.typeStack.addArrangedSubview(self.emergency)
+        self.typeStack.addArrangedSubview(self.night)
         self.titleStack.addArrangedSubview(titleLabel)
         
         self.contentStack.addArrangedSubview(lineView)
@@ -278,8 +311,14 @@ extension PreviewFacilityView {
     }
     
     private func setLayout() {
-        self.titleStack.snp.makeConstraints {
+        
+        self.typeStack.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(24)
             $0.top.equalToSuperview().offset(32)
+        }
+        
+        self.titleStack.snp.makeConstraints {
+            $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             $0.left.equalToSuperview().offset(24)
             $0.right.equalTo(self.navigationButton.snp.left).offset(10)
         }

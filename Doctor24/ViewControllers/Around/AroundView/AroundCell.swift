@@ -32,6 +32,13 @@ final class AroundCell: UITableViewCell, FacilityTitleable {
         return stkView
     }()
     
+    private let typeStack: UIStackView = {
+        let stkView = UIStackView()
+        stkView.axis = .horizontal
+        stkView.spacing = 6
+        return stkView
+    }()
+    
     private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
     private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
     private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
@@ -84,23 +91,44 @@ final class AroundCell: UITableViewCell, FacilityTitleable {
     }
     
     func setData(facility: Model.Todoc.PreviewFacility) {
-        if let typeImg = self.typeImg(with: facility) {
-            self.type.image = typeImg
-            self.type.isHidden = false
-        } else {
-            self.type.isHidden = true
-        }
-        
         self.titleLabel.text = facility.name
         self.dayLabel.text =  "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
         self.distanceLabel.text = self.distance(lat: facility.latitude, long: facility.longitude)
+        
+        guard facility.medicalType == .hospital else { return }
+        switch (facility.nightTimeServe, facility.emergency) {
+        case (true, true):
+            self.normal.isHidden = true
+            self.emergency.isHidden = false
+            self.night.isHidden = false
+            
+        case (false, true):
+            self.normal.isHidden = true
+            self.emergency.isHidden = false
+            self.night.isHidden  = true
+            
+        case (true, false):
+            self.normal.isHidden = true
+            self.emergency.isHidden = true
+            self.night.isHidden = false
+            
+        default:
+            self.normal.isHidden = false
+            self.emergency.isHidden = true
+            self.night.isHidden = true
+        }
     }
     
     private func setupUI() {
+        self.normal.isHidden = true
+        self.emergency.isHidden = true
+        self.night.isHidden = true
+        
         self.backgroundColor = .clear
         self.addSubview(self.contentStackView)
         self.addSubview(self.naviButton)
-        self.contentStackView.addArrangedSubview(self.type)
+        self.addSubview(self.typeStack)
+
         self.contentStackView.addArrangedSubview(self.titleLabel)
         self.contentStackView.addArrangedSubview(self.dayStack)
         self.contentStackView.addArrangedSubview(self.distanceLabel)
@@ -111,12 +139,20 @@ final class AroundCell: UITableViewCell, FacilityTitleable {
             $0.height.equalTo(18)
         }
         
+        self.typeStack.addArrangedSubview(self.normal)
+        self.typeStack.addArrangedSubview(self.night)
+        self.typeStack.addArrangedSubview(self.emergency)
         self.dayStack.addArrangedSubview(self.todayLabel)
         self.dayStack.addArrangedSubview(self.dayLabel)
         
+        self.typeStack.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(24)
+            $0.top.equalToSuperview().offset(16)
+        }
+        
         self.contentStackView.snp.makeConstraints {
             $0.left.equalToSuperview().offset(24)
-            $0.top.equalToSuperview()
+            $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             $0.right.equalTo(self.naviButton.snp.left).offset(-16)
         }
         

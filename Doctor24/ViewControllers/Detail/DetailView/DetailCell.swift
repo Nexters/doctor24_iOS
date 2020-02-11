@@ -33,7 +33,16 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         return stack
     }()
     
-    private let typeView: UIImageView = UIImageView()
+    private let typeStack: UIStackView = {
+        let stkView = UIStackView()
+        stkView.axis = .horizontal
+        stkView.spacing = 6
+        return stkView
+    }()
+    
+    private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
+    private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
+    private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
     private let hospitalTitle: UILabel = {
         let label = UILabel()
         label.font = .bold(size: 20)
@@ -84,25 +93,60 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     }
     
     func setData(data: Model.Todoc.DetailFacility) {
-        if let type = self.typeImg(with: data) {
-            self.typeView.isHidden = false
-            self.typeView.image = type
-        } else {
-            self.typeView.isHidden = true
-        }
-        
         self.hospitalTitle.text = data.name
         self.timeLabel.text  = "\(data.today.startTime.convertDate) ~ \(data.today.endTime.convertDate)"
         self.focusPin(data: data)
+        
+        self.titleStackView.snp.remakeConstraints {
+            $0.left.equalToSuperview().offset(24)
+            $0.right.equalToSuperview()
+            $0.bottom.equalTo(self.lineView.snp.top).offset(-23.5)
+            if data.medicalType == .hospital {
+                $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
+            } else {
+                $0.top.equalTo(self.mapView.snp.bottom).offset(27)
+            }
+        }
+        
+        guard data.medicalType == .hospital else { return }
+        switch (data.nightTimeServe, data.emergency) {
+        case (true, true):
+            self.normal.isHidden = true
+            self.emergency.isHidden = false
+            self.night.isHidden = false
+            
+        case (false, true):
+            self.normal.isHidden = true
+            self.emergency.isHidden = false
+            self.night.isHidden  = true
+            
+        case (true, false):
+            self.normal.isHidden = true
+            self.emergency.isHidden = true
+            self.night.isHidden = false
+            
+        default:
+            self.normal.isHidden = false
+            self.emergency.isHidden = true
+            self.night.isHidden = true
+        }
     }
     
     private func setupUI(){
+        self.normal.isHidden = true
+        self.emergency.isHidden = true
+        self.night.isHidden = true
+            
         self.addSubview(self.mapView)
         self.addSubview(self.blockView)
+        self.addSubview(self.typeStack)
         self.addSubview(self.titleStackView)
         self.addSubview(self.navigationButton)
         self.addSubview(self.lineView)
-        self.titleStackView.addArrangedSubview(self.typeView)
+        
+        self.typeStack.addArrangedSubview(self.normal)
+        self.typeStack.addArrangedSubview(self.emergency)
+        self.typeStack.addArrangedSubview(self.night)
         self.titleStackView.addArrangedSubview(self.hospitalTitle)
         self.titleStackView.addArrangedSubview(self.dateStack)
         self.dateStack.addArrangedSubview(self.todayLabel)
@@ -119,12 +163,17 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         
         self.navigationButton.snp.makeConstraints {
             $0.size.equalTo(54)
-            $0.centerY.equalTo(self.titleStackView)
+            $0.top.equalTo(self.mapView.snp.bottom).offset(35)
             $0.right.equalToSuperview().offset(-24)
         }
         
-        self.titleStackView.snp.makeConstraints {
+        self.typeStack.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(24)
             $0.top.equalTo(self.mapView.snp.bottom).offset(24)
+        }
+        
+        self.titleStackView.snp.makeConstraints {
+            $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             $0.left.equalToSuperview().offset(24)
             $0.right.equalToSuperview()
             $0.bottom.equalTo(self.lineView.snp.top).offset(-23.5)

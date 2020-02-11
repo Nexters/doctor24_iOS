@@ -30,7 +30,7 @@ final class AroundView: BaseView {
         tabView.rowHeight = UITableView.automaticDimension
         tabView.estimatedRowHeight = 10
         tabView.separatorStyle = .none
-        tabView.contentInset = .init(top: 16, left: 0, bottom: 0, right: 0)
+        tabView.contentInset = .init(top: 0, left: 0, bottom: 0, right: 0)
         return tabView
     }()
     
