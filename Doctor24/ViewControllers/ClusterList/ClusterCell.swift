@@ -15,13 +15,6 @@ final class ClusterCell: UITableViewCell, FacilityTitleable {
         return line
     }()
     
-//    private let contentStack: UIStackView = {
-//        let stkView = UIStackView()
-//        stkView.spacing = 8
-//        stkView.axis = .vertical
-//        return stkView
-//    }()
-    
     private let typeStack: UIStackView = {
         let stkView = UIStackView()
         stkView.spacing = 6

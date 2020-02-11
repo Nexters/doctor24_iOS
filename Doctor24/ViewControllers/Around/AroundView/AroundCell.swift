@@ -32,6 +32,10 @@ final class AroundCell: UITableViewCell, FacilityTitleable {
         return stkView
     }()
     
+    private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
+    private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
+    private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    
     private let type: UIImageView = UIImageView()
     
     private let titleLabel: UILabel = {

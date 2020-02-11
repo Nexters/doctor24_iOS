@@ -20,7 +20,7 @@ final class ClusterListView: BaseView {
         tabView.rowHeight = UITableView.automaticDimension
         tabView.estimatedRowHeight = 10
         tabView.separatorStyle = .none
-        tabView.contentInset = .init(top: 16, left: 0, bottom: 0, right: 0)
+        tabView.contentInset = .init(top: 0, left: 0, bottom: 0, right: 0)
         return tabView
     }()
     
@@ -144,7 +144,7 @@ extension ClusterListView {
         }
         
         self.tableView.snp.makeConstraints {
-            $0.top.equalTo(self.titleLabel.snp.bottom)
+            $0.top.equalTo(self.titleLabel.snp.bottom).offset(16.5)
             $0.left.right.bottom.equalToSuperview()
         }
     }
