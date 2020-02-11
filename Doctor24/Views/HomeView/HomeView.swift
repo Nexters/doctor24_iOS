@@ -191,7 +191,7 @@ final class HomeView: BaseView, PinDrawable {
                 if let selected = overlay as? NMFMarker {
                     let facilities = selected.userInfo["tag"] as! Model.Todoc.Facilities
                     if facilities.facilities.count > 1 {
-                        ViewTransition.shared.execute(scene: .cluster)
+                        ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))
                     } else if let facility = facilities.facilities.first {
                         selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
                         self.selectedMarker.insert(selected)

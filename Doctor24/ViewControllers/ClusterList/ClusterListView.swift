@@ -7,8 +7,12 @@
 //
 import Domain
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class ClusterListView: BaseView {
+    let tapFacility = PublishRelay<Model.Todoc.PreviewFacility>()
+    
     private let facilities: [Model.Todoc.PreviewFacility]
     private let tableView: UITableView = {
         let tabView = UITableView()
@@ -55,6 +59,7 @@ final class ClusterListView: BaseView {
                   facilities: [Model.Todoc.PreviewFacility]) {
         self.facilities = facilities
         super.init(controlBy: viewController)
+        self.registerCell()
         self.tableView.reloadData()
     }
     
@@ -76,6 +81,10 @@ final class ClusterListView: BaseView {
         self.tableView.delegate = self
         self.tableView.dataSource = self
     }
+    
+    private func registerCell() {
+        self.tableView.register(ClusterCell.self, forCellReuseIdentifier: "ClusterCell")
+    }
 }
 
 // MARK: Animate View
@@ -88,27 +97,17 @@ extension ClusterListView {
         }
     }
     
-    func onWillDismissView(){
-        self.backgroundView.alpha = 0.4
-        self.contentView.snp.updateConstraints {
-            $0.width.equalTo(327)
-            $0.height.equalTo(398)
-        }
-    }
-    
     func performCustomPresentationAnimation() {
         self.backgroundView.alpha = 0.4
         self.contentView.snp.updateConstraints {
-            $0.width.equalTo(327)
-            $0.height.equalTo(398)
-        }
-    }
-    
-    func performCustomDismissingAnimation() {
-        self.backgroundView.alpha = 0.0
-        self.contentView.snp.updateConstraints {
-            $0.width.equalTo(0)
-            $0.height.equalTo(0)
+            $0.width.equalTo(self.frame.width - 48)
+            if facilities.count < 4 {
+                $0.height.equalTo(398)
+            } else if facilities.count == 4 {
+                $0.height.equalTo(450)
+            } else {
+                $0.height.equalTo(583)
+            }
         }
     }
 }
@@ -145,7 +144,7 @@ extension ClusterListView {
         }
         
         self.tableView.snp.makeConstraints {
-            $0.top.equalTo(self.titleLabel.snp.bottom).offset(16.5)
+            $0.top.equalTo(self.titleLabel.snp.bottom)
             $0.left.right.bottom.equalToSuperview()
         }
     }
@@ -153,7 +152,7 @@ extension ClusterListView {
 
 extension ClusterListView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        self.tapFacility.accept(self.facilities[indexPath.row])
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -167,7 +166,7 @@ extension ClusterListView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell : AroundCell = tableView.dequeueReusableCell(withIdentifier: "AroundCell", for: indexPath) as! AroundCell
+        let cell : ClusterCell = tableView.dequeueReusableCell(withIdentifier: "ClusterCell", for: indexPath) as! ClusterCell
         cell.selectionStyle = .none
         cell.setData(facility: facilities[indexPath.row])
         return cell

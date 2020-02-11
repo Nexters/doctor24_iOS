@@ -13,21 +13,7 @@
         <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="am6-vH-gkK">
-                    <rect key="frame" x="186" y="438" width="42" height="588.5"/>
-                    <string key="text">asdasdakfladmfklasdasdakfladmfklasdasdakfladmfklasdasdakfladmfklasdasdakfladmfklasdasdakfladmfklasdasdakfladmfklasdasdakfladmfkl</string>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-            </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <constraints>
-                <constraint firstItem="am6-vH-gkK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="394" id="d1X-uA-Yl4"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="am6-vH-gkK" secondAttribute="trailing" constant="186" id="kA8-4z-Sah"/>
-                <constraint firstItem="am6-vH-gkK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="186" id="uEF-3O-ah7"/>
-            </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="139" y="117"/>
         </view>

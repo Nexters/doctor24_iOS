@@ -5,6 +5,7 @@
 //  Created by Haehyeon Jeong on 2020/02/11.
 //  Copyright © 2020 JHH. All rights reserved.
 //
+import Domain
 
 import UIKit
 import SnapKit
@@ -12,13 +13,15 @@ import RxSwift
 import RxCocoa
 
 class ClusterListViewController: FadeModalTransitionViewController {
+    private let facilities: [Model.Todoc.PreviewFacility]
     private let disposeBag = DisposeBag()
-    private lazy var clusterView = ClusterListView(controlBy: self)
+    private lazy var clusterView = ClusterListView(controlBy: self, facilities: self.facilities)
     
-    override init() {
+    init(facilities: [Model.Todoc.PreviewFacility]) {
+        self.facilities = facilities
         super.init()
         self.animateSetting.animation.present.damping = 0.5
-        self.animateSetting.animation.dismiss.damping = 0.5
+        self.animateSetting.animation.dismiss.duration = 0
         self.modalPresentationStyle = .overCurrentContext
     }
     
@@ -41,23 +44,19 @@ class ClusterListViewController: FadeModalTransitionViewController {
         self.clusterView.onWillPresentView()
     }
     
-    override func onWillDismissView(){
-        self.clusterView.onWillDismissView()
-    }
-    
     override func performCustomPresentationAnimation() {
         super.performCustomPresentationAnimation()
         self.clusterView.performCustomPresentationAnimation()
     }
     
-    override func performCustomDismissingAnimation() {
-        self.clusterView.performCustomDismissingAnimation()
-    }
-    
     override func setBind() {
         self.clusterView.closeButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                self?.dismiss(animated: true, completion: nil)
+                self?.dismiss(animated: false, completion: nil)
             }).disposed(by: self.disposeBag)
+        
+        self.clusterView.tapFacility.subscribe(onNext: { facility in
+            ViewTransition.shared.execute(scene: .detail(facility: facility))
+        }).disposed(by:self.disposeBag)
     }
 }

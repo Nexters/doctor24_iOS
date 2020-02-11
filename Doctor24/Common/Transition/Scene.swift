@@ -15,7 +15,7 @@ enum Scene {
     case detail(facility: Model.Todoc.PreviewFacility)
     case around(facilities: [Model.Todoc.PreviewFacility])
     case category
-    case cluster
+    case cluster(facilities: [Model.Todoc.PreviewFacility])
 }
 
 extension Scene {
@@ -48,8 +48,8 @@ extension Scene {
             let vc = CategoryViewController()
             return vc
             
-        case .cluster:
-            let vc = ClusterListViewController()
+        case .cluster(let facilities):
+            let vc = ClusterListViewController(facilities: facilities)
             return vc
         }
     }
