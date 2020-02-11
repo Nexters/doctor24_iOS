@@ -12,10 +12,10 @@ import UIKit
 
 enum Scene {
     case main
-    case timePick(type: TimePickViewController.Operating)
     case detail(facility: Model.Todoc.PreviewFacility)
     case around(facilities: [Model.Todoc.PreviewFacility])
     case category
+    case cluster
 }
 
 extension Scene {
@@ -33,10 +33,6 @@ extension Scene {
 
             return vc
             
-        case .timePick(let type):
-            let vc = TimePickViewController(operatingType: type)
-            return vc
-            
         case .detail(let facility):
             let networkService = NetworkPlatform.UseCaseProvider()
             let detailReactor  = DetailViewReactor(service: networkService.makeFacilitiesUseCase())
@@ -50,6 +46,10 @@ extension Scene {
             
         case .category:
             let vc = CategoryViewController()
+            return vc
+            
+        case .cluster:
+            let vc = ClusterListViewController()
             return vc
         }
     }

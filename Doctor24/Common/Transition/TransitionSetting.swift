@@ -17,7 +17,7 @@ struct TransitionSetting {
     
     struct PresentAnimationStyle {
         public var damping = CGFloat(0.7)
-        public var delay = TimeInterval(0.0)
+        public var delay = TimeInterval(0.3)
         public var duration = TimeInterval(0.4)
         public var springVelocity = CGFloat(0.0)
         public var options = UIView.AnimationOptions.curveLinear
@@ -25,7 +25,7 @@ struct TransitionSetting {
     
     struct DismissAnimationStyle {
         public var damping = CGFloat(0.7)
-        public var delay = TimeInterval(0.0)
+        public var delay = TimeInterval(0.3)
         public var duration = TimeInterval(0.4)
         public var springVelocity = CGFloat(0.0)
         public var options = UIView.AnimationOptions.curveLinear

@@ -14,7 +14,7 @@ import RxCocoa
 class CategoryViewController: FadeModalTransitionViewController {
     private lazy var categoryView = CategoryView(controlBy: self)
     private let disposeBag = DisposeBag()
-    init() {
+    override init() {
         super.init()
         self.modalPresentationStyle = .overCurrentContext
     }

@@ -36,9 +36,9 @@ extension API.Facility: APIConfigWithError  {
         }
         
         if let category = self.category {
-            params["category"] = category
+            params["category"] = category == .전체 ? "" : category
         }
-        print("jhh API hi")
+        
         return .map(params)
     }
     

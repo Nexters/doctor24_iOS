@@ -9,11 +9,11 @@
 import UIKit
 
 class FadeModalTransitionViewController: BaseViewController {
+    var animateSetting: TransitionSetting = TransitionSetting()
     private var isPresenting = false
-    private var animateSetting: TransitionSetting
     
-    init(setting: TransitionSetting = TransitionSetting()) {
-        self.animateSetting = setting
+    
+    init() {
         super.init(nibName: nil, bundle: nil)
         self.transitioningDelegate  = self
         self.modalPresentationStyle = .currentContext
