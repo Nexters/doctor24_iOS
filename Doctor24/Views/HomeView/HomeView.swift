@@ -201,6 +201,8 @@ final class HomeView: BaseView, PinDrawable {
                         ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))
                     } else if let facility = facilities.facilities.first {
                         selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
+                        selected.zIndex = 1
+                        selected.isForceShowIcon = true
                         self.selectedMarker.insert(selected)
                         self.onPreview(with: facility)
                     }

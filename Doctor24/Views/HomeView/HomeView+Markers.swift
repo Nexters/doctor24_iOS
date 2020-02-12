@@ -45,6 +45,8 @@ extension HomeView {
         self.selectedMarker.forEach { marker in
             let facility = (marker.userInfo["tag"] as! Model.Todoc.Facilities).facilities.first
             marker.iconImage = self.pin(facility: facility!)
+            marker.zIndex = 0
+            marker.isForceShowIcon = false
         }
         self.dismissPreview()
         self.selectedMarker.removeAll()
