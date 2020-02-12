@@ -55,7 +55,6 @@ extension HomeView {
                 self.onOperatingView()
             } else {
                 self.dismissOperatingView()
-                self.removeOperatorBack()
             }
         }
     }

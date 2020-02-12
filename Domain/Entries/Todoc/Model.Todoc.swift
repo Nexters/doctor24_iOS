@@ -139,12 +139,12 @@ extension Model.Todoc.DetailFacility {
         
         for i in 0 ..< daysTemp.count {
             guard i <= daysTemp.count else { continue }
-            
+            let tempDay = daysTemp[i]
             var differArr = [Model.Todoc.Day]()
             for differ in daysTemp {
-                if daysTemp[i] == differ {
+                if tempDay == differ {
                     differArr.append(differ)
-                    daysTemp.remove(at: i)
+                    daysTemp.remove(at: daysTemp.firstIndex(of: differ) ?? 0)
                 }
             }
             

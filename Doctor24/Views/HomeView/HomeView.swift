@@ -350,12 +350,14 @@ extension HomeView {
     }
     
     func dismissOperatingView() {
+        self.removeOperatorBack()
         self.operatingView.viewState.onNext(.close)
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height -  (132 + bottomSafeAreaInset))
         }
         
         self.animateOpertaingView(show: false)
+        self.bringSubviewToFront(self.preview)
     }
     
     func animateOpertaingView(show: Bool) {
