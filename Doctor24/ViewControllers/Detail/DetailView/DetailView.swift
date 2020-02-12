@@ -10,9 +10,13 @@ import Domain
 import UIKit
 import SnapKit
 import NMapsMap
+import RxSwift
+import RxCocoa
 
 final class DetailView: BaseView, FacilityTitleable {
     // MARK: Property
+    private var phoneNumber: String = ""
+    private let disposeBag = DisposeBag()
     var facility: Model.Todoc.DetailFacility? {
         didSet{
             if let category = self.category(with: self.facility!) {
@@ -44,6 +48,15 @@ final class DetailView: BaseView, FacilityTitleable {
             
             self.topBar.titleLabel.text = self.facility?.name ?? ""
             self.collectionView.reloadData()
+            
+            if let number = facility?.phone {
+                self.phoneNumber = number
+                self.callButton.isEnabled = true
+                self.callButton.backgroundColor = .blue()
+            } else {
+                self.callButton.isEnabled = false
+                self.callButton.backgroundColor = .grey3()
+            }
         }
     }
     
@@ -62,6 +75,8 @@ final class DetailView: BaseView, FacilityTitleable {
         let button = UIButton()
         button.setTitle("전화하기", for: .normal)
         button.setTitleColor(.white(), for: .normal)
+        button.setTitle("전화번호 정보가 없습니다.", for: .disabled)
+        button.setTitleColor(.grey2(), for: .disabled)
         button.backgroundColor = .blue()
         button.titleLabel?.font = .bold(size: 16)
         button.clipsToBounds = true
@@ -90,7 +105,11 @@ final class DetailView: BaseView, FacilityTitleable {
     }
     
     override func setBind() {
-        
+        self.callButton.rx.tap.subscribe(onNext: {
+                guard let url = URL(string: "tel://\(self.phoneNumber.onlyDigits())"),
+                    UIApplication.shared.canOpenURL(url) else { return }
+                UIApplication.shared.open(url)
+        }).disposed(by: self.disposeBag)
     }
 }
 
@@ -121,7 +140,6 @@ extension DetailView {
                 $0.height.equalTo(78)
             }
         }
-        
         
         self.contentView.snp.makeConstraints {
             $0.top.equalTo(self.topBar.snp.bottom)

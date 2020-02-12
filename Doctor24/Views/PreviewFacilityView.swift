@@ -186,6 +186,9 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
         let button = UIButton()
         button.setTitle("전화하기", for: .normal)
         button.setTitleColor(.white(), for: .normal)
+        button.setTitle("전화번호 정보가 없습니다.", for: .disabled)
+        button.setTitleColor(.grey2(), for: .disabled)
+
         button.backgroundColor = .blue()
         button.titleLabel?.font = .bold(size: 16)
         button.clipsToBounds = true
@@ -225,11 +228,19 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
     }
     
     public func setData(facility: Model.Todoc.PreviewFacility) {
+        if let number = facility.phone {
+            self.phoneNumber = number
+            self.callButton.isEnabled = true
+            self.callButton.backgroundColor = .blue()
+        } else {
+            self.callButton.isEnabled = false
+            self.callButton.backgroundColor = .grey3()
+        }
+        
         self.facility = facility
         self.titleLabel.text = facility.name
         self.timeLabel.text  = "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
         self.addreeLabel.text = facility.address
-        self.phoneNumber     = facility.phone ?? ""
         self.distanceLabel.text = self.distance(lat: facility.latitude, long: facility.longitude)
         
         if let category = self.category(with: facility) {
