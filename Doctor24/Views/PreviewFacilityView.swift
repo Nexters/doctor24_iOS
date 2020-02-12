@@ -21,7 +21,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
-    private let titleStack: UIStackView = {
+    let titleStack: UIStackView = {
         let stk = UIStackView()
         stk.axis = .vertical
         stk.alignment = .leading
@@ -74,7 +74,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
         let view = UIView()
         view.backgroundColor = .white()
         view.clipsToBounds = true
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 24
         view.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
         return view
     }()
@@ -173,7 +173,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
         return label
     }()
     
-    private let addreeLabel: UILabel = {
+    let addreeLabel: UILabel = {
         let label = UILabel()
         label.text = "서울 강남구 강남대로 102길 38"
         label.font = .regular(size: 16)

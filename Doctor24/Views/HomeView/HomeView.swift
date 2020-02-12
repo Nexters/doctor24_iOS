@@ -290,11 +290,13 @@ extension HomeView {
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
         self.mapControlView.mapView.moveCamera(cameraUpdate)
         self.preview.setData(facility: facility)
+        self.layoutIfNeeded()
         var height: CGFloat = 0
-        if facility.categories?.count ?? 0 > 0 {
-            height = 325.0 + self.bottomSafeAreaInset
+        
+        if facility.medicalType == .hospital {
+            height = 274 + self.preview.titleStack.frame.height + self.preview.addreeLabel.frame.height + self.bottomSafeAreaInset
         } else {
-            height = 279.0 + self.bottomSafeAreaInset
+            height = 210 + self.preview.titleStack.frame.height + self.preview.addreeLabel.frame.height + self.bottomSafeAreaInset
         }
         
         self.preview.snp.updateConstraints {

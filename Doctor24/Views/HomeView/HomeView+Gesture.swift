@@ -64,11 +64,11 @@ extension HomeView {
         let point  = gesture.location(in: self)
         let height = self.frame.height
         let preview = gesture.view as! PreviewFacilityView
-        var contentViewHeight:CGFloat = bottomSafeAreaInset
-        if preview.facility.categories?.count ?? 0 > 0 {
-            contentViewHeight = 325 + bottomSafeAreaInset
+        var contentViewHeight: CGFloat = bottomSafeAreaInset
+        if preview.facility.medicalType == .hospital {
+            contentViewHeight = 274 + preview.titleStack.frame.height + preview.addreeLabel.frame.height + self.bottomSafeAreaInset
         } else {
-            contentViewHeight = 279.0 + bottomSafeAreaInset
+            contentViewHeight = 208 + preview.titleStack.frame.height + preview.addreeLabel.frame.height + self.bottomSafeAreaInset
         }
         
         if gesture.state == .changed {
