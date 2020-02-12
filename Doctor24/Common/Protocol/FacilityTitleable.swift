@@ -49,16 +49,21 @@ extension FacilityTitleable {
     
     func category(with facility: Facility) -> String? {
         guard let categories = facility.categories, categories.count > 0 else { return nil }
+        let before = categories.map { $0.trimmingCharacters(in: .whitespaces) }
         
-        let convert = categories.map { type in Model.Todoc.MedicalType.Category(rawValue: type) }.compactMap { $0 }
-//        let except  = categories.
+        let converts = before.map { type in Model.Todoc.MedicalType.Category(rawValue: type) }.compactMap { $0 }
+        let excepts  = before.filter { Model.Todoc.MedicalType.Category(rawValue: $0) == nil }
+        var result = [String]()
         
-        print("jhh convert: \(convert)")
-        
-        let categoriesNoWhiteSpc = categories.map {
-            $0.trimmingCharacters(in: .whitespaces)
+        converts.forEach { category in
+            result.append(category.rawValue)
         }
         
-        return categoriesNoWhiteSpc.joined(separator: ", ")
+        for except in excepts {
+            guard result.count < 10 else { break }
+            result.append(except)
+        }
+        
+        return result.joined(separator: ", ") + "\(result.count > 10 ? " 등" : "")"
     }
 }
