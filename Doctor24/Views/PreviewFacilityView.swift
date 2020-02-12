@@ -178,7 +178,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
         label.text = "서울 강남구 강남대로 102길 38"
         label.font = .regular(size: 16)
         label.textColor = .black()
-        label.numberOfLines = 0
+        label.numberOfLines = 1
         return label
     }()
     

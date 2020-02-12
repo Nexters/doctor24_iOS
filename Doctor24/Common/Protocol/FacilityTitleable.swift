@@ -49,6 +49,12 @@ extension FacilityTitleable {
     
     func category(with facility: Facility) -> String? {
         guard let categories = facility.categories, categories.count > 0 else { return nil }
+        
+        let convert = categories.map { type in Model.Todoc.MedicalType.Category(rawValue: type) }.compactMap { $0 }
+//        let except  = categories.
+        
+        print("jhh convert: \(convert)")
+        
         let categoriesNoWhiteSpc = categories.map {
             $0.trimmingCharacters(in: .whitespaces)
         }
