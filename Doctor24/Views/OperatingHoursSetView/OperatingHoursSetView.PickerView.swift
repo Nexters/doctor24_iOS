@@ -28,7 +28,7 @@ extension OperatingHoursSetView {
         let pickerDate: UIDatePicker = {
             let pick = UIDatePicker()
             pick.locale = Locale(identifier: "ko")
-            pick.setValue(UIColor.white, forKey: "textColor")
+            pick.setValue(UIColor.black, forKey: "textColor")
             pick.datePickerMode = .time
             return pick
         }()

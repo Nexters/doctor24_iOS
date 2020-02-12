@@ -24,7 +24,7 @@ final class OperatingHoursSetView: BaseView {
     // MARK: UI Componenet
     let pickerView: PickerView = {
         let view = PickerView()
-        view.backgroundColor = .black()
+        view.backgroundColor = .white()
         view.alpha = 0.0
         view.confirmButton(able: false)
         return view
@@ -34,7 +34,7 @@ final class OperatingHoursSetView: BaseView {
         let view = UIView()
         view.backgroundColor = .white
         view.clipsToBounds = true
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 24
         view.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
         return view
     }()

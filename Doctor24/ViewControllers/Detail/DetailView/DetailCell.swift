@@ -43,6 +43,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
     private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
     private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    
     private let hospitalTitle: UILabel = {
         let label = UILabel()
         label.font = .bold(size: 20)
@@ -192,9 +193,11 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         marker.position = NMGLatLng(lat: data.latitude, lng: data.longitude)
         marker.iconImage = self.detailPin(name: data.name, medicalType: data.medicalType)
         marker.mapView = self.mapView
-        
-        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: data.latitude, lng: data.longitude))
-        self.mapView.moveCamera(cameraUpdate)
+        marker.anchor = CGPoint(x: 0.5,y: 0.5)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+            let cameraUpdate = NMFCameraUpdate(scrollTo: marker.position)
+            self.mapView.moveCamera(cameraUpdate)
+        })
     }
     
     required init?(coder aDecoder: NSCoder) {

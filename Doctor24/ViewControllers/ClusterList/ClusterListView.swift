@@ -91,6 +91,7 @@ final class ClusterListView: BaseView {
 extension ClusterListView {
     func onWillPresentView(){
         self.backgroundView.alpha = 0.0
+        self.contentView.alpha = 0.0
         self.contentView.snp.updateConstraints {
             $0.width.equalTo(0)
             $0.height.equalTo(0)
@@ -99,6 +100,7 @@ extension ClusterListView {
     
     func performCustomPresentationAnimation() {
         self.backgroundView.alpha = 0.4
+        self.contentView.alpha = 1
         self.contentView.snp.updateConstraints {
             $0.width.equalTo(self.frame.width - 48)
             if facilities.count < 4 {
