@@ -56,12 +56,35 @@ final class AroundView: BaseView {
         return label
     }()
     
+    private lazy var emptyView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white()
+        
+        let label = UILabel()
+        label.text = "병원을 찾을 수 없습니다."
+        label.font = .regular(size: 16)
+        label.textColor = .grey2()
+        
+        view.addSubview(label)
+        label.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+        
+        view.isHidden = true
+        
+        return view
+    }()
+    
     required init(controlBy viewController: BaseViewController,
                   facilities: [Model.Todoc.PreviewFacility]) {
         self.facilities = facilities
         super.init(controlBy: viewController)
         self.registerCell()
         self.tableView.reloadData()
+        if facilities.isEmpty {
+            self.emptyView.isHidden = false
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -79,6 +102,7 @@ final class AroundView: BaseView {
         self.infoView.addSubview(self.countLabel)
         self.infoView.addSubview(self.distance)
         self.addSubview(self.tableView)
+        self.addSubview(self.emptyView)
         
         self.topBar.snp.makeConstraints {
             $0.top.right.left.equalToSuperview()
@@ -106,6 +130,11 @@ final class AroundView: BaseView {
         }
         
         self.tableView.snp.makeConstraints {
+            $0.top.equalTo(self.infoView.snp.bottom)
+            $0.left.right.bottom.equalToSuperview()
+        }
+        
+        self.emptyView.snp.makeConstraints {
             $0.top.equalTo(self.infoView.snp.bottom)
             $0.left.right.bottom.equalToSuperview()
         }
