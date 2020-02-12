@@ -29,7 +29,9 @@ extension HomeView {
         let pickerView   = operatingView.pickerView
         let background   = operatingView.operatingBackgroundView
         
-        if gesture.state == .changed {
+        if gesture.state == .began {
+            self.onOperatorBack()
+        } else if gesture.state == .changed {
             if point.y >= 0 && self.frame.height - point.y <= maxHeight{
                 let differ = (height - originHeight) - point.y
                 if differ + originHeight > originHeight {
@@ -42,13 +44,18 @@ extension HomeView {
                     spaincg.transform = transform
                     background.alpha = differ / 200
                     pickerView.alpha = differ / 200
+                    self.operatingBackGround.alpha = (differ / 200) / 2
+                    print("differ: \(differ)")
+                    print("differ / 200: \(differ / 200)")
                 }
             }
         } else if gesture.state == .ended {
             if (point.y - self.frame.height / 2) <= maxHeight / 2 {
+                self.operatingBackGround.alpha = 0.6
                 self.onOperatingView()
             } else {
                 self.dismissOperatingView()
+                self.removeOperatorBack()
             }
         }
     }

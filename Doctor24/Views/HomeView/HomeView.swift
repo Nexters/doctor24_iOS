@@ -73,6 +73,13 @@ final class HomeView: BaseView, PinDrawable {
         return view
     }()
     
+    let operatingBackGround: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black()
+        view.alpha = 0
+        return view
+    }()
+    
     private lazy var operatingView: OperatingHoursSetView = {
         let view = OperatingHoursSetView(controlBy: vc)
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(operatingDragView(_:)))
@@ -317,6 +324,20 @@ extension HomeView {
                        animations: {
                         self.layoutIfNeeded()
         })
+    }
+    
+    func onOperatorBack() {
+        self.addSubview(self.operatingBackGround)
+        self.operatingBackGround.snp.makeConstraints {
+            $0.top.left.bottom.right.equalToSuperview()
+        }
+        
+        self.bringSubviewToFront(self.operatingView)
+    }
+    
+    func removeOperatorBack() {
+        self.operatingBackGround.snp.removeConstraints()
+        self.operatingBackGround.removeFromSuperview()
     }
     
     func onOperatingView() {
