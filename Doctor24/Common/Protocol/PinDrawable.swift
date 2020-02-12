@@ -9,7 +9,6 @@ import Domain
 
 import UIKit
 import NMapsMap
-import SnapKit
 
 protocol PinDrawable {
     func clusterPin(count: Int) -> NMFOverlayImage
