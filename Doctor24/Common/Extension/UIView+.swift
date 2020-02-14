@@ -19,7 +19,7 @@ extension UIView {
     
     var haveSafeArea: Bool {
         if #available(iOS 11.0, *) {
-            if topSafeAreaInset > CGFloat(0) {
+            if bottomSafeAreaInset > CGFloat(0) {
                 return true
             } else {
                 return false

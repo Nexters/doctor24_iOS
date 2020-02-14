@@ -273,7 +273,8 @@ extension OperatingHoursSetView {
         self.operatingBackgroundView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalTo(self.titleLabel.snp.bottom).offset(16)
-            $0.width.equalTo(327)
+            $0.left.equalToSuperview().offset(24)
+            $0.right.equalToSuperview().offset(-24)
             $0.height.equalTo(52)
         }
         
