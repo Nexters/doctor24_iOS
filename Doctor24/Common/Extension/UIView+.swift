@@ -57,4 +57,16 @@ extension UIView {
             layer.render(in: rendererContext.cgContext)
         }
     }
+    
+    func setShadow(radius: CGFloat,
+                   shadowColor: UIColor,
+                   shadowOffset: CGSize,
+                   shadowBlur: CGFloat) {
+        self.layer.cornerRadius = radius
+        self.layer.shadowOffset = shadowOffset
+        self.layer.shadowColor = shadowColor.cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowRadius = shadowBlur / 2
+        self.layer.masksToBounds = false
+    }
 }

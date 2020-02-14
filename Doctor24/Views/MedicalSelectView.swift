@@ -19,18 +19,33 @@ final class MedicalSelectView: BaseView {
     // MARK: UI Componenet
     private let hospital: UIButton = {
         let button = UIButton()
-        button.setTitle("병원", for: .normal)
-        button.titleLabel?.font = UIFont.bold(size:16)
-        button.setTitleColor(.grey3(), for: .normal)
         button.backgroundColor = .clear
         return button
     }()
     
+    private let hospitalTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "병원"
+        label.textColor = .grey3()
+        label.font = .bold(size: 16)
+        
+        return label
+    }()
+    
+    private let hopitalImage = UIImageView(image: UIImage(named: "toggleHospitalEnable"))
+
+    private let drugTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "약국"
+        label.textColor = .grey3()
+        label.font = .bold(size: 16)
+        return label
+    }()
+    
+    private let drugImage = UIImageView(image: UIImage(named: "toggleDrugEnable"))
+    
     private let pharmacy: UIButton = {
         let button = UIButton()
-        button.setTitle("약국", for: .normal)
-        button.titleLabel?.font = UIFont.bold(size:16)
-        button.setTitleColor(.grey3(), for: .normal)
         button.backgroundColor = .clear
         return button
     }()
@@ -47,13 +62,14 @@ final class MedicalSelectView: BaseView {
         view.backgroundColor = .blue()
         view.clipsToBounds = true
         view.layer.cornerRadius = 22
-        view.layer.shadowOffset = CGSize(width: 0, height: 1)
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 1
-        view.layer.shadowRadius = 5
-        view.layer.masksToBounds = false
+        view.setShadow(radius: 22,
+                       shadowColor: UIColor(red: 2, green: 35, blue: 183, alpha: 0.77),
+                       shadowOffset: CGSize(width: 0, height: 2),
+                       shadowBlur: 6)
         return view
     }()
+    
+    private let selectedImageView = UIImageView(image: UIImage(named: "toggleHospitalActive"))
     
     private let selectedLabel: UILabel = {
         let label = UILabel()
@@ -98,10 +114,17 @@ final class MedicalSelectView: BaseView {
 
 extension MedicalSelectView {
     private func addSubviews() {
+        self.addSubview(self.hopitalImage)
+        self.addSubview(self.hospitalTitleLabel)
+        self.addSubview(self.drugImage)
+        self.addSubview(self.drugTitleLabel)
         self.addSubview(self.buttonStackView)
         self.addSubview(self.selectedView)
+        
         self.buttonStackView.addArrangedSubview(self.hospital)
         self.buttonStackView.addArrangedSubview(self.pharmacy)
+        
+        self.selectedView.addSubview(self.selectedImageView)
         self.selectedView.addSubview(self.selectedLabel)
     }
     
@@ -118,7 +141,35 @@ extension MedicalSelectView {
         }
         
         self.selectedLabel.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.left.equalTo(self.selectedImageView.snp.right).offset(4)
+        }
+        
+        self.selectedImageView.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(14)
+            $0.centerY.equalToSuperview()
+        }
+        
+        self.hopitalImage.snp.makeConstraints {
+            $0.size.equalTo(26)
+            $0.centerY.equalToSuperview()
+            $0.left.equalToSuperview().offset(20)
+        }
+        
+        self.hospitalTitleLabel.snp.makeConstraints {
+            $0.left.equalTo(self.hopitalImage.snp.right).offset(4)
+            $0.centerY.equalToSuperview()
+        }
+        
+        self.drugImage.snp.makeConstraints {
+            $0.size.equalTo(26)
+            $0.centerY.equalToSuperview()
+            $0.left.equalTo(self.pharmacy).offset(14)
+        }
+        
+        self.drugTitleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.left.equalTo(self.drugImage.snp.right).offset(4)
         }
     }
     
@@ -131,6 +182,7 @@ extension MedicalSelectView {
             $0.left.equalToSuperview().offset(6)
         }
         self.selectedLabel.text = "병원"
+        self.selectedImageView.image = UIImage(named: "toggleHospitalActive")
         UIView.animate(withDuration: 0.3,
                        delay: 0.0,
                        usingSpringWithDamping: 0.5,
@@ -149,6 +201,7 @@ extension MedicalSelectView {
             $0.centerY.equalToSuperview()
             $0.left.equalToSuperview().offset(self.frame.width/2)
         }
+        self.selectedImageView.image = UIImage(named: "toggleDrugActive")
         self.selectedLabel.text = "약국"
         
         UIView.animate(withDuration: 0.3,
