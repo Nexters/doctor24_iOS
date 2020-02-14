@@ -34,6 +34,17 @@ extension Date {
         }
     }
     
+    func endTime() -> Date! {
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: self)
+        
+        components.hour = 23
+        components.minute = 59
+        components.second = 59
+
+        return calendar.date(from: components)!
+    }
+    
     var ampm: String {
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "a"

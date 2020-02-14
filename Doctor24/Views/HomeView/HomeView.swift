@@ -39,6 +39,7 @@ final class HomeView: BaseView, PinDrawable {
         mapView.showCompass = false
         mapView.showZoomControls = false
         mapView.mapView.logoAlign = .rightTop
+        mapView.mapView.logoMargin = UIEdgeInsets(top: 70, left: 0, bottom: 0, right: 0)
         return mapView
     }()
     

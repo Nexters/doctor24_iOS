@@ -139,7 +139,11 @@ final class OperatingHoursSetView: BaseView {
             case .start:
                 self.pickerView.pickerDate.setDate(self.startTime, animated: true)
             case .end:
-                self.pickerView.pickerDate.setDate(self.endTime, animated: true)
+                print("jhh self.startTime.ampm: \(self.startTime.ampm)")
+                print("jhh self.endTime.ampm: \(self.endTime.ampm)")
+                print("jhh Date().endTime(): \(Date().endTime()!)")
+                self.endTime = Date().endTime()
+                self.pickerView.pickerDate.setDate(Date().endTime(), animated: true)
             }
         }).disposed(by: self.disposeBag)
         
@@ -197,6 +201,8 @@ final class OperatingHoursSetView: BaseView {
             case .end:
                 self.endView.endTimeLabel.text = date.convertDate
                 self.endTime = date
+                self.maxEndTime()
+                
                 break
             }
         }).disposed(by: self.disposeBag)
@@ -218,6 +224,8 @@ final class OperatingHoursSetView: BaseView {
                     self.endView.endTimeLabel.text     = end.convertDate
                     self.startTime = start
                     self.endTime   = end
+                    
+                    self.maxEndTime()
                 }
             }
         }).disposed(by: self.disposeBag)
@@ -290,6 +298,18 @@ extension OperatingHoursSetView {
             .withLatestFrom(self.focusButton) { ($0,$1) }
             .bind(to: self.changedTime)
             .disposed(by: self.disposeBag)
+    }
+    
+    private func maxEndTime() {
+        print("jhh self.startTime.ampm: \(self.startTime.ampm)")
+        print("jhh self.endTime.ampm: \(self.endTime.ampm)")
+        print("jhh Date().endTime(): \(Date().endTime()!)")
+        
+        if self.startTime.ampm == "오후" && self.endTime.ampm == "오전" {
+            self.pickerView.pickerDate.setDate(Date().endTime(), animated: true)
+            self.endView.endTimeLabel.text = Date().endTime().convertDate
+            self.endTime = Date().endTime()
+        }
     }
 }
 
