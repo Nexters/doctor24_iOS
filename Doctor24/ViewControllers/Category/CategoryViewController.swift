@@ -34,6 +34,10 @@ class CategoryViewController: FadeModalTransitionViewController {
     }
     
     override func setBind() {
+        TodocInfo.shared.category.subscribe(onNext: { [weak self] category in
+            self?.categoryView.refreshButton.isHidden = category == .전체 ? true : false
+        }).disposed(by: self.disposeBag)
+        
         self.categoryView.closeButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 self?.dismiss(animated: true, completion: nil)

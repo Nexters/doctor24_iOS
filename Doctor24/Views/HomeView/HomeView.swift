@@ -58,6 +58,8 @@ final class HomeView: BaseView, PinDrawable {
         return button
     }()
     
+    private let activeCategory = UIImageView(image: UIImage(named: "activeCategory"))
+    
     lazy var medicalSelectView: MedicalSelectView = {
         let view = MedicalSelectView(controlBy: vc)
         view.backgroundColor = .white
@@ -208,6 +210,10 @@ final class HomeView: BaseView, PinDrawable {
                     }
                 }
             }).disposed(by: self.disposeBag)
+        
+        TodocInfo.shared.category.subscribe(onNext: { [weak self] category in
+            self?.activeCategory.isHidden = category == .전체 ? true : false
+        }).disposed(by: self.disposeBag)
     }
 }
 
@@ -260,6 +266,11 @@ extension HomeView {
             $0.centerY.equalTo(self.medicalSelectView)
             $0.right.equalToSuperview().offset(-24)
         }
+        
+        self.activeCategory.snp.makeConstraints {
+            $0.top.right.equalTo(self.categoryButton)
+            $0.size.equalTo(20)
+        }
     }
 
     private func addSubViews() {
@@ -267,6 +278,7 @@ extension HomeView {
         self.addSubview(self.operatingView)
         self.addSubview(self.cameraButton)
         self.addSubview(self.categoryButton)
+        self.addSubview(self.activeCategory)
         self.addSubview(self.medicalSelectView)
         self.addSubview(self.retrySearchView)
         self.addSubview(self.preview)
