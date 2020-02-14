@@ -12,6 +12,8 @@ pod 'RxCocoa'
 pod 'ReactorKit'
 pod 'Alamofire'
 pod 'SnapKit'
+pod 'Toast-Swift', '~> 5.0.1'
+
 
   target 'Doctor24Tests' do
     inherit! :search_paths

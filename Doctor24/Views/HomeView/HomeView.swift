@@ -118,7 +118,7 @@ final class HomeView: BaseView, PinDrawable {
         self.addGesture()
         
         Observable.merge(self.retrySearchView.button.rx.tap.asObservable(),
-                         self.operatingView.pickerView.confirmButton.rx.tap.asObservable(),
+                         self.operatingView.pickerConfirm.asObservable(),
                          self.operatingView.refreshButton.rx.tap.asObservable())
             .do(onNext:  { [weak self] in
                 self?.dismissOperatingView()

@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Toast_Swift
 import RxSwift
 import RxCocoa
 
@@ -20,7 +21,7 @@ final class OperatingHoursSetView: BaseView {
     private var startTime   = Date()
     private var endTime     = Date().addingTimeInterval(TimeInterval(30.0*60.0))
     let viewState = BehaviorSubject<FilterViewState>(value: .close)
-    
+    let pickerConfirm = PublishRelay<Void>()
     // MARK: UI Componenet
     let pickerView: PickerView = {
         let view = PickerView()
@@ -163,12 +164,22 @@ final class OperatingHoursSetView: BaseView {
             .disposed(by: self.disposeBag)
         
         self.pickerView.confirmButton.rx.tap
-            .subscribe(onNext: { [weak self] in
+            .filter { [weak self] _ in
+                guard let self = self else { return false }
+                if self.startTime.compareTimeOnly(to: self.endTime) == .orderedDescending {
+                    self.makeToast("안돼여!!")
+                    return false
+                }
+                return true
+            }
+            .do(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.refreshButton.isHidden = false
                 TodocInfo.shared.startTimeFilter.onNext(self.startTime)
                 TodocInfo.shared.endTimeFilter.onNext(self.endTime)
-        }).disposed(by:self.disposeBag)
+            })
+            .bind(to: self.pickerConfirm)
+            .disposed(by:self.disposeBag)
         
         self.changedTime.subscribe(onNext: { [weak self] date, type in
             guard let self = self else { return }
