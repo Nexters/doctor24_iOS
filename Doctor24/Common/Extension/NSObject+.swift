@@ -34,6 +34,15 @@ extension Date {
         }
     }
     
+    var ampm: String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "a"
+        dateformatter.locale = Locale(identifier: "ko_KR")
+        let date = dateformatter.string(from: self)
+        
+        return date
+    }
+    
     var convertDate: String {
         let dateformatter = DateFormatter()
         dateformatter.dateFormat = "a h:mm"

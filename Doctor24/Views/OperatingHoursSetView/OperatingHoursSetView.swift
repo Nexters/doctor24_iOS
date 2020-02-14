@@ -166,10 +166,16 @@ final class OperatingHoursSetView: BaseView {
         self.pickerView.confirmButton.rx.tap
             .filter { [weak self] _ in
                 guard let self = self else { return false }
+                if self.startTime.ampm == "오후" && self.endTime.ampm == "오전" {
+                    self.makeToast("12시 넘어가면 안돼여!!!!")
+                    return false
+                }
+
                 if self.startTime.compareTimeOnly(to: self.endTime) == .orderedDescending {
                     self.makeToast("안돼여!!")
                     return false
                 }
+                
                 return true
             }
             .do(onNext: { [weak self] _ in
