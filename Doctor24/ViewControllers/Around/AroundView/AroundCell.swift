@@ -9,13 +9,22 @@ import Domain
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
-final class AroundCell: UITableViewCell, FacilityTitleable {
+final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setupUI()
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.disposeBag = DisposeBag()
+    }
+    
+    private var disposeBag = DisposeBag()
     
     private let contentStackView: UIStackView = {
         let stkView = UIStackView()
@@ -91,6 +100,10 @@ final class AroundCell: UITableViewCell, FacilityTitleable {
     }
     
     func setData(facility: Model.Todoc.PreviewFacility) {
+        self.naviButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.selectMap(latitude: facility.latitude, longitude: facility.longitude, title: facility.name)
+        }).disposed(by: self.disposeBag)
+        
         self.titleLabel.text = facility.name
         self.dayLabel.text =  "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
         self.distanceLabel.text = self.distance(lat: facility.latitude, long: facility.longitude)

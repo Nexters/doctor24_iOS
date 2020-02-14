@@ -14,7 +14,6 @@ protocol Alertable {
 
 extension Alertable {
     func showActionSheet(sheetActions :UIAlertAction...) {
-        guard let rootVC = UIApplication.shared.windows.first?.rootViewController else { return }
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         let cancelButton = UIAlertAction(title: "취소", style: .cancel, handler: { (action) -> Void in
             print("Cancel button tapped")
@@ -25,23 +24,30 @@ extension Alertable {
         }
         
         alertController.addAction(cancelButton)
-        rootVC.present(alertController, animated: true, completion: nil)
+        
+        if let presented = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
+            presented.present(alertController, animated: true, completion: nil)
+        } else if let rootVC = UIApplication.shared.windows.first?.rootViewController  {
+            rootVC.present(alertController, animated: true, completion: nil)
+        }
     }
 }
 
 protocol MapSelectable: Alertable {
-    func selectMap(latitude: Double, longitude: Double)
+    func selectMap(latitude: Double, longitude: Double, title: String)
 }
 
 extension MapSelectable {
-    func selectMap(latitude: Double, longitude: Double) {
+    func selectMap(latitude: Double, longitude: Double, title: String) {
         let apple = UIAlertAction(title: "애플 맵", style: .default, handler: { _ in
             let url = "http://maps.apple.com/maps?daddr=\(latitude),\(longitude)"
             UIApplication.shared.open(URL(string: url)!, options: [:], completionHandler: nil)
         })
         
         let naver = UIAlertAction(title: "네이버 지도", style: .default, handler: { _ in
-            let url = URL(string: "nmap://route/walk?dlat=\(latitude)&dlng=\(longitude)&appname=\(Bundle.main.bundleIdentifier!)")!
+            let urlStr = "nmap://route/walk?dlat=\(latitude)&dlng=\(longitude)&dname=\(title)&appname=\(Bundle.main.bundleIdentifier!)"
+            guard let encoded  = urlStr.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed), let url = URL(string: encoded) else { return }
+
             let appStoreURL = URL(string: "http://itunes.apple.com/app/id311867728?mt=8")!
             
             if UIApplication.shared.canOpenURL(url) {

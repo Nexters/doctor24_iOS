@@ -10,8 +10,17 @@ import Domain
 import UIKit
 import SnapKit
 import NMapsMap
+import RxSwift
+import RxCocoa
 
-final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDrawable {
+final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDrawable, MapSelectable {
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.disposeBag = DisposeBag()
+    }
+    
+    private var disposeBag = DisposeBag()
     private let mapView: NMFMapView = {
         let mapView = NMFMapView()
         mapView.mapType = .navi
@@ -94,6 +103,10 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     }
     
     func setData(data: Model.Todoc.DetailFacility) {
+        self.navigationButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.selectMap(latitude: data.latitude, longitude: data.longitude, title: data.name)
+        }).disposed(by: self.disposeBag)
+        
         self.hospitalTitle.text = data.name
         self.timeLabel.text  = "\(data.today.startTime.convertDate) ~ \(data.today.endTime.convertDate)"
         self.focusPin(data: data)

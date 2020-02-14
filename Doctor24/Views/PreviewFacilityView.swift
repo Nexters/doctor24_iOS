@@ -223,7 +223,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
         self.navigationButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.selectMap(latitude: self.facility.latitude, longitude: self.facility.longitude)
+                self.selectMap(latitude: self.facility.latitude, longitude: self.facility.longitude, title: self.facility.name)
             }).disposed(by: self.disposeBag)
     }
     
