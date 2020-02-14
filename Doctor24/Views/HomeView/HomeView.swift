@@ -198,6 +198,7 @@ final class HomeView: BaseView, PinDrawable {
                 }
                 
                 if let selected = overlay as? NMFMarker {
+                    self.cameraType.onNext(.normal)
                     let facilities = selected.userInfo["tag"] as! Model.Todoc.Facilities
                     if facilities.facilities.count > 1 {
                         ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))
@@ -211,9 +212,10 @@ final class HomeView: BaseView, PinDrawable {
                 }
             }).disposed(by: self.disposeBag)
         
-        TodocInfo.shared.category.subscribe(onNext: { [weak self] category in
-            self?.activeCategory.isHidden = category == .전체 ? true : false
-        }).disposed(by: self.disposeBag)
+        TodocInfo.shared.category
+            .subscribe(onNext: { [weak self] category in
+                self?.activeCategory.isHidden = category == .전체 ? true : false
+            }).disposed(by: self.disposeBag)
     }
 }
 
