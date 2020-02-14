@@ -14,7 +14,8 @@ import RxSwift
 import RxCocoa
 
 
-final class PreviewFacilityView: BaseView, FacilityTitleable {
+final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
+    
     // MARK: Property
     var facility: Model.Todoc.PreviewFacility!
     private var phoneNumber: String = ""
@@ -222,8 +223,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable {
         self.navigationButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                let url = "http://maps.apple.com/maps?daddr=\(self.facility.latitude),\(self.facility.longitude)"
-                UIApplication.shared.open(URL(string: url)!, options: [:], completionHandler: nil)
+                self.selectMap(latitude: self.facility.latitude, longitude: self.facility.longitude)
             }).disposed(by: self.disposeBag)
     }
     
