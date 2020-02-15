@@ -70,7 +70,6 @@ extension PinDrawable {
         titleLabel.sizeToFit()
         titleLabel.textColor = .grey1()
         
-        
         titleBack.backgroundColor    = .white()
         titleBack.layer.cornerRadius = 8
         

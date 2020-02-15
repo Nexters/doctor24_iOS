@@ -309,12 +309,12 @@ extension HomeView {
         self.preview.setData(facility: facility)
         self.layoutIfNeeded()
         var height: CGFloat = 0
-        //total - 24
+        
         
         if facility.medicalType == .hospital {
             height = 293 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
         } else {
-            height = 271 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
+            height = 223 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
         }
         
         self.preview.snp.updateConstraints {

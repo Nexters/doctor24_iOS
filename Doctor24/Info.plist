@@ -15,18 +15,18 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>사용자의 위치를 병원 및 약국 검색에 사용합니다.</string>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>nmap</string>
 		<string>kakaomap</string>
 	</array>
-	<key>CFBundleVersion</key>
-	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>사용자의 위치를 병원 및 약국 검색에 사용합니다.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

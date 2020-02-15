@@ -139,11 +139,8 @@ final class OperatingHoursSetView: BaseView {
             case .start:
                 self.pickerView.pickerDate.setDate(self.startTime, animated: true)
             case .end:
-                print("jhh self.startTime.ampm: \(self.startTime.ampm)")
-                print("jhh self.endTime.ampm: \(self.endTime.ampm)")
-                print("jhh Date().endTime(): \(Date().endTime()!)")
-                self.endTime = Date().endTime()
-                self.pickerView.pickerDate.setDate(Date().endTime(), animated: true)
+                self.pickerView.pickerDate.setDate(self.endTime, animated: true)
+                self.maxEndTime()
             }
         }).disposed(by: self.disposeBag)
         

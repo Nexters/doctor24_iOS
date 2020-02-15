@@ -19,7 +19,7 @@ extension OperatingHoursSetView {
             button.backgroundColor = .blue()
             
             if haveSafeArea {
-                button.layer.cornerRadius = 5
+                button.layer.cornerRadius = 8
             }
             
             return button
