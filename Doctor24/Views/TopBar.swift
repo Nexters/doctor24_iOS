@@ -19,6 +19,7 @@ final class TopBar: UIView {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black()
+        label.textAlignment = .center
         label.font = UIFont.regular(size: 18)
         return label
     }()

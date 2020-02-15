@@ -340,7 +340,7 @@ extension HomeView {
         self.preview.setData(facility: facility)
         self.layoutIfNeeded()
         var height: CGFloat = 0
-        
+        self.operatingView.isHidden = true
         //total - 24
         if facility.medicalType == .hospital {
             height = 306 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
@@ -367,6 +367,7 @@ extension HomeView {
     }
     
     func dismissPreview() {
+        self.operatingView.isHidden = false
         if !self.selectedMarker.isEmpty {
             self.unselectPins()
         }

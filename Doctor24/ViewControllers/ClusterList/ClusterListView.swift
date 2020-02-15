@@ -101,12 +101,11 @@ extension ClusterListView {
     func performCustomPresentationAnimation() {
         self.backgroundView.alpha = 0.4
         self.contentView.alpha = 1
+        //105
         self.contentView.snp.updateConstraints {
             $0.width.equalTo(327)
             if facilities.count < 4 {
-                $0.height.equalTo(398)
-            } else if facilities.count == 4 {
-                $0.height.equalTo(450)
+                $0.height.equalTo(facilities.count * 105)
             } else {
                 $0.height.equalTo(583)
             }

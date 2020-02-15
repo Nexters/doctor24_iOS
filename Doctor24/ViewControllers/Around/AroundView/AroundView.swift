@@ -24,6 +24,12 @@ final class AroundView: BaseView {
         return bar
     }()
     
+    private let headerLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = .grey4()
+        return view
+    }()
+    
     private let tableView: UITableView = {
         let tabView = UITableView()
         tabView.backgroundColor = .white
@@ -98,6 +104,7 @@ final class AroundView: BaseView {
     override func setupUI() {
         self.countLabel.text = "총 \(self.facilities.count)개"
         self.addSubview(self.topBar)
+        self.addSubview(self.headerLine)
         self.addSubview(self.infoView)
         self.infoView.addSubview(self.countLabel)
         self.infoView.addSubview(self.distance)
@@ -111,6 +118,12 @@ final class AroundView: BaseView {
             } else {
                 $0.height.equalTo(78)
             }
+        }
+        
+        self.headerLine.snp.makeConstraints {
+            $0.left.right.equalToSuperview()
+            $0.height.equalTo(1)
+            $0.bottom.equalTo(self.infoView.snp.top)
         }
         
         self.infoView.snp.makeConstraints {
