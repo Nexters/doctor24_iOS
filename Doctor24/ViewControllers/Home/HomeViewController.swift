@@ -98,6 +98,11 @@ final class HomeViewController: BaseViewController, View {
     }
     
     private func bind() {
+        self.homeView.medicalSelectView.medicalType
+            .subscribe(onNext: { type in
+                self.homeView.categoryButton.isHidden = type == .hospital ? false : true
+            }).disposed(by: self.disposeBag)
+        
         self.facilities
             .subscribe(onNext:{ [weak self] facilities in
                 self?.homeView.drawPins(facilities: facilities)

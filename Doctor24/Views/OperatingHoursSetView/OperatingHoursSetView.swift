@@ -15,13 +15,13 @@ import RxCocoa
 final class OperatingHoursSetView: BaseView {
     
     // MARK: Properties
+    let viewState = BehaviorSubject<FilterViewState>(value: .close)
+    let pickerConfirm = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     private let focusButton = BehaviorSubject<FocusTimeButton>(value: .start)
     private let changedTime = PublishRelay<(Date, FocusTimeButton)>()
     private var startTime   = Date()
     private var endTime     = Date().addingTimeInterval(TimeInterval(30.0*60.0))
-    let viewState = BehaviorSubject<FilterViewState>(value: .close)
-    let pickerConfirm = PublishRelay<Void>()
     // MARK: UI Componenet
     let pickerView: PickerView = {
         let view = PickerView()
@@ -245,6 +245,7 @@ extension OperatingHoursSetView {
     }
     
     private func setLayout() {
+        
         self.lineView.snp.makeConstraints {
             $0.width.equalTo(28)
             $0.height.equalTo(4)

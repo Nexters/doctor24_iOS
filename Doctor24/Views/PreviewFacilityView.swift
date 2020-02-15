@@ -347,7 +347,7 @@ extension PreviewFacilityView {
         
         self.navigationButton.snp.makeConstraints {
             $0.size.equalTo(54)
-            $0.top.equalToSuperview().offset(33)
+            $0.centerY.equalTo(self.titleLabel)
             $0.right.equalToSuperview().offset(-24)
         }
         

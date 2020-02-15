@@ -39,7 +39,7 @@ final class HomeView: BaseView, PinDrawable {
         mapView.showCompass = false
         mapView.showZoomControls = false
         mapView.mapView.logoAlign = .rightTop
-        mapView.mapView.logoMargin = UIEdgeInsets(top: 70, left: 0, bottom: 0, right: 0)
+        mapView.mapView.logoMargin = UIEdgeInsets(top: 70, left: 0, bottom: 0, right: 24)
         return mapView
     }()
     
@@ -50,7 +50,7 @@ final class HomeView: BaseView, PinDrawable {
         return button
     }()
     
-    private let categoryButton: UIButton = {
+    let categoryButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "category"), for: .normal)
         button.setImage(UIImage(named: "unCategory"), for: .highlighted)
@@ -72,21 +72,33 @@ final class HomeView: BaseView, PinDrawable {
     private lazy var preview: PreviewFacilityView = {
         let view = PreviewFacilityView(controlBy: vc)
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(previewDragView(_:)))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(onDetailView(_:)))
+        tap.numberOfTouchesRequired = 1
+        view.addGestureRecognizer(tap)
         view.addGestureRecognizer(gesture)
+        
         return view
     }()
     
-    let operatingBackGround: UIView = {
+    lazy var operatingBackGround: UIView = {
         let view = UIView()
         view.backgroundColor = .black()
         view.alpha = 0
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(dismissOperatingView(_:)))
+        gesture.numberOfTapsRequired = 1
+        view.addGestureRecognizer(gesture)
+        
         return view
     }()
     
     private lazy var operatingView: OperatingHoursSetView = {
         let view = OperatingHoursSetView(controlBy: vc)
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(operatingDragView(_:)))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(onOperatingView(_:)))
+        tap.numberOfTouchesRequired = 1
         view.addGestureRecognizer(gesture)
+        view.addGestureRecognizer(tap)
         
         return view
     }()
@@ -194,10 +206,7 @@ final class HomeView: BaseView, PinDrawable {
             .subscribe(onNext: { [weak self] overlay in
                 guard let self = self else { return }
                 
-                if !self.selectedMarker.isEmpty {
-                    self.unselectPins()
-                }
-                
+                self.dismissPreview()
                 if let selected = overlay as? NMFMarker {
                     self.cameraType.onNext(.normal)
                     let facilities = selected.userInfo["tag"] as! Model.Todoc.Facilities
@@ -303,6 +312,21 @@ extension HomeView {
         self.panGestureMap.accept(())
     }
     
+    @objc
+    private func onOperatingView(_ gestureRecognizer: UIPanGestureRecognizer) {
+        self.onOperatingView()
+    }
+    
+    @objc
+    private func dismissOperatingView(_ gestureRecognizer: UIPanGestureRecognizer) {
+        self.dismissOperatingView()
+    }
+    
+    @objc
+    private func onDetailView(_ gestureRecognizer: UIPanGestureRecognizer){
+        self.previewFullSignal.accept(())
+    }
+    
     private func onPreview(with facility: Model.Todoc.PreviewFacility) {
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
         self.mapControlView.mapView.moveCamera(cameraUpdate)
@@ -332,6 +356,9 @@ extension HomeView {
     }
     
     func dismissPreview() {
+        if !self.selectedMarker.isEmpty {
+            self.unselectPins()
+        }
         self.preview.snp.updateConstraints {
             $0.height.equalTo(0)
         }
@@ -361,6 +388,7 @@ extension HomeView {
     }
     
     func onOperatingView() {
+        self.operatingBackGround.alpha = 0.6
         self.operatingView.viewState.onNext(.open)
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height - (396 + bottomSafeAreaInset))

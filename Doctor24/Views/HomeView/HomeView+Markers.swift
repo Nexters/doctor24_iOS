@@ -48,7 +48,7 @@ extension HomeView {
             marker.zIndex = 0
             marker.isForceShowIcon = false
         }
-        self.dismissPreview()
+//        self.dismissPreview()
         self.selectedMarker.removeAll()
     }
 }

@@ -51,7 +51,6 @@ extension HomeView {
             }
         } else if gesture.state == .ended {
             if (point.y - self.frame.height / 2) <= maxHeight / 2 {
-                self.operatingBackGround.alpha = 0.6
                 self.onOperatingView()
             } else {
                 self.dismissOperatingView()
@@ -68,7 +67,7 @@ extension HomeView {
         if preview.facility.medicalType == .hospital {
             contentViewHeight = 293 + preview.titleStack.frame.height + self.bottomSafeAreaInset
         } else {
-            contentViewHeight = 271 + preview.titleStack.frame.height + self.bottomSafeAreaInset
+            contentViewHeight = 223 + preview.titleStack.frame.height + self.bottomSafeAreaInset
         }
         
         if gesture.state == .changed {
@@ -90,10 +89,6 @@ extension HomeView {
                            animations: {
                             var height: CGFloat = 0.0
                             if point.y <= self.vc.view.frame.height/2 {
-                                
-                                if !self.selectedMarker.isEmpty {
-                                    self.unselectPins()
-                                }
                                 self.previewFullSignal.accept(())
                             } else {
                                 height = contentViewHeight

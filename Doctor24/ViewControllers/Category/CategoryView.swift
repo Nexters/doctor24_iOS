@@ -16,10 +16,14 @@ final class CategoryView: BaseView {
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
-    private let backgroundView: UIView = {
+    private lazy var backgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
         view.alpha = 0.4
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(pressedBackView(_:)))
+        gesture.numberOfTapsRequired = 1
+        view.addGestureRecognizer(gesture)
         return view
     }()
     
@@ -27,9 +31,8 @@ final class CategoryView: BaseView {
         let view = UIView()
         view.backgroundColor = .white()
         view.clipsToBounds = true
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 24
         view.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
-        
         return view
     }()
     

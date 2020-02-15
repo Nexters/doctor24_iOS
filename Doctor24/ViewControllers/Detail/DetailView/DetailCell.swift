@@ -177,7 +177,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         
         self.navigationButton.snp.makeConstraints {
             $0.size.equalTo(54)
-            $0.top.equalTo(self.mapView.snp.bottom).offset(35)
+            $0.centerY.equalTo(self.hospitalTitle)
             $0.right.equalToSuperview().offset(-24)
         }
         
