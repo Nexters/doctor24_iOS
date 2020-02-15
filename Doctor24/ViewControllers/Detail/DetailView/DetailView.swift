@@ -19,10 +19,6 @@ final class DetailView: BaseView, FacilityTitleable {
     private let disposeBag = DisposeBag()
     var facility: Model.Todoc.DetailFacility? {
         didSet{
-            if let category = self.category(with: self.facility!) {
-                self.detailData.append(.hospitalType(category))
-            }
-            
             if self.facility?.convertDaysArray().count ?? 0 > 0 {
                 var result = [(String,String)?]()
                 self.facility?.convertDaysArray().forEach { days in
@@ -44,6 +40,10 @@ final class DetailView: BaseView, FacilityTitleable {
             
             if let address = self.facility?.address {
                 self.detailData.append(.distance((self.distance(lat: self.facility?.latitude ?? 0.0, long: self.facility?.longitude ?? 0.0), address)))
+            }
+            
+            if let category = self.category(with: self.facility!) {
+                self.detailData.append(.hospitalType(category))
             }
             
             self.topBar.titleLabel.text = self.facility?.name ?? ""
@@ -87,7 +87,7 @@ final class DetailView: BaseView, FacilityTitleable {
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.headerReferenceSize = CGSize(width: self.frame.width, height: 50)
-        flowLayout.sectionInset = UIEdgeInsets(top: 11.5, left: 0, bottom: 11.5, right: 0)
+        flowLayout.sectionInset = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
         flowLayout.minimumLineSpacing = 6
         flowLayout.minimumInteritemSpacing = 0
         let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)

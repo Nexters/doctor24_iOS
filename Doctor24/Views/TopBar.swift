@@ -51,7 +51,8 @@ extension TopBar {
         
         self.titleLabel.snp.makeConstraints {
             $0.centerY.equalTo(self.closeButton)
-            $0.centerX.equalToSuperview()
+            $0.left.equalToSuperview().offset(58)
+            $0.right.equalToSuperview().offset(-58)
         }
     }
 }

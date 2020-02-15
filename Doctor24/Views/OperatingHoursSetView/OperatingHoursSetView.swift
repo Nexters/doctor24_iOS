@@ -23,6 +23,12 @@ final class OperatingHoursSetView: BaseView {
     private var startTime   = Date()
     private var endTime     = Date().addingTimeInterval(TimeInterval(30.0*60.0))
     // MARK: UI Componenet
+    let closeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "rectangle"), for: .normal)
+        return button
+    }()
+    
     let pickerView: PickerView = {
         let view = PickerView()
         view.backgroundColor = .white()
@@ -208,11 +214,13 @@ final class OperatingHoursSetView: BaseView {
             guard let self = self else { return }
             switch state {
             case .open:
+                self.closeButton.isHidden = false
                 self.startView.able(true)
                 self.endView.able(false)
                 self.pickerView.confirmButton(able: false)
                 self.focusButton.onNext(.start)
             case .close:
+                self.closeButton.isHidden = true
                 self.startView.able(true)
                 self.endView.able(true)
                 if let start = try? TodocInfo.shared.startTimeFilter.value(),
@@ -238,6 +246,7 @@ extension OperatingHoursSetView {
         self.operatingStackView.addArrangedSubview(self.endView)
         self.contentView.addSubview(self.lineView)
         self.contentView.addSubview(self.titleLabel)
+        self.contentView.addSubview(self.closeButton)
         self.contentView.addSubview(self.refreshButton)
         self.contentView.addSubview(self.operatingBackgroundView)
         self.contentView.addSubview(self.operatingStackView)
@@ -245,6 +254,11 @@ extension OperatingHoursSetView {
     }
     
     private func setLayout() {
+        self.closeButton.snp.makeConstraints {
+            $0.centerY.equalTo(self.titleLabel)
+            $0.size.equalTo(50)
+            $0.left.equalToSuperview().offset(24)
+        }
         
         self.lineView.snp.makeConstraints {
             $0.width.equalTo(28)

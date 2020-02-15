@@ -114,7 +114,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         self.titleStackView.snp.remakeConstraints {
             $0.left.equalToSuperview().offset(24)
             $0.right.equalToSuperview()
-            $0.bottom.equalTo(self.lineView.snp.top).offset(-23.5)
+            $0.bottom.equalTo(self.lineView.snp.top).offset(-16)
             if data.medicalType == .hospital {
                 $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             } else {
@@ -189,8 +189,8 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         self.titleStackView.snp.makeConstraints {
             $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             $0.left.equalToSuperview().offset(24)
-            $0.right.equalToSuperview()
-            $0.bottom.equalTo(self.lineView.snp.top).offset(-23.5)
+            $0.right.lessThanOrEqualTo(self.navigationButton.snp.left).offset(-24)
+            $0.bottom.equalTo(self.lineView.snp.top).offset(-16)
         }
         
         self.lineView.snp.makeConstraints {
@@ -289,11 +289,11 @@ final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitl
         self.imageView.snp.makeConstraints {
             $0.size.equalTo(24)
             $0.left.equalTo(24)
-            $0.centerY.equalToSuperview()
+            $0.top.equalToSuperview()
         }
         
         self.content.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalTo(self.imageView.snp.top).offset(3)
             $0.left.equalTo(self.imageView.snp.right).offset(6)
             $0.right.equalToSuperview().offset(-24)
             $0.bottom.equalToSuperview()

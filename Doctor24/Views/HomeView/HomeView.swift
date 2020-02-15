@@ -141,6 +141,11 @@ final class HomeView: BaseView, PinDrawable {
             .bind(to: self.search)
             .disposed(by: self.disposeBag)
         
+        self.operatingView.closeButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.dismissOperatingView()
+            }).disposed(by: self.disposeBag)
+        
         self.panGestureMap.subscribe(onNext:{ [weak self] in
             self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
             self?.retrySearchView.hidden(false)
@@ -215,6 +220,7 @@ final class HomeView: BaseView, PinDrawable {
                     } else if let facility = facilities.facilities.first {
                         selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
                         selected.zIndex = 1
+                        selected.isHideCollidedMarkers = true
                         selected.isForceShowIcon = true
                         self.selectedMarker.insert(selected)
                         self.onPreview(with: facility)
@@ -314,6 +320,7 @@ extension HomeView {
     
     @objc
     private func onOperatingView(_ gestureRecognizer: UIPanGestureRecognizer) {
+        self.onOperatorBack()
         self.onOperatingView()
     }
     
@@ -334,15 +341,19 @@ extension HomeView {
         self.layoutIfNeeded()
         var height: CGFloat = 0
         
-        
+        //total - 24
         if facility.medicalType == .hospital {
-            height = 293 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
+            height = 306 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
         } else {
-            height = 223 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
+            height = 236 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
         }
         
         self.preview.snp.updateConstraints {
             $0.height.equalTo(height)
+        }
+        
+        self.mapControlView.snp.updateConstraints {
+            $0.bottom.equalToSuperview().offset(-height + 150)
         }
         
         UIView.animate(withDuration: 0.5,
@@ -361,6 +372,10 @@ extension HomeView {
         }
         self.preview.snp.updateConstraints {
             $0.height.equalTo(0)
+        }
+        
+        self.mapControlView.snp.updateConstraints {
+            $0.bottom.equalToSuperview()
         }
         
         UIView.animate(withDuration: 0.5,

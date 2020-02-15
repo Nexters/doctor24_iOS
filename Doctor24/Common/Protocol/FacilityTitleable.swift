@@ -25,10 +25,13 @@ extension FacilityTitleable {
             numberFormatter.roundingMode = .floor
             numberFormatter.minimumSignificantDigits = 2
             numberFormatter.maximumSignificantDigits = 2
-
-            let newNum = numberFormatter.string(from: NSNumber(value: distance / 1000))
-            
-            return "\(newNum ?? "0")km"
+            if distance < 1000 {
+                let newNum = numberFormatter.string(from: NSNumber(value: distance))
+                return "\(newNum ?? "0")m"
+            } else {
+                let newNum = numberFormatter.string(from: NSNumber(value: distance / 1000))
+                return "\(newNum ?? "0")km"
+            }
         }
         
         return "km"

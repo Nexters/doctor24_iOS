@@ -244,14 +244,12 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
         self.distanceLabel.text = self.distance(lat: facility.latitude, long: facility.longitude)
         
         if let category = self.category(with: facility) {
-            lineView.isHidden = false
-            heightView.isHidden = false
+            lineView2.isHidden = false
             hospitalTypeStack.isHidden = false
             heightView2.isHidden = false
             hopitalCategories.text = category
         } else {
-            lineView.isHidden = true
-            heightView.isHidden = true
+            lineView2.isHidden = true
             hospitalTypeStack.isHidden = true
             heightView2.isHidden = true
         }
@@ -301,12 +299,12 @@ extension PreviewFacilityView {
         
         self.contentStack.addArrangedSubview(lineView)
         self.contentStack.addArrangedSubview(heightView)
-        self.contentStack.addArrangedSubview(hospitalTypeStack)
-        self.contentStack.addArrangedSubview(heightView2)
-        self.contentStack.addArrangedSubview(lineView2)
-        self.contentStack.addArrangedSubview(heightView3)
         self.contentStack.addArrangedSubview(distanceStackView)
         self.contentStack.addArrangedSubview(distanceContentStackView)
+        self.contentStack.addArrangedSubview(heightView3)
+        self.contentStack.addArrangedSubview(lineView2)
+        self.contentStack.addArrangedSubview(heightView2)
+        self.contentStack.addArrangedSubview(hospitalTypeStack)
         
         self.hospitalTypeStack.addArrangedSubview(hopitalImgView)
         self.hospitalTypeStack.addArrangedSubview(hopitalCategories)
@@ -379,12 +377,12 @@ extension PreviewFacilityView {
         
         self.heightView.snp.makeConstraints {
             $0.left.right.equalToSuperview()
-            $0.height.equalTo(11.5)
+            $0.height.equalTo(14.5)
         }
         
         self.heightView2.snp.makeConstraints {
             $0.left.right.equalToSuperview()
-            $0.height.equalTo(11.5)
+            $0.height.equalTo(14.5)
         }
         
         self.heightView3.snp.makeConstraints {

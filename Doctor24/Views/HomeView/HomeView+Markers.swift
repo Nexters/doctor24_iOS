@@ -47,6 +47,7 @@ extension HomeView {
             marker.iconImage = self.pin(facility: facility!)
             marker.zIndex = 0
             marker.isForceShowIcon = false
+            marker.isHideCollidedMarkers = true
         }
 //        self.dismissPreview()
         self.selectedMarker.removeAll()
