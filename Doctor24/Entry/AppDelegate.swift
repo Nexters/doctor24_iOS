@@ -19,9 +19,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else {
             NMFAuthManager.shared().clientId = "kmnj0rb8vt"
             let window = UIWindow(frame: UIScreen.main.bounds)
-            self.dependency = self.dependency ?? CompositionRoot.resolve(window: window)
-            self.window     = self.dependency.window
+            self.window?.rootViewController = SplashViewController()
             self.window?.makeKeyAndVisible()
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+                self.dependency = self.dependency ?? CompositionRoot.resolve(window: window)
+                self.window     = self.dependency.window
+            }
         }
 
         return true

@@ -21,8 +21,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         NMFAuthManager.shared().clientId = "kmnj0rb8vt"
-        self.dependency = self.dependency ?? CompositionRoot.resolve(scene: windowScene)
-        self.window = self.dependency.window
+        
+        let window = UIWindow(windowScene: windowScene)
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
+        
+        self.window = window
+        self.window?.makeKeyAndVisible()
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            self.dependency = self.dependency ?? CompositionRoot.resolve(scene: windowScene)
+            self.window = self.dependency.window
+        }
     }
     
     @available(iOS 13.0, *)

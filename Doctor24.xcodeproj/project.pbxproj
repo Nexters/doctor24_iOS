@@ -46,6 +46,7 @@
 		A127209E23F7D77400924CD6 /* NetworkPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9043F423C439DC00A5EFC5 /* NetworkPlatform.framework */; };
 		A127209F23F7D77400924CD6 /* NetworkPlatform.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9043F423C439DC00A5EFC5 /* NetworkPlatform.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A12720A523F7D7D500924CD6 /* Domain.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9043D123C439C400A5EFC5 /* Domain.framework */; };
+		A12720AB23F8757F00924CD6 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12720AA23F8757F00924CD6 /* SplashViewController.swift */; };
 		A12C34A023DD77A100BF4D06 /* TodocNightFacility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12C349F23DD77A100BF4D06 /* TodocNightFacility.swift */; };
 		A12C34A223DD7A4400BF4D06 /* NightFacilitiesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12C34A123DD7A4400BF4D06 /* NightFacilitiesUseCase.swift */; };
 		A12C34A423DD99C100BF4D06 /* MedicalSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12C34A323DD99C100BF4D06 /* MedicalSelectView.swift */; };
@@ -233,6 +234,7 @@
 		983B041B442ABEFEFAA986AD /* Pods-Doctor24UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24UITests.release.xcconfig"; path = "Target Support Files/Pods-Doctor24UITests/Pods-Doctor24UITests.release.xcconfig"; sourceTree = "<group>"; };
 		A12210F523F2D9F200BC33B8 /* ClusterListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterListViewController.swift; sourceTree = "<group>"; };
 		A12210F823F2DA1600BC33B8 /* ClusterListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterListView.swift; sourceTree = "<group>"; };
+		A12720AA23F8757F00924CD6 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		A12C349F23DD77A100BF4D06 /* TodocNightFacility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocNightFacility.swift; sourceTree = "<group>"; };
 		A12C34A123DD7A4400BF4D06 /* NightFacilitiesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightFacilitiesUseCase.swift; sourceTree = "<group>"; };
 		A12C34A323DD99C100BF4D06 /* MedicalSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalSelectView.swift; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 				A1900B0A23F020A9005DA940 /* Detail */,
 				A1900B0923F020A1005DA940 /* Home */,
 				A1D52F1723DB093300C2ED3D /* TimePickViewController.swift */,
+				A12720AA23F8757F00924CD6 /* SplashViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -1312,6 +1315,7 @@
 				A1900B0823EE5153005DA940 /* RetrySearchView.swift in Sources */,
 				A1D52F1423DAE19D00C2ED3D /* OperatingHoursSetView.EndView.swift in Sources */,
 				6F6FDA7423C70AB700B091DF /* NSObject+.swift in Sources */,
+				A12720AB23F8757F00924CD6 /* SplashViewController.swift in Sources */,
 				6F6FDA7223C70A3800B091DF /* Scene.swift in Sources */,
 				A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */,
 				A12210F923F2DA1600BC33B8 /* ClusterListView.swift in Sources */,
