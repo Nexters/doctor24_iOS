@@ -69,14 +69,12 @@ extension HomeView {
         } else {
             contentViewHeight = 223 + preview.titleStack.frame.height + self.bottomSafeAreaInset
         }
-        
+        print("point.t: \(point.y)")
         if gesture.state == .changed {
             if point.y >= 0 && point.y <= height{
                 let differ = (height - contentViewHeight) - point.y
-                if differ > 0 {
                     preview.snp.updateConstraints { (make) in
                         make.height.equalTo(differ + contentViewHeight)
-                    }
                 }
             }
         }else if gesture.state == .ended {
@@ -88,15 +86,17 @@ extension HomeView {
                            options: [],
                            animations: {
                             var height: CGFloat = 0.0
-                            if point.y <= self.vc.view.frame.height/2 {
+                            
+                            if point.y <= self.vc.view.frame.height / 3 {
                                 self.previewFullSignal.accept(())
+                            } else if self.vc.view.frame.height - point.y <= (contentViewHeight * 2) / 3 {
+                                self.dismissPreview()
                             } else {
                                 height = contentViewHeight
+                                preview.snp.updateConstraints({ make in
+                                    make.height.equalTo(height)
+                                })
                             }
-                            
-                            preview.snp.updateConstraints({ make in
-                                make.height.equalTo(height)
-                            })
                             
                             self.layoutIfNeeded()
             })

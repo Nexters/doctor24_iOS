@@ -239,7 +239,8 @@ final class HomeView: BaseView, PinDrawable {
 extension HomeView {
     private func setLayout() {
         self.mapControlView.snp.makeConstraints {
-            $0.top.left.right.bottom.equalToSuperview()
+            $0.top.left.right.equalToSuperview()
+            $0.bottom.equalTo(self.preview.snp.top).offset(150)
         }
         
         self.operatingView.snp.makeConstraints {
@@ -337,6 +338,7 @@ extension HomeView {
     private func onPreview(with facility: Model.Todoc.PreviewFacility) {
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
         self.mapControlView.mapView.moveCamera(cameraUpdate)
+        self.retrySearchView.isHidden = true
         self.preview.setData(facility: facility)
         self.layoutIfNeeded()
         var height: CGFloat = 0
@@ -350,10 +352,6 @@ extension HomeView {
         
         self.preview.snp.updateConstraints {
             $0.height.equalTo(height)
-        }
-        
-        self.mapControlView.snp.updateConstraints {
-            $0.bottom.equalToSuperview().offset(-height + 150)
         }
         
         UIView.animate(withDuration: 0.5,
@@ -373,10 +371,6 @@ extension HomeView {
         }
         self.preview.snp.updateConstraints {
             $0.height.equalTo(0)
-        }
-        
-        self.mapControlView.snp.updateConstraints {
-            $0.bottom.equalToSuperview()
         }
         
         UIView.animate(withDuration: 0.5,

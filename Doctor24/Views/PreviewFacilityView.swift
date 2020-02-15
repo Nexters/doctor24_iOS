@@ -197,6 +197,12 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
         return button
     }()
     
+    private let callBackGroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+    
     required init(controlBy viewController: BaseViewController) {
         super.init(controlBy: viewController)
         self.setupUI()
@@ -288,8 +294,8 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
 extension PreviewFacilityView {
     private func addSubviews() {
         self.addSubview(self.contentView)
-        self.contentView.addSubview(bottomView)
-        self.contentView.addSubview(titleStack)
+        self.contentView.addSubview(self.bottomView)
+        self.contentView.addSubview(self.titleStack)
         self.contentView.addSubview(self.contentStack)
         self.contentView.addSubview(self.typeStack)
         self.typeStack.addArrangedSubview(self.normal)
@@ -316,6 +322,7 @@ extension PreviewFacilityView {
         self.contentView.addSubview(navigationButton)
         self.contentView.addSubview(todayLabel)
         self.contentView.addSubview(timeLabel)
+        self.contentView.addSubview(self.callBackGroundView)
         self.contentView.addSubview(callButton)
     }
     
@@ -397,6 +404,12 @@ extension PreviewFacilityView {
         self.addreeLabel.snp.makeConstraints {
             $0.top.right.equalToSuperview()
             $0.left.equalTo(30)
+        }
+        
+        self.callBackGroundView.snp.makeConstraints {
+            $0.left.right.equalToSuperview()
+            $0.bottom.equalToSuperview()
+            $0.top.equalTo(self.callButton)
         }
         
         self.callButton.snp.makeConstraints {
