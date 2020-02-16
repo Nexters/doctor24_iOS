@@ -172,6 +172,17 @@ final class HomeView: BaseView, PinDrawable {
                 self?.dismissOperatingView()
             }).disposed(by: self.disposeBag)
         
+        
+        Observable.merge(self.operatingView.startView.startTimeButton.rx.tap.asObservable(),
+                         self.operatingView.endView.endTimeButton.rx.tap.asObservable())
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                if let state = try? self.operatingView.viewState.value(), state == .close {
+                    self.onOperatorBack()
+                    self.onOperatingView()
+                }
+            }).disposed(by: self.disposeBag)
+        
         self.panGestureMap.subscribe(onNext:{ [weak self] in
             self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
             self?.retrySearchView.hidden(false)
@@ -347,8 +358,10 @@ extension HomeView {
     
     @objc
     private func onOperatingView(_ gestureRecognizer: UIPanGestureRecognizer) {
-        self.onOperatorBack()
-        self.onOperatingView()
+        if let state = try? operatingView.viewState.value(), state == .close {
+            self.onOperatorBack()
+            self.onOperatingView()
+        }
     }
     
     @objc

@@ -319,10 +319,6 @@ extension OperatingHoursSetView {
     }
     
     private func maxEndTime() {
-        print("jhh self.startTime.ampm: \(self.startTime.ampm)")
-        print("jhh self.endTime.ampm: \(self.endTime.ampm)")
-        print("jhh Date().endTime(): \(Date().endTime()!)")
-        
         if self.startTime.ampm == "오후" && self.endTime.ampm == "오전" {
             self.pickerView.pickerDate.setDate(Date().endTime(), animated: true)
             self.endView.endTimeLabel.text = Date().endTime().convertDate
