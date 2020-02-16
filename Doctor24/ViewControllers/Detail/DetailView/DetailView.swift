@@ -148,7 +148,7 @@ extension DetailView {
         
         self.collectionView.snp.makeConstraints {
             $0.top.left.right.equalToSuperview()
-            $0.bottom.equalTo(self.callButton.snp.top).offset(-16)
+            $0.bottom.equalTo(self.callButton.snp.top).offset(-8)
         }
         
         self.callButton.snp.makeConstraints {

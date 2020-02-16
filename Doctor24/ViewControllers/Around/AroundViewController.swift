@@ -50,7 +50,9 @@ class AroundViewController: BaseViewController {
             }).disposed(by: self.disposeBag)
         
         self.aroundView.tapFacility.subscribe(onNext: { facility in
-            ViewTransition.shared.execute(scene: .detail(facility: facility))
+            if let facility = facility {
+                ViewTransition.shared.execute(scene: .detail(facility: facility))
+            }
         }).disposed(by:self.disposeBag)
     }
 }

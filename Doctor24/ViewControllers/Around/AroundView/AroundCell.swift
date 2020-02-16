@@ -184,3 +184,32 @@ final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable {
         }
     }
 }
+
+final class AroundNoMoreCell: UITableViewCell {
+    private let contentLabel: UILabel = {
+        let label = UILabel()
+        label.font = .regular(size: 16)
+        label.textColor = .grey2()
+        label.text = "더 이상 병원이 없습니다."
+        return label
+    }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        self.backgroundColor = .clear
+        self.addSubview(contentLabel)
+        self.contentLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(23.5)
+            $0.bottom.equalToSuperview()
+            $0.centerX.equalToSuperview()
+        }
+    }
+}

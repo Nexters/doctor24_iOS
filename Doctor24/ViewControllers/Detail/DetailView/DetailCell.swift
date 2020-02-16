@@ -275,10 +275,35 @@ final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitl
         case .hospitalType(let title):
             self.imageView.image = UIImage(named: "hospitalType")
             self.content.text = title
+            self.imageView.snp.remakeConstraints {
+                $0.size.equalTo(24)
+                $0.left.equalTo(24)
+                $0.top.equalToSuperview()
+            }
+            
+            self.content.snp.remakeConstraints {
+                $0.top.equalTo(self.imageView.snp.top).offset(3)
+                $0.left.equalTo(self.imageView.snp.right).offset(6)
+                $0.right.lessThanOrEqualTo(-24)
+                $0.bottom.equalToSuperview()
+            }
             
         case .phone(let number):
             self.imageView.image = UIImage(named: "phoneNumber")
             self.content.text = number
+            
+            self.imageView.snp.remakeConstraints {
+                $0.size.equalTo(24)
+                $0.left.equalTo(24)
+                $0.centerY.equalToSuperview()
+            }
+            
+            self.content.snp.remakeConstraints {
+                $0.top.equalToSuperview()
+                $0.left.equalTo(self.imageView.snp.right).offset(6)
+                $0.right.lessThanOrEqualTo(-24)
+                $0.bottom.equalToSuperview()
+            }
         default:
             break
         }
@@ -287,19 +312,6 @@ final class DetailNormalCell: UICollectionViewCell, DetailCellData, FacilityTitl
     private func setupUI() {
         self.addSubview(self.imageView)
         self.addSubview(self.content)
-        
-        self.imageView.snp.makeConstraints {
-            $0.size.equalTo(24)
-            $0.left.equalTo(24)
-            $0.top.equalToSuperview()
-        }
-        
-        self.content.snp.makeConstraints {
-            $0.top.equalTo(self.imageView.snp.top).offset(3)
-            $0.left.equalTo(self.imageView.snp.right).offset(6)
-            $0.right.equalToSuperview().offset(-24)
-            $0.bottom.equalToSuperview()
-        }
     }
 }
 

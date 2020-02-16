@@ -70,7 +70,7 @@ final class HomeView: BaseView, PinDrawable {
         return button
     }()
     
-    private let activeCategory = UIImageView(image: UIImage(named: "activeCategory"))
+    let activeCategory = UIImageView(image: UIImage(named: "activeCategory"))
     
     lazy var medicalSelectView: MedicalSelectView = {
         let view = MedicalSelectView(controlBy: vc)

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A1F19D3323C219A200FE4D6C"
-               BuildableName = "Doctor24.app"
+               BuildableName = "&#x1110;&#x1169;&#x1103;&#x1161;&#x11a8;&#x1110;&#x1169;&#x1103;&#x1161;&#x11a8;.app"
                BlueprintName = "Doctor24"
                ReferencedContainer = "container:Doctor24.xcodeproj">
             </BuildableReference>
@@ -113,7 +113,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A1F19D3323C219A200FE4D6C"
-            BuildableName = "Doctor24.app"
+            BuildableName = "&#x1110;&#x1169;&#x1103;&#x1161;&#x11a8;&#x1110;&#x1169;&#x1103;&#x1161;&#x11a8;.app"
             BlueprintName = "Doctor24"
             ReferencedContainer = "container:Doctor24.xcodeproj">
          </BuildableReference>
@@ -130,7 +130,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A1F19D3323C219A200FE4D6C"
-            BuildableName = "Doctor24.app"
+            BuildableName = "&#x1110;&#x1169;&#x1103;&#x1161;&#x11a8;&#x1110;&#x1169;&#x1103;&#x1161;&#x11a8;.app"
             BlueprintName = "Doctor24"
             ReferencedContainer = "container:Doctor24.xcodeproj">
          </BuildableReference>

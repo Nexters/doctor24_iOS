@@ -14,8 +14,8 @@ import RxCocoa
 
 final class AroundView: BaseView {
     // MARK: Properties
-    private let facilities: [Model.Todoc.PreviewFacility]
-    let tapFacility = PublishRelay<Model.Todoc.PreviewFacility>()
+    private var facilities: [Model.Todoc.PreviewFacility?]
+    let tapFacility = PublishRelay<Model.Todoc.PreviewFacility?>()
     
     // MARK: UI Component
     let topBar: TopBar = {
@@ -86,11 +86,16 @@ final class AroundView: BaseView {
         self.facilities = facilities
         super.init(controlBy: viewController)
         self.registerCell()
-        self.tableView.reloadData()
+        
         if facilities.isEmpty {
+            self.countLabel.text = "총 0개"
             self.emptyView.isHidden = false
+        } else {
+            self.facilities.append(nil)
+            self.countLabel.text = "총 \(self.facilities.count - 1)개"
         }
         
+        self.tableView.reloadData()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -102,7 +107,7 @@ final class AroundView: BaseView {
     }
     
     override func setupUI() {
-        self.countLabel.text = "총 \(self.facilities.count)개"
+        
         self.addSubview(self.topBar)
         self.addSubview(self.headerLine)
         self.addSubview(self.infoView)
@@ -159,6 +164,7 @@ final class AroundView: BaseView {
     }
     
     private func registerCell() {
+        self.tableView.register(AroundNoMoreCell.self, forCellReuseIdentifier: "AroundNoMoreCell")
         self.tableView.register(AroundCell.self, forCellReuseIdentifier: "AroundCell")
     }
 }
@@ -179,9 +185,15 @@ extension AroundView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell : AroundCell = tableView.dequeueReusableCell(withIdentifier: "AroundCell", for: indexPath) as! AroundCell
-        cell.selectionStyle = .none
-        cell.setData(facility: facilities[indexPath.row])
-        return cell
+        if let facility = facilities[indexPath.row] {
+            let cell : AroundCell = tableView.dequeueReusableCell(withIdentifier: "AroundCell", for: indexPath) as! AroundCell
+            cell.selectionStyle = .none
+            cell.setData(facility: facility)
+            return cell
+        } else {
+            let cell : AroundNoMoreCell = tableView.dequeueReusableCell(withIdentifier: "AroundNoMoreCell", for: indexPath) as! AroundNoMoreCell
+            cell.selectionStyle = .none
+            return cell
+        }
     }
 }

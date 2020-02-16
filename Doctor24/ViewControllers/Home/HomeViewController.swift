@@ -23,9 +23,9 @@ final class HomeViewController: BaseViewController, View {
     private var zoomLevel: Int {
         get {
             if self.homeView.mapControlView.mapView.zoomLevel < 14 {
-                return 1
-            } else if self.homeView.mapControlView.mapView.zoomLevel >= 14 {
                 return 2
+            } else if self.homeView.mapControlView.mapView.zoomLevel >= 14 {
+                return 1
             }
             return 1
         }
@@ -105,9 +105,14 @@ final class HomeViewController: BaseViewController, View {
     }
     
     private func bind() {
-        self.homeView.medicalSelectView.medicalType
-            .subscribe(onNext: { type in
+        self.homeView.medicalSelectView.medicalType.withLatestFrom(TodocInfo.shared.category) { ($0,$1) }
+            .subscribe(onNext: { type, category in
                 self.homeView.categoryButton.isHidden = type == .hospital ? false : true
+                if type == .pharmacy {
+                    self.homeView.activeCategory.isHidden = true
+                } else if type == .hospital && category != .전체 {
+                    self.homeView.activeCategory.isHidden = false
+                }
             }).disposed(by: self.disposeBag)
         
         self.facilities
