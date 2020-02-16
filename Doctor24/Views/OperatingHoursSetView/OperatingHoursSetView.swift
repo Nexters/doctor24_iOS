@@ -21,7 +21,7 @@ final class OperatingHoursSetView: BaseView {
     private let focusButton = BehaviorSubject<FocusTimeButton>(value: .start)
     private let changedTime = PublishRelay<(Date, FocusTimeButton)>()
     private var startTime   = Date()
-    private var endTime     = Date().addingTimeInterval(TimeInterval(30.0*60.0))
+    private var endTime     = Date().addingTimeInterval(TimeInterval(60.0*60.0))
     // MARK: UI Componenet
     let closeButton: UIButton = {
         let button = UIButton()
@@ -42,7 +42,12 @@ final class OperatingHoursSetView: BaseView {
         view.backgroundColor = .white
         view.clipsToBounds = true
         view.layer.cornerRadius = 24
+        view.setShadow(radius: 24,
+                       shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
+                       shadowOffset: CGSize(width: 0, height: 2),
+                       shadowBlur: 6)
         view.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
+        
         return view
     }()
     
@@ -130,7 +135,7 @@ final class OperatingHoursSetView: BaseView {
         self.refreshButton.rx.tap.subscribe(onNext: {
             self.refreshButton.isHidden = true
             let start = Date()
-            let end   = Date().addingTimeInterval(TimeInterval(30.0*60.0))
+            let end   = Date().addingTimeInterval(TimeInterval(60.0*60.0))
             TodocInfo.shared.startTimeFilter.onNext(start)
             TodocInfo.shared.endTimeFilter.onNext(end)
             self.startView.startTimeLabel.text = start.convertDate
@@ -179,7 +184,7 @@ final class OperatingHoursSetView: BaseView {
                 }
 
                 if self.startTime.compareTimeOnly(to: self.endTime) == .orderedDescending {
-                    self.makeToast("안돼여!!")
+                    self.makeToast("종료 시간을 시작 시간보다\n이후로 설정해주세요.")
                     return false
                 }
                 
@@ -257,7 +262,7 @@ extension OperatingHoursSetView {
         self.closeButton.snp.makeConstraints {
             $0.centerY.equalTo(self.titleLabel)
             $0.size.equalTo(50)
-            $0.left.equalToSuperview().offset(24)
+            $0.left.equalToSuperview().offset(15)
         }
         
         self.lineView.snp.makeConstraints {

@@ -137,9 +137,8 @@ extension Model.Todoc.DetailFacility {
         var set = [[Model.Todoc.Day]]()
         var daysTemp = self.days.filter { $0.dayType ?? .MONDAY != .SATURDAY && $0.dayType ?? .MONDAY != .SUNDAY && $0.dayType ?? .MONDAY != .HOLIDAY }
         
-        for i in 0 ..< daysTemp.count {
-            guard i < daysTemp.count else { continue }
-            let tempDay = daysTemp[i]
+        for tempDay in daysTemp {
+            guard daysTemp.contains(tempDay) else { continue }
             var differArr = [Model.Todoc.Day]()
             for differ in daysTemp {
                 if tempDay == differ {

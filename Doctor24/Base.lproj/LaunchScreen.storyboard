@@ -15,45 +15,7 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ezm-Iy-h3h">
-                                <rect key="frame" x="162.5" y="363" width="89" height="170"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashIcon" translatesAutoresizingMaskIntoConstraints="NO" id="zOT-ER-rXx">
-                                        <rect key="frame" x="0.0" y="0.0" width="89" height="89"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="89" id="7C8-t5-EcC"/>
-                                            <constraint firstAttribute="height" constant="89" id="liG-uz-wWH"/>
-                                        </constraints>
-                                    </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W7g-o2-NCl">
-                                        <rect key="frame" x="0.0" y="89" width="89" height="28"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="28" id="7MV-y1-wHB"/>
-                                        </constraints>
-                                    </view>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group13Copy" translatesAutoresizingMaskIntoConstraints="NO" id="o7a-ZC-zhm">
-                                        <rect key="frame" x="0.0" y="117" width="89" height="32"/>
-                                    </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ujg-Jc-WMb">
-                                        <rect key="frame" x="0.0" y="149" width="89" height="10"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="10" id="n1Z-Nd-PQq"/>
-                                        </constraints>
-                                    </view>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splashName" translatesAutoresizingMaskIntoConstraints="NO" id="44I-2a-XaD">
-                                        <rect key="frame" x="0.0" y="159" width="89" height="11"/>
-                                    </imageView>
-                                </subviews>
-                            </stackView>
-                        </subviews>
                         <color key="backgroundColor" red="0.34901960784313724" green="0.34901960784313724" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="ezm-Iy-h3h" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="n1i-mq-fZO"/>
-                            <constraint firstItem="ezm-Iy-h3h" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="nHd-xA-k0m"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
@@ -62,9 +24,4 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="group13Copy" width="128" height="32"/>
-        <image name="splashIcon" width="111" height="111"/>
-        <image name="splashName" width="123" height="11"/>
-    </resources>
 </document>

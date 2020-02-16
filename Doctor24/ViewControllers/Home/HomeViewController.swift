@@ -12,6 +12,7 @@ import CoreLocation
 import ReactorKit
 import RxSwift
 import RxCocoa
+import Toast_Swift
 
 final class HomeViewController: BaseViewController, View {
     typealias Reactor = HomeViewReactor
@@ -94,6 +95,12 @@ final class HomeViewController: BaseViewController, View {
             .bind(to: self.facilities)
             .disposed(by: self.disposeBag)
         
+        reactor.state.asObservable()
+            .map { $0.errorMessage }
+            .filter { $0 != "" }
+            .subscribe(onNext: { [weak self] message in
+                self?.view.makeToast(message)
+            }).disposed(by: self.disposeBag)
         self.bind()
     }
     
@@ -106,6 +113,12 @@ final class HomeViewController: BaseViewController, View {
         self.facilities
             .subscribe(onNext:{ [weak self] facilities in
                 self?.homeView.drawPins(facilities: facilities)
+            }).disposed(by: self.disposeBag)
+        
+        self.facilities.filter { $0.count == 0 }
+            .withLatestFrom(self.homeView.medicalSelectView.medicalType)
+            .subscribe(onNext : { [weak self] type in
+                self?.view.makeToast("현재 운영중인 \(type == .hospital ? "병원":"약국")이 없습니다.")
             }).disposed(by: self.disposeBag)
         
         self.homeView.detailFacility

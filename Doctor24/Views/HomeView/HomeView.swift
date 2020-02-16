@@ -33,8 +33,11 @@ final class HomeView: BaseView, PinDrawable {
     // MARK: UI Componenet
     let mapControlView: NMFNaverMapView = {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
-        mapView.mapView.mapType = .navi
-        mapView.mapView.isNightModeEnabled = true
+        if TodocInfo.shared.theme == .night {
+            mapView.mapView.mapType = .navi
+            mapView.mapView.isNightModeEnabled = true
+        }
+        
         mapView.showLocationButton = false
         mapView.showCompass = false
         mapView.showZoomControls = false
@@ -46,7 +49,10 @@ final class HomeView: BaseView, PinDrawable {
     private let cameraButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .white()
-        button.layer.cornerRadius = 30
+        button.setShadow(radius: 30,
+                         shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
+                         shadowOffset: CGSize(width: 0, height: 2),
+                         shadowBlur: 6)
         return button
     }()
     
@@ -54,8 +60,11 @@ final class HomeView: BaseView, PinDrawable {
         let button = UIButton()
         button.setImage(UIImage(named: "category"), for: .normal)
         button.setImage(UIImage(named: "unCategory"), for: .highlighted)
-        button.layer.cornerRadius = 30
         button.backgroundColor = .white()
+        button.setShadow(radius: 30,
+                         shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
+                         shadowOffset: CGSize(width: 0, height: 2),
+                         shadowBlur: 6)
         return button
     }()
     
@@ -65,7 +74,10 @@ final class HomeView: BaseView, PinDrawable {
         let view = MedicalSelectView(controlBy: vc)
         view.backgroundColor = .white
         view.clipsToBounds = true
-        view.layer.cornerRadius = 28.5
+        view.setShadow(radius: 28.5,
+                       shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
+                       shadowOffset: CGSize(width: 0, height: 2),
+                       shadowBlur: 6)
         return view
     }()
     
@@ -108,14 +120,20 @@ final class HomeView: BaseView, PinDrawable {
         btn.setImage(UIImage(named: "list"), for: .normal)
         btn.setImage(UIImage(named: "selectedList"), for: .highlighted)
         btn.backgroundColor = .white()
-        btn.layer.cornerRadius = 30
+        btn.setShadow(radius: 30,
+                      shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
+                      shadowOffset: CGSize(width: 0, height: 2),
+                      shadowBlur: 6)
         return btn
     }()
     
     let retrySearchView: RetrySearchView = {
         let view = RetrySearchView()
         view.backgroundColor = .white()
-        view.layer.cornerRadius = 22
+        view.setShadow(radius: 22,
+                       shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
+                       shadowOffset: CGSize(width: 0, height: 2),
+                       shadowBlur: 6)
         view.hidden(true)
         return view
     }()
@@ -125,6 +143,12 @@ final class HomeView: BaseView, PinDrawable {
     }
     
     override func setupUI() {
+        if TodocInfo.shared.theme == .light {
+            self.backgroundColor = .white
+        } else {
+            self.backgroundColor = .black
+        }
+        
         self.addSubViews()
         self.setLayout()
     }

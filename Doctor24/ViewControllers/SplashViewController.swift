@@ -10,16 +10,14 @@ import UIKit
 import SnapKit
 
 final class SplashViewController: BaseViewController {
-    private let stackView: UIStackView = {
-        let stkView = UIStackView()
-        stkView.axis = .vertical
-        return stkView
+    private let contentView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .clear
+        return view
     }()
     
     private let logo = UIImageView(image: UIImage(named: "splashIcon"))
-    private lazy var empty1 = emptyViewFactory()
     private let titleImage = UIImageView(image: UIImage(named: "group13Copy"))
-    private lazy var empty2 = emptyViewFactory()
     private let subTitleImage = UIImageView(image: UIImage(named: "splashName"))
     
     init() {
@@ -32,29 +30,31 @@ final class SplashViewController: BaseViewController {
     
     override func setupUI() {
         self.view.backgroundColor = .blue()
-        self.view.addSubview(self.stackView)
-        self.stackView.addArrangedSubview(self.logo)
-        self.stackView.addArrangedSubview(self.empty1)
-        self.stackView.addArrangedSubview(self.titleImage)
-        self.stackView.addArrangedSubview(self.empty2)
-        self.stackView.addArrangedSubview(self.subTitleImage)
-        
-        self.stackView.snp.makeConstraints {
+        self.view.addSubview(self.contentView)
+        self.contentView.addSubview(self.logo)
+        self.contentView.addSubview(self.titleImage)
+        self.contentView.addSubview(self.subTitleImage)
+
+        self.contentView.snp.makeConstraints {
             $0.center.equalToSuperview()
+            $0.width.equalTo(128)
+            $0.height.equalTo(179)
         }
         
-        self.empty1.snp.makeConstraints {
-            $0.height.equalTo(25)
+        self.logo.snp.makeConstraints {
+            $0.size.equalTo(111)
+            $0.top.equalToSuperview()
+            $0.centerX.equalToSuperview()
         }
         
-        self.empty2.snp.makeConstraints {
-            $0.height.equalTo(10)
+        self.titleImage.snp.makeConstraints {
+            $0.left.right.equalToSuperview()
+            $0.top.equalTo(self.logo.snp.bottom).offset(16)
         }
-    }
-    
-    private func emptyViewFactory() -> UIView {
-        let view = UIView()
-        view.backgroundColor = .clear
-        return view
+        
+        self.subTitleImage.snp.makeConstraints {
+            $0.top.equalTo(self.titleImage.snp.bottom).offset(10)
+            $0.centerX.equalToSuperview()
+        }
     }
 }

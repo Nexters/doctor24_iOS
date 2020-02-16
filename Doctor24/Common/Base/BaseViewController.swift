@@ -14,6 +14,29 @@ class BaseViewController: UIViewController {
         self.setBind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if self is ClusterListViewController {
+            UIApplication.shared.statusBarStyle = .lightContent
+        } else if self is AroundViewController {
+            if #available(iOS 13.0, *) {
+                UIApplication.shared.statusBarStyle = .darkContent
+            }
+        } else if self is DetailViewController {
+            if #available(iOS 13.0, *) {
+                UIApplication.shared.statusBarStyle = .darkContent
+            }
+        } else if self is HomeViewController {
+            if TodocInfo.shared.theme == .light {
+                if #available(iOS 13.0, *) {
+                    UIApplication.shared.statusBarStyle = .darkContent
+                }
+            } else {
+                UIApplication.shared.statusBarStyle = .lightContent
+            }
+        }
+    }
+    
     func setupUI(){
         // override
     }

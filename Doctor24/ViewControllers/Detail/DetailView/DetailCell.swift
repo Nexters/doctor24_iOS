@@ -23,8 +23,10 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     private var disposeBag = DisposeBag()
     private let mapView: NMFMapView = {
         let mapView = NMFMapView()
-        mapView.mapType = .navi
-        mapView.isNightModeEnabled = true
+        if TodocInfo.shared.theme == .night {
+            mapView.mapType = .navi
+            mapView.isNightModeEnabled = true
+        }
         return mapView
     }()
     

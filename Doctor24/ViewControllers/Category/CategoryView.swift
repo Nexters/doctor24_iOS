@@ -31,7 +31,10 @@ final class CategoryView: BaseView {
         let view = UIView()
         view.backgroundColor = .white()
         view.clipsToBounds = true
-        view.layer.cornerRadius = 24
+        view.setShadow(radius: 24,
+                       shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
+                       shadowOffset: CGSize(width: 0, height: 2),
+                       shadowBlur: 6)
         view.layer.maskedCorners = [.layerMinXMinYCorner,.layerMaxXMinYCorner]
         return view
     }()

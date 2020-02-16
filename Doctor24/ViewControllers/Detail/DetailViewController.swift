@@ -44,6 +44,10 @@ class DetailViewController: BaseViewController, View {
         self.detailView.setBind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func setupUI() {
         self.view.backgroundColor = .white
     }

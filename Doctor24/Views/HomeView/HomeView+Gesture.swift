@@ -69,7 +69,6 @@ extension HomeView {
         } else {
             contentViewHeight = 236 + preview.titleStack.frame.height + self.bottomSafeAreaInset
         }
-        print("point.t: \(point.y)")
         if gesture.state == .changed {
             if point.y >= 0 && point.y <= height{
                 let differ = (height - contentViewHeight) - point.y
@@ -87,7 +86,7 @@ extension HomeView {
                            animations: {
                             var height: CGFloat = 0.0
                             
-                            if point.y <= self.vc.view.frame.height / 3 {
+                            if point.y <= self.vc.view.frame.height / 2 {
                                 self.previewFullSignal.accept(())
                             } else if self.vc.view.frame.height - point.y <= (contentViewHeight * 2) / 3 {
                                 self.dismissPreview()

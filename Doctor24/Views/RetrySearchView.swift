@@ -28,6 +28,7 @@ final class RetrySearchView: UIView {
     init() {
         super.init(frame: CGRect.zero)
         self.backgroundColor = .white
+        self.alpha = 0
         self.addSubviews()
         self.setLayout()
     }
