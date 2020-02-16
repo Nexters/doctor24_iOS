@@ -21,15 +21,21 @@ class BaseViewController: UIViewController {
         } else if self is AroundViewController {
             if #available(iOS 13.0, *) {
                 UIApplication.shared.statusBarStyle = .darkContent
+            } else {
+                UIApplication.shared.statusBarStyle = .default
             }
         } else if self is DetailViewController {
             if #available(iOS 13.0, *) {
                 UIApplication.shared.statusBarStyle = .darkContent
+            } else {
+                UIApplication.shared.statusBarStyle = .default
             }
         } else if self is HomeViewController {
             if TodocInfo.shared.theme == .light {
                 if #available(iOS 13.0, *) {
                     UIApplication.shared.statusBarStyle = .darkContent
+                } else {
+                    UIApplication.shared.statusBarStyle = .default
                 }
             } else {
                 UIApplication.shared.statusBarStyle = .lightContent

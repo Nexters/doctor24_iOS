@@ -412,9 +412,9 @@ extension HomeView {
             $0.height.equalTo(0)
         }
         
-        UIView.animate(withDuration: 0.5,
+        UIView.animate(withDuration: 0.2,
                        delay: 0.0,
-                       usingSpringWithDamping: 0.5,
+                       usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 0.0,
                        options: [],
                        animations: {
@@ -447,6 +447,7 @@ extension HomeView {
     }
     
     func dismissOperatingView() {
+        self.operatingBackGround.alpha = 0.0
         self.removeOperatorBack()
         self.operatingView.viewState.onNext(.close)
         self.operatingView.snp.updateConstraints {

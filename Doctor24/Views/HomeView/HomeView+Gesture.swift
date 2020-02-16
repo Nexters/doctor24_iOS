@@ -28,6 +28,7 @@ extension HomeView {
         let spaincg      = operatingView.spacingLabel
         let pickerView   = operatingView.pickerView
         let background   = operatingView.operatingBackgroundView
+        let closeButton  = operatingView.closeButton
         
         if gesture.state == .began {
             self.onOperatorBack()
@@ -44,6 +45,7 @@ extension HomeView {
                     spaincg.transform = transform
                     background.alpha = differ / 200
                     pickerView.alpha = differ / 200
+                    closeButton.alpha = differ / 200
                     self.operatingBackGround.alpha = (differ / 200) / 2
                     print("differ: \(differ)")
                     print("differ / 200: \(differ / 200)")
@@ -78,9 +80,9 @@ extension HomeView {
             }
         }else if gesture.state == .ended {
             
-            UIView.animate(withDuration: 0.5,
+            UIView.animate(withDuration: 0.3,
                            delay: 0.0,
-                           usingSpringWithDamping: 0.5,
+                           usingSpringWithDamping: 1.0,
                            initialSpringVelocity: 0.0,
                            options: [],
                            animations: {
