@@ -99,7 +99,7 @@ final class HomeViewController: BaseViewController, View {
             .map { $0.errorMessage }
             .filter { $0 != "" }
             .subscribe(onNext: { [weak self] message in
-                self?.view.makeToast(message)
+                self?.view.toast(message, duration: 3)
             }).disposed(by: self.disposeBag)
         self.bind()
     }
@@ -123,7 +123,7 @@ final class HomeViewController: BaseViewController, View {
         self.facilities.filter { $0.count == 0 }
             .withLatestFrom(self.homeView.medicalSelectView.medicalType)
             .subscribe(onNext : { [weak self] type in
-                self?.view.makeToast("현재 운영중인 \(type == .hospital ? "병원":"약국")이 없습니다.")
+                self?.view.toast("현재 운영중인 \(type == .hospital ? "병원":"약국")이 없습니다.", duration: 3)
             }).disposed(by: self.disposeBag)
         
         self.homeView.detailFacility

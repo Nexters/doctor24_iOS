@@ -178,12 +178,12 @@ final class OperatingHoursSetView: BaseView {
             .filter { [weak self] _ in
                 guard let self = self else { return false }
                 if self.startTime.ampm == "오후" && self.endTime.ampm == "오전" {
-                    self.makeToast("자정 이후에는 조회되지 않습니다.")
+                    self.toast("자정 이후에는 조회되지 않습니다.", duration: 3)
                     return false
                 }
 
                 if self.startTime.compareTimeOnly(to: self.endTime) == .orderedDescending {
-                    self.makeToast("종료 시간을 시작 시간보다\n이후로 설정해주세요.")
+                    self.toast("종료 시간을 시작 시간보다\n이후로 설정해주세요.", duration: 3)
                     return false
                 }
                 
