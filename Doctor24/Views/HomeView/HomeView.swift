@@ -376,6 +376,7 @@ extension HomeView {
     
     private func onPreview(with facility: Model.Todoc.PreviewFacility) {
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
+        cameraUpdate.animation = .linear
         self.mapControlView.mapView.moveCamera(cameraUpdate)
         self.retrySearchView.isHidden = true
         self.preview.setData(facility: facility)
@@ -429,6 +430,7 @@ extension HomeView {
         }
         
         self.bringSubviewToFront(self.operatingView)
+        self.layoutIfNeeded()
     }
     
     func removeOperatorBack() {
@@ -437,7 +439,6 @@ extension HomeView {
     }
     
     func onOperatingView() {
-        self.operatingBackGround.alpha = 0.6
         self.operatingView.viewState.onNext(.open)
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height - (396 + bottomSafeAreaInset))
@@ -459,7 +460,7 @@ extension HomeView {
     }
     
     func animateOpertaingView(show: Bool) {
-        
+        var backAlpha: CGFloat = 0.0
         var alpha : CGFloat = 0.0
         let maxFontSize:CGFloat = 1
         let minFontSize:CGFloat = 0.87
@@ -473,15 +474,17 @@ extension HomeView {
         
         if show {
             alpha  = 1.0
+            backAlpha = 0.6
             size = minFontSize
         } else {
             alpha  = 0.0
+            backAlpha = 0.0
             size = maxFontSize
         }
         
         UIView.animate(withDuration: 0.5,
                        delay: 0.0,
-                       usingSpringWithDamping: 0.5,
+                       usingSpringWithDamping: 0.7,
                        initialSpringVelocity: 0.0,
                        options: [],
                        animations: {
@@ -492,7 +495,7 @@ extension HomeView {
                         
                         pickerView.alpha = alpha
                         background.alpha = alpha
-                        
+                        self.operatingBackGround.alpha = backAlpha
                         self.layoutIfNeeded()
         })
         

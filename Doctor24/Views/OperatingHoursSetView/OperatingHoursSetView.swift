@@ -151,7 +151,6 @@ final class OperatingHoursSetView: BaseView {
                 self.pickerView.pickerDate.setDate(self.startTime, animated: true)
             case .end:
                 self.pickerView.pickerDate.setDate(self.endTime, animated: true)
-                self.maxEndTime()
             }
         }).disposed(by: self.disposeBag)
         
@@ -179,7 +178,7 @@ final class OperatingHoursSetView: BaseView {
             .filter { [weak self] _ in
                 guard let self = self else { return false }
                 if self.startTime.ampm == "오후" && self.endTime.ampm == "오전" {
-                    self.makeToast("12시 넘어가면 안돼여!!!!")
+                    self.makeToast("자정 이후에는 조회되지 않습니다.")
                     return false
                 }
 
@@ -209,7 +208,6 @@ final class OperatingHoursSetView: BaseView {
             case .end:
                 self.endView.endTimeLabel.text = date.convertDate
                 self.endTime = date
-                self.maxEndTime()
                 
                 break
             }
@@ -234,8 +232,6 @@ final class OperatingHoursSetView: BaseView {
                     self.endView.endTimeLabel.text     = end.convertDate
                     self.startTime = start
                     self.endTime   = end
-                    
-                    self.maxEndTime()
                 }
             }
         }).disposed(by: self.disposeBag)

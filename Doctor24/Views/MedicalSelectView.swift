@@ -185,7 +185,7 @@ extension MedicalSelectView {
         self.selectedImageView.image = UIImage(named: "toggleHospitalActive")
         UIView.animate(withDuration: 0.3,
                        delay: 0.0,
-                       usingSpringWithDamping: 0.5,
+                       usingSpringWithDamping: 0.6,
                        initialSpringVelocity: 0.0,
                        options: [],
                        animations: {
@@ -206,7 +206,7 @@ extension MedicalSelectView {
         
         UIView.animate(withDuration: 0.3,
                        delay: 0.0,
-                       usingSpringWithDamping: 0.5,
+                       usingSpringWithDamping: 0.6,
                        initialSpringVelocity: 0.0,
                        options: [],
                        animations: {

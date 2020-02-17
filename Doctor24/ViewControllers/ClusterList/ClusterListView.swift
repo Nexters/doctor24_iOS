@@ -105,7 +105,7 @@ extension ClusterListView {
         self.contentView.snp.updateConstraints {
             $0.width.equalTo(327)
             if facilities.count < 4 {
-                $0.height.equalTo((facilities.count * 105) + 53)
+                $0.height.equalTo((facilities.count * 105) + 53 + 15)
             } else {
                 $0.height.equalTo(583)
             }

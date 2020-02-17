@@ -20,7 +20,7 @@ class ClusterListViewController: FadeModalTransitionViewController {
     init(facilities: [Model.Todoc.PreviewFacility]) {
         self.facilities = facilities
         super.init()
-        self.animateSetting.animation.present.damping = 0.5
+        self.animateSetting.animation.present.damping = 0.7
         self.animateSetting.animation.dismiss.duration = 0
         self.modalPresentationStyle = .overCurrentContext
     }
