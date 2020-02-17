@@ -107,7 +107,7 @@ extension ClusterListView {
             if facilities.count < 4 {
                 $0.height.equalTo((facilities.count * 105) + 53 + 15)
             } else {
-                $0.height.equalTo(583)
+                $0.height.equalTo(478 - 23)
             }
         }
     }
