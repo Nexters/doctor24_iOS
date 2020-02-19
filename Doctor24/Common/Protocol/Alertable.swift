@@ -25,11 +25,7 @@ extension Alertable {
         
         alertController.addAction(cancelButton)
         
-        if let presented = UIApplication.shared.windows.first?.rootViewController?.presentedViewController {
-            presented.present(alertController, animated: true, completion: nil)
-        } else if let rootVC = UIApplication.shared.windows.first?.rootViewController  {
-            rootVC.present(alertController, animated: true, completion: nil)
-        }
+        appDelegate?.searchFrontViewController().present(alertController, animated: true, completion: nil)
     }
 }
 

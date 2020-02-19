@@ -96,7 +96,6 @@ extension UIView {
         
         ToastManager.shared.isQueueEnabled = false
         
-        //self.makeToast(massage, duration: duration, position: CGPoint(x: self.frame.size.width/2, y: (position?.positionY(frame: self.frame))!), style: style)
         self.makeToast(massage, duration: duration, point: CGPoint(x: self.frame.size.width/2, y: (position?.positionY(frame: self.frame))!), title: nil, image: nil, style: style, completion: nil)
     }
 }

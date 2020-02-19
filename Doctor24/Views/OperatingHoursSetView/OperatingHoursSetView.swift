@@ -25,6 +25,8 @@ final class OperatingHoursSetView: BaseView {
     // MARK: UI Componenet
     let closeButton: UIButton = {
         let button = UIButton()
+        button.alpha = 0.0
+        button.isHidden = true
         button.setImage(UIImage(named: "rectangle"), for: .normal)
         return button
     }()
@@ -217,13 +219,11 @@ final class OperatingHoursSetView: BaseView {
             guard let self = self else { return }
             switch state {
             case .open:
-                self.closeButton.isHidden = false
                 self.startView.able(true)
                 self.endView.able(false)
                 self.pickerView.confirmButton(able: false)
                 self.focusButton.onNext(.start)
             case .close:
-                self.closeButton.isHidden = true
                 self.startView.able(true)
                 self.endView.able(true)
                 if let start = try? TodocInfo.shared.startTimeFilter.value(),

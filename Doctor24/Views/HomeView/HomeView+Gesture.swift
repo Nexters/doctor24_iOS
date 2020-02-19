@@ -32,6 +32,7 @@ extension HomeView {
         
         if gesture.state == .began {
             self.onOperatorBack()
+            closeButton.isHidden = false
         } else if gesture.state == .changed {
             if point.y >= 0 && self.frame.height - point.y <= maxHeight{
                 let differ = (height - originHeight) - point.y

@@ -380,6 +380,7 @@ extension HomeView {
         self.mapControlView.mapView.moveCamera(cameraUpdate)
         self.retrySearchView.isHidden = true
         self.preview.setData(facility: facility)
+        self.preview.alpha = 1.0
         self.layoutIfNeeded()
         var height: CGFloat = 0
         self.operatingView.isHidden = true
@@ -413,12 +414,13 @@ extension HomeView {
             $0.height.equalTo(0)
         }
         
-        UIView.animate(withDuration: 0.2,
+        UIView.animate(withDuration: 0.5,
                        delay: 0.0,
                        usingSpringWithDamping: 1.0,
                        initialSpringVelocity: 0.0,
                        options: [],
                        animations: {
+                        self.preview.alpha = 0.0
                         self.layoutIfNeeded()
         })
     }
@@ -471,6 +473,7 @@ extension HomeView {
         let spaincg      = operatingView.spacingLabel
         let pickerView   = operatingView.pickerView
         let background   = operatingView.operatingBackgroundView
+        let close        = operatingView.closeButton
         
         if show {
             alpha  = 1.0
@@ -489,12 +492,14 @@ extension HomeView {
                        options: [],
                        animations: {
                         let transform = CGAffineTransform(scaleX: size, y: size)
+                        close.isHidden = show ? false:true
                         start.transform = transform
                         end.transform   = transform
                         spaincg.transform = transform
                         
                         pickerView.alpha = alpha
                         background.alpha = alpha
+                        close.alpha      = alpha
                         self.operatingBackGround.alpha = backAlpha
                         self.layoutIfNeeded()
         })
