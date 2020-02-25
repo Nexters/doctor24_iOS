@@ -81,6 +81,16 @@ final class HomeViewController: BaseViewController, View {
         .bind(to: reactor.action)
         .disposed(by: self.disposeBag)
         
+        self.homeView.coronaButton.buttonState.filter { $0 == .focused }
+            .map { [weak self] _ in
+                let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
+                let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
+                let loc = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+                
+                return HomeViewReactor.Action.corona(location: loc)
+            }.bind(to: reactor.action)
+            .disposed(by: self.disposeBag)
+        
         TodocInfo.shared.currentLocation
             .filter { $0.isValid() }
             .take(1)
