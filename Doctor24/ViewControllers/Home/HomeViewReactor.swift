@@ -22,6 +22,7 @@ final class HomeViewReactor: Reactor {
     enum Action {
         case viewDidLoad(location: CLLocationCoordinate2D, zoomLevel: Int)
         case facilites(type: Model.Todoc.MedicalType, location: CLLocationCoordinate2D, zoomLevel: Int, day: Model.Todoc.Day, category: Model.Todoc.MedicalType.Category?)
+//        case corona(location: CLLocationCoordinate2D)
     }
     
     // represent state changes
@@ -72,6 +73,9 @@ final class HomeViewReactor: Reactor {
                         return .setError(error)
                     }
             }
+            
+//        case .corona(let location):
+//                break
         }
     }
     

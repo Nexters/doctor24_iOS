@@ -12,6 +12,8 @@ import SnapKit
 extension HomeView {
     @objc
     func operatingDragView(_ gesture : UIGestureRecognizer){
+        guard self.coronaButton.buttonState.value == .normal else { return }
+        
         var maxHeight: CGFloat = 0.0
         var originHeight:CGFloat = 0.0
         let point  = gesture.location(in: self)

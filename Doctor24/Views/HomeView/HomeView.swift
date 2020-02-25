@@ -31,6 +31,7 @@ final class HomeView: BaseView, PinDrawable {
     private var panGestureRecognizer: UIPanGestureRecognizer!
     
     // MARK: UI Componenet
+    let coronaButton = CoronaButton()
     let mapControlView: NMFNaverMapView = {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
         if TodocInfo.shared.theme == .night {
@@ -265,6 +266,15 @@ final class HomeView: BaseView, PinDrawable {
                 }
             }).disposed(by: self.disposeBag)
         
+        self.coronaButton.buttonState.subscribe(onNext: { state in
+            switch state {
+            case .focused:
+                self.convertCoronaView()
+            case .normal:
+                self.revertCoronaView()
+            }
+        }).disposed(by: self.disposeBag)
+        
         TodocInfo.shared.category
             .subscribe(onNext: { [weak self] category in
                 self?.activeCategory.isHidden = category == .전체 ? true : false
@@ -305,6 +315,13 @@ extension HomeView {
             $0.height.equalTo(58)
         }
         
+        self.coronaButton.snp.makeConstraints {
+            $0.left.equalTo(self.medicalSelectView)
+            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
+            $0.width.equalTo(94)
+            $0.height.equalTo(32)
+        }
+        
         self.retrySearchView.snp.makeConstraints {
             $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(34)
             $0.centerX.equalToSuperview()
@@ -336,6 +353,7 @@ extension HomeView {
         self.addSubview(self.categoryButton)
         self.addSubview(self.activeCategory)
         self.addSubview(self.medicalSelectView)
+        self.addSubview(self.coronaButton)
         self.addSubview(self.retrySearchView)
         self.addSubview(self.preview)
         self.addSubview(self.aroundListButton)
@@ -441,6 +459,8 @@ extension HomeView {
     }
     
     func onOperatingView() {
+        guard self.coronaButton.buttonState.value == .normal else { return }
+        
         self.operatingView.viewState.onNext(.open)
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height - (396 + bottomSafeAreaInset))
@@ -503,7 +523,58 @@ extension HomeView {
                         self.operatingBackGround.alpha = backAlpha
                         self.layoutIfNeeded()
         })
+    }
+    
+    func convertCoronaView() {
+        let start        = operatingView.startView.startTimeLabel
+        let end          = operatingView.endView.endTimeLabel
+        let spacing      = operatingView.spacingLabel
+        let holder       = operatingView.holderView
+        let title        = operatingView.titleLabel
+        self.operatingView.snp.updateConstraints {
+            $0.top.equalToSuperview().offset(self.frame.height - (56 + bottomSafeAreaInset))
+        }
         
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        start.alpha = 0.0
+                        end.alpha = 0.0
+                        spacing.alpha = 0.0
+                        holder.alpha = 0.0
+                        title.textColor = .grey3()
+                        self.categoryButton.alpha = 0.0
+                        self.layoutIfNeeded()
+        })
+    }
+    
+    func revertCoronaView() {
+        let start        = operatingView.startView.startTimeLabel
+        let end          = operatingView.endView.endTimeLabel
+        let spacing      = operatingView.spacingLabel
+        let holder       = operatingView.holderView
+        let title        = operatingView.titleLabel
+        self.operatingView.snp.updateConstraints {
+            $0.top.equalToSuperview().offset(self.frame.height -  (132 + bottomSafeAreaInset))
+        }
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        start.alpha = 1.0
+                        end.alpha = 1.0
+                        spacing.alpha = 1.0
+                        holder.alpha = 1.0
+                        title.textColor = .grey1()
+                        self.categoryButton.alpha = 1.0
+                        self.layoutIfNeeded()
+        })
     }
 }
 
