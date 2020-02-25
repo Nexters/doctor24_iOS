@@ -81,7 +81,10 @@ final class HomeViewController: BaseViewController, View {
         .bind(to: reactor.action)
         .disposed(by: self.disposeBag)
         
-        self.homeView.coronaButton.buttonState.filter { $0 == .focused }
+        self.homeView.coronaSearch
+            .do(onNext: { [weak self] _ in
+                self?.homeView.retrySearchView.hidden(true)
+            })
             .map { [weak self] _ in
                 let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
                 let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0

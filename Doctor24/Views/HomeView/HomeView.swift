@@ -16,6 +16,7 @@ import SnapKit
 
 final class HomeView: BaseView, PinDrawable {
     // MARK: Property
+    let coronaSearch      = PublishRelay<Void>()
     let search            = BehaviorRelay<Void>(value: ())
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
@@ -159,8 +160,7 @@ final class HomeView: BaseView, PinDrawable {
     override func setBind() {
         self.addGesture()
         
-        Observable.merge(self.retrySearchView.button.rx.tap.asObservable(),
-                         self.operatingView.pickerConfirm.asObservable(),
+        Observable.merge(self.operatingView.pickerConfirm.asObservable(),
                          self.operatingView.refreshButton.rx.tap.asObservable())
             .do(onNext:  { [weak self] in
                 self?.dismissOperatingView()
@@ -183,6 +183,21 @@ final class HomeView: BaseView, PinDrawable {
                     self.onOperatingView()
                 }
             }).disposed(by: self.disposeBag)
+        
+        Observable.merge(self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaButton.buttonState),
+                         self.coronaButton.buttonState.asObservable())
+            .filter { $0 == .focused }
+            .mapToVoid()
+            .bind(to: self.coronaSearch)
+            .disposed(by: self.disposeBag)
+        
+        self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaButton.buttonState)
+            .filter { $0 == .normal }
+            .mapToVoid()
+            .bind(to: self.search)
+            .disposed(by: self.disposeBag)
+        
+        
         
         self.panGestureMap.subscribe(onNext:{ [weak self] in
             self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)

@@ -9,6 +9,7 @@
 import UIKit
 import Domain
 import NMapsMap
+import struct CoreLocation.CLLocation.CLLocationCoordinate2D
 
 // MARK: Draw Pins
 extension HomeView {
@@ -39,6 +40,10 @@ extension HomeView {
             
             self.markers.append(marker)
         }
+        
+        let (southWest, northEast) = self.pinAreaRect(facilites: facilities)
+        let cameraUpdate = NMFCameraUpdate(fit: NMGLatLngBounds(southWest: southWest, northEast: northEast))
+        self.mapControlView.mapView.moveCamera(cameraUpdate)
     }
     
     func unselectPins() {
@@ -51,5 +56,35 @@ extension HomeView {
         }
 //        self.dismissPreview()
         self.selectedMarker.removeAll()
+    }
+    
+    private func pinAreaRect(facilites: [Model.Todoc.Facilities]) -> (NMGLatLng, NMGLatLng){
+        var maxLat: Double = 0.0
+        var minLat: Double = 200.0
+        var maxLong: Double = 0.0
+        var minLong: Double = 200.0
+        
+        for pin in facilites {
+            if maxLat < pin.latitude {
+                maxLat = pin.latitude
+            }
+            
+            if minLat > pin.latitude {
+                minLat = pin.latitude
+            }
+            
+            if maxLong < pin.longitude {
+                maxLong = pin.longitude
+            }
+            
+            if minLong > pin.longitude {
+                minLong = pin.longitude
+            }
+        }
+        
+        let northEast = NMGLatLng(lat: maxLat, lng: maxLong)
+        let southWest = NMGLatLng(lat: minLat, lng: minLong)
+        
+        return (southWest, northEast)
     }
 }
