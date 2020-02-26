@@ -420,8 +420,10 @@ extension HomeView {
         var height: CGFloat = 0
         self.operatingView.isHidden = true
         //total - 24
-        if facility.medicalType == .hospital || facility.medicalType == .corona {
+        if facility.medicalType == .hospital {
             height = 306 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
+        } else if facility.medicalType == .corona {
+            height = 260 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
         } else {
             height = 236 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
         }
