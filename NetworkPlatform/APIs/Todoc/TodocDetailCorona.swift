@@ -19,7 +19,7 @@ extension API.DetailCorona: APIConfigWithError {
     static let domainConfig = TodocDomain.self
     static let serviceError = MockError.self
     
-    var path: String { return "/api/v1/medicals/corona/facilities/C:\(self.coronaID)" }
+    var path: String { return "/api/v1/medicals/corona/facilities/\(self.coronaID)" }
     var method: HTTPMethod { return .get }
     var parameters: API.Parameter? {
         return .map(nil)

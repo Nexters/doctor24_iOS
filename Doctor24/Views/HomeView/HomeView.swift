@@ -155,6 +155,7 @@ final class HomeView: BaseView, PinDrawable {
         
         self.addSubViews()
         self.setLayout()
+        self.layoutIfNeeded()
     }
     
     override func setBind() {
@@ -196,8 +197,6 @@ final class HomeView: BaseView, PinDrawable {
             .mapToVoid()
             .bind(to: self.search)
             .disposed(by: self.disposeBag)
-        
-        
         
         self.panGestureMap.subscribe(onNext:{ [weak self] in
             self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
@@ -408,8 +407,9 @@ extension HomeView {
     }
     
     private func onPreview(with facility: Model.Todoc.PreviewFacility) {
-        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude), zoomTo: 14)
         cameraUpdate.animation = .linear
+        
         self.mapControlView.mapView.moveCamera(cameraUpdate)
         self.retrySearchView.isHidden = true
         self.preview.setData(facility: facility)
@@ -418,7 +418,7 @@ extension HomeView {
         var height: CGFloat = 0
         self.operatingView.isHidden = true
         //total - 24
-        if facility.medicalType == .hospital {
+        if facility.medicalType == .hospital || facility.medicalType == .corona {
             height = 306 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
         } else {
             height = 236 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295

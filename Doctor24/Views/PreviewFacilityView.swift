@@ -70,6 +70,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
     private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
     private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
     private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    private let corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
     
     private let contentView: UIView = {
         let view = UIView()
@@ -260,33 +261,64 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
             heightView2.isHidden = true
         }
         
-        guard facility.medicalType == .hospital else {
+        guard facility.medicalType == .hospital ||
+              facility.medicalType == .corona
+        else {
             self.normal.isHidden = true
             self.emergency.isHidden = true
             self.night.isHidden = true
+            self.corona.isHidden = true
             return
         }
         
-        switch (facility.nightTimeServe, facility.emergency) {
-        case (true, true):
+        switch (facility.nightTimeServe, facility.emergency, facility.medicalType == .corona) {
+        case (true, true, true):
             self.normal.isHidden = true
             self.emergency.isHidden = false
             self.night.isHidden = false
+            self.corona.isHidden = false
             
-        case (false, true):
+        case (true, true, false):
             self.normal.isHidden = true
             self.emergency.isHidden = false
-            self.night.isHidden  = true
+            self.night.isHidden = false
+            self.corona.isHidden = true
+        
+        case (false, true, true):
+            self.normal.isHidden = true
+            self.emergency.isHidden = false
+            self.night.isHidden = true
+            self.corona.isHidden = false
             
-        case (true, false):
+        case (false, true, false):
+            self.normal.isHidden = true
+            self.emergency.isHidden = false
+            self.night.isHidden = true
+            self.corona.isHidden = true
+            
+        case (true, false, true):
             self.normal.isHidden = true
             self.emergency.isHidden = true
             self.night.isHidden = false
+            self.corona.isHidden = false
             
-        default:
+        case (true, false, false):
+            self.normal.isHidden = true
+            self.emergency.isHidden = true
+            self.night.isHidden = false
+            self.corona.isHidden = true
+            
+        case (false, false, true):
+            self.normal.isHidden = true
+            self.emergency.isHidden = true
+            self.night.isHidden = true
+            self.corona.isHidden = false
+            
+        case (false, false, false):
             self.normal.isHidden = false
             self.emergency.isHidden = true
             self.night.isHidden = true
+            self.corona.isHidden = true
         }
     }
 }
@@ -298,6 +330,7 @@ extension PreviewFacilityView {
         self.contentView.addSubview(self.titleStack)
         self.contentView.addSubview(self.contentStack)
         self.contentView.addSubview(self.typeStack)
+        self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.normal)
         self.typeStack.addArrangedSubview(self.emergency)
         self.typeStack.addArrangedSubview(self.night)
