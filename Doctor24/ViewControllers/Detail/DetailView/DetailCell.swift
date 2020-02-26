@@ -13,7 +13,7 @@ import NMapsMap
 import RxSwift
 import RxCocoa
 
-final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDrawable, MapSelectable {
+final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDrawable, MapSelectable, Badgeable {
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -51,9 +51,10 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         return stkView
     }()
     
-    private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
-    private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
-    private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    var emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
+    var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
+    var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
     
     private let hospitalTitle: UILabel = {
         let label = UILabel()
@@ -117,41 +118,26 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
             $0.left.equalToSuperview().offset(24)
             $0.right.equalToSuperview()
             $0.bottom.equalTo(self.lineView.snp.top).offset(-16)
-            if data.medicalType == .hospital {
+            if data.medicalType == .hospital || data.medicalType == .corona {
                 $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             } else {
                 $0.top.equalTo(self.mapView.snp.bottom).offset(27)
             }
         }
         
-        guard data.medicalType == .hospital else { return }
-        switch (data.nightTimeServe, data.emergency) {
-        case (true, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = false
-            
-        case (false, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden  = true
-            
-        case (true, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = false
-            
-        default:
-            self.normal.isHidden = false
-            self.emergency.isHidden = true
-            self.night.isHidden = true
-        }
+        guard data.medicalType == .hospital ||
+              data.medicalType == .corona else { return }
+        
+        self.showBadge(night: data.nightTimeServe,
+                       emergency: data.emergency,
+                       corona: data.medicalType == .corona)
     }
     
     private func setupUI(){
         self.normal.isHidden = true
         self.emergency.isHidden = true
         self.night.isHidden = true
+        self.corona.isHidden = true
             
         self.addSubview(self.mapView)
         self.addSubview(self.blockView)
@@ -160,6 +146,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         self.addSubview(self.navigationButton)
         self.addSubview(self.lineView)
         
+        self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.normal)
         self.typeStack.addArrangedSubview(self.emergency)
         self.typeStack.addArrangedSubview(self.night)

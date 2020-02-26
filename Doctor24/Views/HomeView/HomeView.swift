@@ -16,6 +16,7 @@ import SnapKit
 
 final class HomeView: BaseView, PinDrawable {
     // MARK: Property
+    let coronaSearch      = PublishRelay<Void>()
     let search            = BehaviorRelay<Void>(value: ())
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
@@ -31,6 +32,7 @@ final class HomeView: BaseView, PinDrawable {
     private var panGestureRecognizer: UIPanGestureRecognizer!
     
     // MARK: UI Componenet
+    let coronaButton = CoronaButton()
     let mapControlView: NMFNaverMapView = {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
         if TodocInfo.shared.theme == .night {
@@ -44,7 +46,7 @@ final class HomeView: BaseView, PinDrawable {
         mapView.mapView.logoAlign = .rightTop
         mapView.mapView.logoMargin = UIEdgeInsets(top: 70, left: 0, bottom: 0, right: 24)
         mapView.mapView.maxZoomLevel = 17
-        mapView.mapView.minZoomLevel = 12
+        mapView.mapView.minZoomLevel = 10
         return mapView
     }()
     
@@ -153,13 +155,13 @@ final class HomeView: BaseView, PinDrawable {
         
         self.addSubViews()
         self.setLayout()
+        self.layoutIfNeeded()
     }
     
     override func setBind() {
         self.addGesture()
         
-        Observable.merge(self.retrySearchView.button.rx.tap.asObservable(),
-                         self.operatingView.pickerConfirm.asObservable(),
+        Observable.merge(self.operatingView.pickerConfirm.asObservable(),
                          self.operatingView.refreshButton.rx.tap.asObservable())
             .do(onNext:  { [weak self] in
                 self?.dismissOperatingView()
@@ -182,6 +184,19 @@ final class HomeView: BaseView, PinDrawable {
                     self.onOperatingView()
                 }
             }).disposed(by: self.disposeBag)
+        
+        Observable.merge(self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaButton.buttonState),
+                         self.coronaButton.buttonState.asObservable())
+            .filter { $0 == .focused }
+            .mapToVoid()
+            .bind(to: self.coronaSearch)
+            .disposed(by: self.disposeBag)
+        
+        self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaButton.buttonState)
+            .filter { $0 == .normal }
+            .mapToVoid()
+            .bind(to: self.search)
+            .disposed(by: self.disposeBag)
         
         self.panGestureMap.subscribe(onNext:{ [weak self] in
             self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
@@ -265,6 +280,17 @@ final class HomeView: BaseView, PinDrawable {
                 }
             }).disposed(by: self.disposeBag)
         
+        self.coronaButton.buttonState.subscribe(onNext: { state in
+            switch state {
+            case .focused:
+                self.medicalSelectView.isMedicalLock = true
+                self.convertCoronaView()
+            case .normal:
+                self.medicalSelectView.isMedicalLock = false
+                self.revertCoronaView()
+            }
+        }).disposed(by: self.disposeBag)
+        
         TodocInfo.shared.category
             .subscribe(onNext: { [weak self] category in
                 self?.activeCategory.isHidden = category == .전체 ? true : false
@@ -305,6 +331,13 @@ extension HomeView {
             $0.height.equalTo(58)
         }
         
+        self.coronaButton.snp.makeConstraints {
+            $0.left.equalTo(self.medicalSelectView)
+            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
+            $0.width.equalTo(106)
+            $0.height.equalTo(32)
+        }
+        
         self.retrySearchView.snp.makeConstraints {
             $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(34)
             $0.centerX.equalToSuperview()
@@ -336,6 +369,7 @@ extension HomeView {
         self.addSubview(self.categoryButton)
         self.addSubview(self.activeCategory)
         self.addSubview(self.medicalSelectView)
+        self.addSubview(self.coronaButton)
         self.addSubview(self.retrySearchView)
         self.addSubview(self.preview)
         self.addSubview(self.aroundListButton)
@@ -377,6 +411,7 @@ extension HomeView {
     private func onPreview(with facility: Model.Todoc.PreviewFacility) {
         let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
         cameraUpdate.animation = .linear
+        
         self.mapControlView.mapView.moveCamera(cameraUpdate)
         self.retrySearchView.isHidden = true
         self.preview.setData(facility: facility)
@@ -385,7 +420,7 @@ extension HomeView {
         var height: CGFloat = 0
         self.operatingView.isHidden = true
         //total - 24
-        if facility.medicalType == .hospital {
+        if facility.medicalType == .hospital || facility.medicalType == .corona {
             height = 306 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
         } else {
             height = 236 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
@@ -441,6 +476,11 @@ extension HomeView {
     }
     
     func onOperatingView() {
+        guard self.coronaButton.buttonState.value == .normal else {
+            self.toast("코로나 진료소 보기 중에는 사용할 수 없습니다.\n코로나 진료소 태그를 해제해주세요", duration: 3)
+            return
+        }
+        
         self.operatingView.viewState.onNext(.open)
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height - (396 + bottomSafeAreaInset))
@@ -503,7 +543,64 @@ extension HomeView {
                         self.operatingBackGround.alpha = backAlpha
                         self.layoutIfNeeded()
         })
+    }
+    
+    func convertCoronaView() {
+        let start        = operatingView.startView.startTimeLabel
+        let end          = operatingView.endView.endTimeLabel
+        let spacing      = operatingView.spacingLabel
+        let holder       = operatingView.holderView
+        let title        = operatingView.titleLabel
+        let refresh      = operatingView.refreshButton
         
+        self.operatingView.snp.updateConstraints {
+            $0.top.equalToSuperview().offset(self.frame.height - (56 + bottomSafeAreaInset))
+        }
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        start.alpha = 0.0
+                        end.alpha = 0.0
+                        spacing.alpha = 0.0
+                        holder.alpha = 0.0
+                        refresh.alpha = 0.0
+                        title.textColor = .grey3()
+                        self.categoryButton.alpha = 0.0
+                        self.layoutIfNeeded()
+        })
+    }
+    
+    func revertCoronaView() {
+        let start        = operatingView.startView.startTimeLabel
+        let end          = operatingView.endView.endTimeLabel
+        let spacing      = operatingView.spacingLabel
+        let holder       = operatingView.holderView
+        let title        = operatingView.titleLabel
+        let refresh      = operatingView.refreshButton
+        
+        self.operatingView.snp.updateConstraints {
+            $0.top.equalToSuperview().offset(self.frame.height -  (132 + bottomSafeAreaInset))
+        }
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0.0,
+                       options: [],
+                       animations: {
+                        start.alpha = 1.0
+                        end.alpha = 1.0
+                        spacing.alpha = 1.0
+                        holder.alpha = 1.0
+                        refresh.alpha = 1.0
+                        title.textColor = .grey1()
+                        self.categoryButton.alpha = 1.0
+                        self.layoutIfNeeded()
+        })
     }
 }
 
