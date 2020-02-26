@@ -75,6 +75,7 @@
 		A1AEAE5F23CCABDD002B5AB2 /* Model.Todoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE5E23CCABDD002B5AB2 /* Model.Todoc.swift */; };
 		A1AEAE6323CE0673002B5AB2 /* FacilitiesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE6223CE0673002B5AB2 /* FacilitiesUseCase.swift */; };
 		A1AEAE6523CE06FB002B5AB2 /* FacilitiesUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AEAE6423CE06FB002B5AB2 /* FacilitiesUseCase.swift */; };
+		A1B5190B2406BE4900888751 /* Badgeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B5190A2406BE4900888751 /* Badgeable.swift */; };
 		A1C3702A23DC1C2B001E60C8 /* RxCLLocationManagerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3702923DC1C2B001E60C8 /* RxCLLocationManagerDelegateProxy.swift */; };
 		A1C3702C23DC1C90001E60C8 /* Rx+CLLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3702B23DC1C90001E60C8 /* Rx+CLLocationManager.swift */; };
 		A1C3702E23DC1D14001E60C8 /* TodocInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3702D23DC1D14001E60C8 /* TodocInfo.swift */; };
@@ -267,6 +268,7 @@
 		A1AEAE5E23CCABDD002B5AB2 /* Model.Todoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.Todoc.swift; sourceTree = "<group>"; };
 		A1AEAE6223CE0673002B5AB2 /* FacilitiesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesUseCase.swift; sourceTree = "<group>"; };
 		A1AEAE6423CE06FB002B5AB2 /* FacilitiesUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacilitiesUseCase.swift; sourceTree = "<group>"; };
+		A1B5190A2406BE4900888751 /* Badgeable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badgeable.swift; sourceTree = "<group>"; };
 		A1C3702923DC1C2B001E60C8 /* RxCLLocationManagerDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxCLLocationManagerDelegateProxy.swift; sourceTree = "<group>"; };
 		A1C3702B23DC1C90001E60C8 /* Rx+CLLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+CLLocationManager.swift"; sourceTree = "<group>"; };
 		A1C3702D23DC1D14001E60C8 /* TodocInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocInfo.swift; sourceTree = "<group>"; };
@@ -400,6 +402,7 @@
 				A1CFFFD923ED75A200FA47E4 /* FacilityTitleable.swift */,
 				A1CFFFDB23EDDEC000FA47E4 /* PinDrawable.swift */,
 				A1D3389E23F6E07900D52112 /* Alertable.swift */,
+				A1B5190A2406BE4900888751 /* Badgeable.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1324,6 +1327,7 @@
 				A1F19D3C23C219A200FE4D6C /* HomeViewController.swift in Sources */,
 				A1AEAE5623CB0B6A002B5AB2 /* ViewMenuSeletable.swift in Sources */,
 				A1D3389F23F6E07900D52112 /* Alertable.swift in Sources */,
+				A1B5190B2406BE4900888751 /* Badgeable.swift in Sources */,
 				6F67164D23C7FA2A000EE7F0 /* BaseViewController.swift in Sources */,
 				A17F84C423E72180009EC3D7 /* HomeView+Gesture.swift in Sources */,
 				A17F84C223E70FB3009EC3D7 /* OperatingHoursSetView.PickerView.swift in Sources */,

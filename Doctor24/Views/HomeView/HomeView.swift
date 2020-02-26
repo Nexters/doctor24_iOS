@@ -551,6 +551,8 @@ extension HomeView {
         let spacing      = operatingView.spacingLabel
         let holder       = operatingView.holderView
         let title        = operatingView.titleLabel
+        let refresh      = operatingView.refreshButton
+        
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height - (56 + bottomSafeAreaInset))
         }
@@ -565,6 +567,7 @@ extension HomeView {
                         end.alpha = 0.0
                         spacing.alpha = 0.0
                         holder.alpha = 0.0
+                        refresh.alpha = 0.0
                         title.textColor = .grey3()
                         self.categoryButton.alpha = 0.0
                         self.layoutIfNeeded()
@@ -577,6 +580,8 @@ extension HomeView {
         let spacing      = operatingView.spacingLabel
         let holder       = operatingView.holderView
         let title        = operatingView.titleLabel
+        let refresh      = operatingView.refreshButton
+        
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height -  (132 + bottomSafeAreaInset))
         }
@@ -591,6 +596,7 @@ extension HomeView {
                         end.alpha = 1.0
                         spacing.alpha = 1.0
                         holder.alpha = 1.0
+                        refresh.alpha = 1.0
                         title.textColor = .grey1()
                         self.categoryButton.alpha = 1.0
                         self.layoutIfNeeded()

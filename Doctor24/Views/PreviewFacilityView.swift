@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 
 
-final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
+final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable, Badgeable {
     
     // MARK: Property
     var facility: Model.Todoc.PreviewFacility!
@@ -67,10 +67,10 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
         return stkView
     }()
     
-    private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
-    private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
-    private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
-    private let corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
+    var emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
+    var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
+    var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
     
     private let contentView: UIView = {
         let view = UIView()
@@ -271,55 +271,9 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
             return
         }
         
-        switch (facility.nightTimeServe, facility.emergency, facility.medicalType == .corona) {
-        case (true, true, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = false
-            self.corona.isHidden = false
-            
-        case (true, true, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = false
-            self.corona.isHidden = true
-        
-        case (false, true, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = true
-            self.corona.isHidden = false
-            
-        case (false, true, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = true
-            self.corona.isHidden = true
-            
-        case (true, false, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = false
-            self.corona.isHidden = false
-            
-        case (true, false, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = false
-            self.corona.isHidden = true
-            
-        case (false, false, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = true
-            self.corona.isHidden = false
-            
-        case (false, false, false):
-            self.normal.isHidden = false
-            self.emergency.isHidden = true
-            self.night.isHidden = true
-            self.corona.isHidden = true
-        }
+        self.showBadge(night: facility.nightTimeServe,
+                       emergency: facility.emergency,
+                       corona: facility.medicalType == .corona)
     }
 }
 
