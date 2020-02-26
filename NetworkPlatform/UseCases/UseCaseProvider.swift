@@ -18,5 +18,9 @@ public final class UseCaseProvider: Domain.UseCaseProvider {
     public func makeNightFacilitiesUseCase() -> Domain.NightFacilitiesUseCase {
         return NightFacilitiesUseCase()
     }
+    
+    public func makeCoronaUsecase() -> Domain.CoronaUsecase {
+        return CoronaUsecase()
+    }
 }
 

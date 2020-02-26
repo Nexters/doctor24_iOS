@@ -10,9 +10,11 @@ import Domain
 import UIKit
 import RxSwift
 import RxCocoa
+import Toast_Swift
 
 final class MedicalSelectView: BaseView {
     // MARK: Properties
+    var isMedicalLock = false
     let medicalType = BehaviorRelay<Model.Todoc.MedicalType>(value: .hospital)
     private let disposeBag = DisposeBag()
     
@@ -95,7 +97,9 @@ final class MedicalSelectView: BaseView {
     }
     
     override func setBind() {
-        self.hospital.rx.tap.do(onNext: { [weak self] in
+        self.hospital.rx.tap
+            .filter{ self.isMedicalLock == false }
+            .do(onNext: { [weak self] in
                 self?.animateSelectHospital()
             })
             .map { Model.Todoc.MedicalType.hospital }
@@ -103,12 +107,22 @@ final class MedicalSelectView: BaseView {
             .disposed(by: self.disposeBag)
         
         self.pharmacy.rx.tap
+            .filter{ self.isMedicalLock == false }
             .do(onNext: { [weak self] in
                 self?.animateSelectPharmacy()
             })
             .map { Model.Todoc.MedicalType.pharmacy }
             .bind(to: self.medicalType)
             .disposed(by: self.disposeBag)
+        
+        Observable.merge(self.hospital.rx.tap.asObservable(),
+                         self.pharmacy.rx.tap.asObservable())
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                if self.isMedicalLock == true {
+                    self.vc.view.toast("코로나 진료소 보기 중에는 사용할 수 없습니다.\n코로나 진료소 태그를 해제해주세요", duration: 3)
+                }
+            }).disposed(by: self.disposeBag)
     }
 }
 

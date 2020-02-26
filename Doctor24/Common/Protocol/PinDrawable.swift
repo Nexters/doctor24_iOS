@@ -11,21 +11,23 @@ import UIKit
 import NMapsMap
 
 protocol PinDrawable {
-    func clusterPin(count: Int) -> NMFOverlayImage
+    func clusterPin(count: Int, facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage
     func detailPin(name: String, medicalType: Model.Todoc.MedicalType) -> NMFOverlayImage
     func pin(facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage
 }
-
+//coronaPin
 extension PinDrawable {
     func pin(facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage {
-        switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy) {
-        case (_, _, true):
+        switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy, facility.medicalType == .corona) {
+        case (_, _, _, true):
+            return NMFOverlayImage(name: "coronaPin")
+        case (_, _, true, false):
             //약국
             return NMFOverlayImage(name: "drugStore")
-        case (_, true, false):
+        case (_, true, false, false):
             //야간
             return NMFOverlayImage(name: "nightHospital")
-        case (true, false, false):
+        case (true, false, false, false):
             //응급
             return NMFOverlayImage(name: "emergency")
         default:
@@ -34,9 +36,28 @@ extension PinDrawable {
         }
     }
     
-    func clusterPin(count: Int) -> NMFOverlayImage {
+    func pin(facility: Model.Todoc.PreviewFacility) -> UIImage {
+        switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy, facility.medicalType == .corona) {
+        case (_, _, _, true):
+            return UIImage(named: "coronaPin")!
+        case (_, _, true, false):
+            //약국
+            return UIImage(named: "drugStore")!
+        case (_, true, false, false):
+            //야간
+            return UIImage(named: "nightHospital")!
+        case (true, false, false, false):
+            //응급
+            return UIImage(named: "emergency")!
+        default:
+            //기본
+            return UIImage(named: "hospital")!
+        }
+    }
+    
+    func clusterPin(count: Int, facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage {
         let container   = UIView(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
-        let defaultMark = UIImageView(image: UIImage(named: "hospital"))
+        let defaultMark = UIImageView(image: self.pin(facility: facility)) 
         let countImg    = UIImageView(image: UIImage(named: "number"))
         let countLabel  = UILabel()
         
@@ -58,8 +79,19 @@ extension PinDrawable {
     }
     
     func detailPin(name: String, medicalType: Model.Todoc.MedicalType) -> NMFOverlayImage {
+        var detailImg     = UIImage(named: "detailHospital")
+        switch medicalType {
+        case .hospital:
+            detailImg = UIImage(named: "detailHospital")
+        case .pharmacy:
+            detailImg = UIImage(named: "detailDrugStore")
+        case .corona:
+            detailImg = UIImage(named: "coronaMarker")
+        default:
+            detailImg = UIImage(named: "detailHospital")
+        }
+        
         let container     = UIView()
-        let detailImg     = medicalType == .hospital ? UIImage(named: "detailHospital") : UIImage(named: "detailDrugStore")
         let detailImgView = UIImageView(image: detailImg)
         let titleLabel    = UILabel(frame: CGRect(x: 0, y: 0, width: 0, height: 14))
         let titleBack     = UIView()

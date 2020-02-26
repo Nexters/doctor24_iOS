@@ -14,7 +14,7 @@ import RxSwift
 import RxCocoa
 
 
-final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
+final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable, Badgeable {
     
     // MARK: Property
     var facility: Model.Todoc.PreviewFacility!
@@ -67,9 +67,10 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
         return stkView
     }()
     
-    private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
-    private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
-    private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    var emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
+    var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
+    var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
     
     private let contentView: UIView = {
         let view = UIView()
@@ -260,34 +261,19 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable {
             heightView2.isHidden = true
         }
         
-        guard facility.medicalType == .hospital else {
+        guard facility.medicalType == .hospital ||
+              facility.medicalType == .corona
+        else {
             self.normal.isHidden = true
             self.emergency.isHidden = true
             self.night.isHidden = true
+            self.corona.isHidden = true
             return
         }
         
-        switch (facility.nightTimeServe, facility.emergency) {
-        case (true, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = false
-            
-        case (false, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden  = true
-            
-        case (true, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = false
-            
-        default:
-            self.normal.isHidden = false
-            self.emergency.isHidden = true
-            self.night.isHidden = true
-        }
+        self.showBadge(night: facility.nightTimeServe,
+                       emergency: facility.emergency,
+                       corona: facility.medicalType == .corona)
     }
 }
 
@@ -298,6 +284,7 @@ extension PreviewFacilityView {
         self.contentView.addSubview(self.titleStack)
         self.contentView.addSubview(self.contentStack)
         self.contentView.addSubview(self.typeStack)
+        self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.normal)
         self.typeStack.addArrangedSubview(self.emergency)
         self.typeStack.addArrangedSubview(self.night)

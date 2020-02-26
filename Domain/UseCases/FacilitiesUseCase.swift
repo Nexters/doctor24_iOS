@@ -53,3 +53,10 @@ public protocol NightFacilitiesUseCase {
                     operatingTime: Model.Todoc.Day,
                     category: Model.Todoc.MedicalType.Category) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>>
 }
+
+public protocol CoronaUsecase {
+    func facilities(latitude: Double,
+                    longitude: Double) -> Observable<Result<[Model.Todoc.Facilities], APIError<MockError>>>
+    
+    func detailFacility(coronaID: String) -> Observable<Result<Model.Todoc.DetailFacility, APIError<MockError>>>
+}

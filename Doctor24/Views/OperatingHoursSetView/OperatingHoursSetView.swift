@@ -53,14 +53,14 @@ final class OperatingHoursSetView: BaseView {
         return view
     }()
     
-    private let lineView: UIView = {
+    let holderView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.grey3()
         view.layer.cornerRadius = 2
         return view
     }()
     
-    private let titleLabel: UILabel = {
+    let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "진료시간"
         label.font = .bold(size: 14)
@@ -245,7 +245,7 @@ extension OperatingHoursSetView {
         self.operatingStackView.addArrangedSubview(self.startView)
         self.operatingStackView.addArrangedSubview(self.spacingLabel)
         self.operatingStackView.addArrangedSubview(self.endView)
-        self.contentView.addSubview(self.lineView)
+        self.contentView.addSubview(self.holderView)
         self.contentView.addSubview(self.titleLabel)
         self.contentView.addSubview(self.closeButton)
         self.contentView.addSubview(self.refreshButton)
@@ -261,7 +261,7 @@ extension OperatingHoursSetView {
             $0.left.equalToSuperview().offset(15)
         }
         
-        self.lineView.snp.makeConstraints {
+        self.holderView.snp.makeConstraints {
             $0.width.equalTo(28)
             $0.height.equalTo(4)
             $0.centerX.equalToSuperview()
@@ -273,7 +273,7 @@ extension OperatingHoursSetView {
         }
         
         self.titleLabel.snp.makeConstraints{
-            $0.top.equalTo(self.lineView.snp.bottom).offset(12)
+            $0.top.equalTo(self.holderView.snp.bottom).offset(12)
             $0.centerX.equalToSuperview()
         }
         
