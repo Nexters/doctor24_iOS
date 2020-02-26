@@ -46,7 +46,7 @@ final class HomeView: BaseView, PinDrawable {
         mapView.mapView.logoAlign = .rightTop
         mapView.mapView.logoMargin = UIEdgeInsets(top: 70, left: 0, bottom: 0, right: 24)
         mapView.mapView.maxZoomLevel = 17
-        mapView.mapView.minZoomLevel = 12
+        mapView.mapView.minZoomLevel = 10
         return mapView
     }()
     
@@ -333,7 +333,7 @@ extension HomeView {
         self.coronaButton.snp.makeConstraints {
             $0.left.equalTo(self.medicalSelectView)
             $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-            $0.width.equalTo(94)
+            $0.width.equalTo(106)
             $0.height.equalTo(32)
         }
         

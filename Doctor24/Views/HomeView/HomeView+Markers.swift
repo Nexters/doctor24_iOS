@@ -41,9 +41,11 @@ extension HomeView {
             self.markers.append(marker)
         }
         
-        let (southWest, northEast) = self.pinAreaRect(facilites: facilities)
-        let cameraUpdate = NMFCameraUpdate(fit: NMGLatLngBounds(southWest: southWest, northEast: northEast))
-        self.mapControlView.mapView.moveCamera(cameraUpdate)
+        if let (southWest, northEast) = self.pinAreaRect(facilites: facilities) {
+            let cameraUpdate = NMFCameraUpdate(fit: NMGLatLngBounds(southWest: southWest, northEast: northEast))
+            cameraUpdate.animation = .linear
+            self.mapControlView.mapView.moveCamera(cameraUpdate)
+        }
     }
     
     func unselectPins() {
@@ -58,13 +60,16 @@ extension HomeView {
         self.selectedMarker.removeAll()
     }
     
-    private func pinAreaRect(facilites: [Model.Todoc.Facilities]) -> (NMGLatLng, NMGLatLng){
+    private func pinAreaRect(facilites: [Model.Todoc.Facilities]) -> (NMGLatLng, NMGLatLng)? {
         var maxLat: Double = 0.0
         var minLat: Double = 200.0
         var maxLong: Double = 0.0
         var minLong: Double = 200.0
+        let distanceMultiple = 0.1
         
-        for pin in facilites {
+        let pins = facilites.map { CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) }
+        
+        for pin in pins {
             if maxLat < pin.latitude {
                 maxLat = pin.latitude
             }
@@ -84,7 +89,13 @@ extension HomeView {
         
         let northEast = NMGLatLng(lat: maxLat, lng: maxLong)
         let southWest = NMGLatLng(lat: minLat, lng: minLong)
+
+        let gapLat = fabs(northEast.lat - southWest.lat) * distanceMultiple
+        let gapLon = fabs(northEast.lng - southWest.lng) * distanceMultiple
         
-        return (southWest, northEast)
+        let southWestGap = NMGLatLng(lat: minLat - gapLat, lng: minLong - gapLon)
+        let northEastGap = NMGLatLng(lat: maxLat + gapLat, lng: maxLong + gapLon)
+        
+        return (southWestGap, northEastGap)
     }
 }
