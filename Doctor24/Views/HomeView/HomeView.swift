@@ -283,8 +283,10 @@ final class HomeView: BaseView, PinDrawable {
         self.coronaButton.buttonState.subscribe(onNext: { state in
             switch state {
             case .focused:
+                self.medicalSelectView.isMedicalLock = true
                 self.convertCoronaView()
             case .normal:
+                self.medicalSelectView.isMedicalLock = false
                 self.revertCoronaView()
             }
         }).disposed(by: self.disposeBag)
@@ -407,7 +409,7 @@ extension HomeView {
     }
     
     private func onPreview(with facility: Model.Todoc.PreviewFacility) {
-        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude), zoomTo: 14)
+        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
         cameraUpdate.animation = .linear
         
         self.mapControlView.mapView.moveCamera(cameraUpdate)
@@ -474,7 +476,10 @@ extension HomeView {
     }
     
     func onOperatingView() {
-        guard self.coronaButton.buttonState.value == .normal else { return }
+        guard self.coronaButton.buttonState.value == .normal else {
+            self.toast("코로나 진료소 보기 중에는 사용할 수 없습니다.\n코로나 진료소 태그를 해제해주세요", duration: 3)
+            return
+        }
         
         self.operatingView.viewState.onNext(.open)
         self.operatingView.snp.updateConstraints {

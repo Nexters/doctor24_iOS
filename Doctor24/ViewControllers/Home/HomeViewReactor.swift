@@ -21,7 +21,7 @@ final class HomeViewReactor: Reactor {
     var initialState: State = State()
     
     enum Action {
-        case viewDidLoad(location: CLLocationCoordinate2D, zoomLevel: Int)
+        case viewDidLoad(location: CLLocationCoordinate2D, zoomLevel: Int, day: Model.Todoc.Day)
         case facilites(type: Model.Todoc.MedicalType, location: CLLocationCoordinate2D, zoomLevel: Int, day: Model.Todoc.Day, category: Model.Todoc.MedicalType.Category?)
         case corona(location: CLLocationCoordinate2D)
     }
@@ -48,10 +48,11 @@ final class HomeViewReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .viewDidLoad(let location, let zoomLevel):
+        case .viewDidLoad(let location, let zoomLevel, let day):
             return self.service.facilities(.hospital,
                                            latitude: location.latitude,
                                            longitude: location.longitude,
+                                           operatingTime: day,
                                            zoomLevel: zoomLevel)
                 .map{ result in
                     switch result {

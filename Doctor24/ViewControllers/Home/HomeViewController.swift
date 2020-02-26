@@ -13,6 +13,7 @@ import ReactorKit
 import RxSwift
 import RxCocoa
 import Toast_Swift
+import NMapsMap
 
 final class HomeViewController: BaseViewController, View {
     typealias Reactor = HomeViewReactor
@@ -54,12 +55,14 @@ final class HomeViewController: BaseViewController, View {
     }
     
     func bind(reactor: HomeViewReactor) {
-        Observable.combineLatest(self.homeView.medicalSelectView.medicalType,
+        let selectMedical = self.homeView.medicalSelectView.medicalType
+            .withLatestFrom(self.homeView.coronaButton.buttonState) { ($0,$1) }
+        
+        Observable.combineLatest(selectMedical.filter { $1 == .normal }.map { $0.0 },
                                  Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
                                                           TodocInfo.shared.endTimeFilter.unwrap()),
                                  TodocInfo.shared.category,
-                                 self.homeView.search.mapToVoid()
-        ) {($0, $1.0, $1.1, $2, $3) }
+                                 self.homeView.search.mapToVoid()) {($0, $1.0, $1.1, $2, $3) }
             .debounce(.microseconds(500), scheduler: MainScheduler.instance)
             .skip(1)
             .do(onNext: { [weak self] _ in
@@ -94,11 +97,21 @@ final class HomeViewController: BaseViewController, View {
             }.bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
-        TodocInfo.shared.currentLocation
-            .filter { $0.isValid() }
-            .take(1)
-            .map { [weak self] location in
-                return HomeViewReactor.Action.viewDidLoad(location: location, zoomLevel: self?.zoomLevel ?? 0)
+        Observable.merge(TodocInfo.shared.currentLocation.filter { $0.isValid() }.take(1),
+                         self.homeView.coronaButton.buttonState.filter{ $0 == .normal }.withLatestFrom(TodocInfo.shared.currentLocation))
+            .withLatestFrom(Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
+                                                     TodocInfo.shared.endTimeFilter.unwrap())) { ($0,$1.0,$1.1) }
+            .skip(1)
+            .do(onNext:{ [weak self] (location, _, _) in
+                let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: location.latitude, lng: location.longitude), zoomTo: 14)
+                cameraUpdate.animation = .linear
+                self?.homeView.mapControlView.mapView.moveCamera(cameraUpdate)
+            })
+            .map { [weak self] location, startTime, endTime in
+                let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
+                return HomeViewReactor.Action.viewDidLoad(location: location,
+                                                          zoomLevel: self?.zoomLevel ?? 0,
+                                                          day: day)
             }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
@@ -114,6 +127,7 @@ final class HomeViewController: BaseViewController, View {
             .subscribe(onNext: { [weak self] message in
                 self?.view.toast(message, duration: 3)
             }).disposed(by: self.disposeBag)
+        
         self.bind()
     }
     
@@ -121,6 +135,7 @@ final class HomeViewController: BaseViewController, View {
         self.homeView.medicalSelectView.medicalType.withLatestFrom(TodocInfo.shared.category) { ($0,$1) }
             .subscribe(onNext: { type, category in
                 self.homeView.categoryButton.isHidden = type == .hospital ? false : true
+                self.homeView.coronaButton.isHidden = type == .hospital ? false : true
                 if type == .pharmacy {
                     self.homeView.activeCategory.isHidden = true
                 } else if type == .hospital && category != .전체 {

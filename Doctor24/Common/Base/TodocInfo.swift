@@ -15,8 +15,8 @@ import RxCocoa
 final class TodocInfo {
     static let shared = TodocInfo()
     
-    let startTimeFilter = BehaviorSubject<Date?>(value: nil)
-    let endTimeFilter   = BehaviorSubject<Date?>(value: nil)
+    let startTimeFilter = BehaviorSubject<Date?>(value: Date())
+    let endTimeFilter   = BehaviorSubject<Date?>(value: Date().addingTimeInterval(TimeInterval(60.0*60.0)))
     let currentLocation = BehaviorSubject<CLLocationCoordinate2D>(value: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
     let category        = BehaviorSubject<Model.Todoc.MedicalType.Category>(value: .전체)
     var theme           = Theme.light
