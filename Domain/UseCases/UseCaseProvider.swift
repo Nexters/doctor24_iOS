@@ -11,4 +11,5 @@ import Foundation
 public protocol UseCaseProvider {
     func makeFacilitiesUseCase() -> FacilitiesUseCase
     func makeNightFacilitiesUseCase() -> NightFacilitiesUseCase
+    func makeCoronaUsecase() -> CoronaUsecase
 }

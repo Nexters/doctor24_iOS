@@ -9,6 +9,7 @@
 import UIKit
 import Domain
 import NMapsMap
+import struct CoreLocation.CLLocation.CLLocationCoordinate2D
 
 // MARK: Draw Pins
 extension HomeView {
@@ -32,12 +33,18 @@ extension HomeView {
             }
             
             if facility.facilities.count > 1 {
-                marker.iconImage = self.clusterPin(count: facility.facilities.count)
+                marker.iconImage = self.clusterPin(count: facility.facilities.count, facility: first)
             } else {
                 marker.iconImage = self.pin(facility: first)
             }
             
             self.markers.append(marker)
+        }
+        
+        if let (southWest, northEast) = self.pinAreaRect(facilites: facilities) {
+            let cameraUpdate = NMFCameraUpdate(fit: NMGLatLngBounds(southWest: southWest, northEast: northEast))
+            cameraUpdate.animation = .linear
+            self.mapControlView.mapView.moveCamera(cameraUpdate)
         }
     }
     
@@ -47,9 +54,50 @@ extension HomeView {
             marker.iconImage = self.pin(facility: facility!)
             marker.zIndex = 0
             marker.isForceShowIcon = false
-            marker.isHideCollidedMarkers = true
+            marker.isHideCollidedMarkers = false
         }
-//        self.dismissPreview()
+        
         self.selectedMarker.removeAll()
+    }
+    
+    private func pinAreaRect(facilites: [Model.Todoc.Facilities]) -> (NMGLatLng, NMGLatLng)? {
+        guard let type = facilites.first?.facilities.first?.medicalType,
+                  type == .corona else { return nil }
+        var maxLat: Double = 0.0
+        var minLat: Double = 200.0
+        var maxLong: Double = 0.0
+        var minLong: Double = 200.0
+        let distanceMultiple = 0.1
+        
+        let pins = facilites.map { CLLocationCoordinate2D(latitude: $0.latitude, longitude: $0.longitude) }
+        
+        for pin in pins {
+            if maxLat < pin.latitude {
+                maxLat = pin.latitude
+            }
+            
+            if minLat > pin.latitude {
+                minLat = pin.latitude
+            }
+            
+            if maxLong < pin.longitude {
+                maxLong = pin.longitude
+            }
+            
+            if minLong > pin.longitude {
+                minLong = pin.longitude
+            }
+        }
+        
+        let northEast = NMGLatLng(lat: maxLat, lng: maxLong)
+        let southWest = NMGLatLng(lat: minLat, lng: minLong)
+
+        let gapLat = fabs(northEast.lat - southWest.lat) * distanceMultiple
+        let gapLon = fabs(northEast.lng - southWest.lng) * distanceMultiple
+        
+        let southWestGap = NMGLatLng(lat: minLat - gapLat, lng: minLong - gapLon)
+        let northEastGap = NMGLatLng(lat: maxLat + gapLat, lng: maxLong + gapLon)
+        
+        return (southWestGap, northEastGap)
     }
 }

@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else {
             NMFAuthManager.shared().clientId = "kmnj0rb8vt"
             let window = UIWindow(frame: UIScreen.main.bounds)
+            self.window = window
             self.window?.rootViewController = SplashViewController()
             self.window?.makeKeyAndVisible()
             

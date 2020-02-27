@@ -12,7 +12,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable {
+final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable, Badgeable {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -48,9 +48,10 @@ final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable {
         return stkView
     }()
     
-    private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
-    private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
-    private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    var emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
+    var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
+    var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
     
     private let type: UIImageView = UIImageView()
     
@@ -108,34 +109,17 @@ final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable {
         self.dayLabel.text =  "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
         self.distanceLabel.text = self.distance(lat: facility.latitude, long: facility.longitude)
         
-        guard facility.medicalType == .hospital else { return }
-        switch (facility.nightTimeServe, facility.emergency) {
-        case (true, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = false
-            
-        case (false, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden  = true
-            
-        case (true, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = false
-            
-        default:
-            self.normal.isHidden = false
-            self.emergency.isHidden = true
-            self.night.isHidden = true
-        }
+        guard facility.medicalType == .hospital ||
+              facility.medicalType == .corona else { return }
+        
+        self.showBadge(night: facility.nightTimeServe, emergency: facility.emergency, corona: facility.medicalType == .corona)
     }
     
     private func setupUI() {
         self.normal.isHidden = true
         self.emergency.isHidden = true
         self.night.isHidden = true
+        self.corona.isHidden = true
         
         self.backgroundColor = .clear
         self.addSubview(self.contentStackView)
@@ -152,6 +136,7 @@ final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable {
             $0.height.equalTo(18)
         }
         
+        self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.normal)
         self.typeStack.addArrangedSubview(self.night)
         self.typeStack.addArrangedSubview(self.emergency)
