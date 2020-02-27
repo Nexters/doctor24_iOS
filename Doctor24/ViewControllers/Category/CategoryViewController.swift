@@ -16,7 +16,8 @@ class CategoryViewController: FadeModalTransitionViewController {
     private let disposeBag = DisposeBag()
     override init() {
         super.init()
-        self.animateSetting.animation.present.delay = 0.5
+        self.animateSetting.animation.present.damping = 0.7
+        self.animateSetting.animation.present.duration = 0.5
         self.modalPresentationStyle = .overCurrentContext
     }
     

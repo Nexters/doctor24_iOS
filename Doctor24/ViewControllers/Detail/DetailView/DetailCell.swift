@@ -116,7 +116,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         
         self.titleStackView.snp.remakeConstraints {
             $0.left.equalToSuperview().offset(24)
-            $0.right.equalToSuperview()
+            $0.right.equalTo(self.navigationButton.snp.left).offset(24)
             $0.bottom.equalTo(self.lineView.snp.top).offset(-16)
             if data.medicalType == .hospital || data.medicalType == .corona {
                 $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
@@ -178,7 +178,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         self.titleStackView.snp.makeConstraints {
             $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             $0.left.equalToSuperview().offset(24)
-            $0.right.lessThanOrEqualTo(self.navigationButton.snp.left).offset(-24)
+            $0.right.equalTo(self.navigationButton.snp.left).offset(24)
             $0.bottom.equalTo(self.lineView.snp.top).offset(-16)
         }
         
