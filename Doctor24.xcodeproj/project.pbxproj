@@ -53,6 +53,7 @@
 		A144DEC423F033EA00D6B96E /* AroundCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A144DEC323F033EA00D6B96E /* AroundCell.swift */; };
 		A145A105240E79B100F3E0B3 /* TodocSecureFacility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A145A104240E79B100F3E0B3 /* TodocSecureFacility.swift */; };
 		A145A107240E7AAE00F3E0B3 /* SecureUsecase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A145A106240E7AAE00F3E0B3 /* SecureUsecase.swift */; };
+		A145A10A240E823200F3E0B3 /* CoronaStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A145A109240E823200F3E0B3 /* CoronaStackView.swift */; };
 		A14DDF0B23EC47DF009A1DD9 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF0A23EC47DF009A1DD9 /* DetailViewController.swift */; };
 		A14DDF0D23EC4893009A1DD9 /* DetailViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF0C23EC4893009A1DD9 /* DetailViewReactor.swift */; };
 		A14DDF0F23EC4A82009A1DD9 /* TodocDetailFacility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF0E23EC4A82009A1DD9 /* TodocDetailFacility.swift */; };
@@ -246,6 +247,7 @@
 		A144DEC323F033EA00D6B96E /* AroundCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AroundCell.swift; sourceTree = "<group>"; };
 		A145A104240E79B100F3E0B3 /* TodocSecureFacility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocSecureFacility.swift; sourceTree = "<group>"; };
 		A145A106240E7AAE00F3E0B3 /* SecureUsecase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureUsecase.swift; sourceTree = "<group>"; };
+		A145A109240E823200F3E0B3 /* CoronaStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoronaStackView.swift; sourceTree = "<group>"; };
 		A14DDF0A23EC47DF009A1DD9 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A14DDF0C23EC4893009A1DD9 /* DetailViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewReactor.swift; sourceTree = "<group>"; };
 		A14DDF0E23EC4A82009A1DD9 /* TodocDetailFacility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocDetailFacility.swift; sourceTree = "<group>"; };
@@ -606,6 +608,19 @@
 			path = AroundView;
 			sourceTree = "<group>";
 		};
+		A145A108240E819100F3E0B3 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				A14DDF1523EC6535009A1DD9 /* TopBar.swift */,
+				A1900B0723EE5153005DA940 /* RetrySearchView.swift */,
+				A1D94DC123E9AF810047F5DA /* PreviewFacilityView.swift */,
+				A12C34A323DD99C100BF4D06 /* MedicalSelectView.swift */,
+				A1C6B6A3240552DA00C766F6 /* CoronaButton.swift */,
+				A145A109240E823200F3E0B3 /* CoronaStackView.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
 		A14DDF1223EC5E71009A1DD9 /* DetailView */ = {
 			isa = PBXGroup;
 			children = (
@@ -669,11 +684,7 @@
 			children = (
 				A17F84C523E722C6009EC3D7 /* HomeView */,
 				A17F84C623E722CF009EC3D7 /* OperatingHoursSetView */,
-				A14DDF1523EC6535009A1DD9 /* TopBar.swift */,
-				A1900B0723EE5153005DA940 /* RetrySearchView.swift */,
-				A1D94DC123E9AF810047F5DA /* PreviewFacilityView.swift */,
-				A12C34A323DD99C100BF4D06 /* MedicalSelectView.swift */,
-				A1C6B6A3240552DA00C766F6 /* CoronaButton.swift */,
+				A145A108240E819100F3E0B3 /* Component */,
 				A1900B0523EE4B38005DA940 /* View.xib */,
 			);
 			path = Views;
@@ -1365,6 +1376,7 @@
 				A1AEAE5423CB0AF6002B5AB2 /* ViewMenuable.swift in Sources */,
 				A14DDF0D23EC4893009A1DD9 /* DetailViewReactor.swift in Sources */,
 				A133D6C123F1908100A97BB3 /* CategoryViewController.swift in Sources */,
+				A145A10A240E823200F3E0B3 /* CoronaStackView.swift in Sources */,
 				A14DDF1423EC5E82009A1DD9 /* DetailView.swift in Sources */,
 				6FC1B2F723C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift in Sources */,
 				A17F84BA23E706BF009EC3D7 /* UIColor+.swift in Sources */,

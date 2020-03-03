@@ -56,9 +56,9 @@ final class HomeViewController: BaseViewController, View {
     
     func bind(reactor: HomeViewReactor) {
         let selectMedical = self.homeView.medicalSelectView.medicalType
-            .withLatestFrom(self.homeView.coronaButton.buttonState) { ($0,$1) }
+            .withLatestFrom(self.homeView.coronaTag.coronaType) { ($0,$1) }.filter { $1 == .none }.map { $0.0 }
         
-        Observable.combineLatest(selectMedical.filter { $1 == .normal }.map { $0.0 },
+        Observable.combineLatest(selectMedical,
                                  Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
                                                           TodocInfo.shared.endTimeFilter.unwrap()),
                                  TodocInfo.shared.category,
@@ -85,20 +85,27 @@ final class HomeViewController: BaseViewController, View {
         .disposed(by: self.disposeBag)
         
         self.homeView.coronaSearch
+            .debounce(.microseconds(500), scheduler: MainScheduler.instance)
             .do(onNext: { [weak self] _ in
                 self?.homeView.retrySearchView.hidden(true)
             })
-            .map { [weak self] _ in
+            .map { [weak self] state in
                 let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
                 let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
                 let loc = CLLocationCoordinate2D(latitude: lat, longitude: lng)
                 
-                return HomeViewReactor.Action.corona(location: loc)
+                if state == .corona {
+                    return HomeViewReactor.Action.corona(location: loc)
+                } else {
+                    return HomeViewReactor.Action.secure(location: loc)
+                }
+                
             }.bind(to: reactor.action)
             .disposed(by: self.disposeBag)
         
         Observable.merge(TodocInfo.shared.currentLocation.filter { $0.isValid() }.take(1),
-                         self.homeView.coronaButton.buttonState.filter{ $0 == .normal }.withLatestFrom(TodocInfo.shared.currentLocation))
+                         self.homeView.coronaTag.coronaType.filter { $0 == .none }.withLatestFrom(TodocInfo.shared.currentLocation)
+        )
             .withLatestFrom(Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
                                                      TodocInfo.shared.endTimeFilter.unwrap())) { ($0,$1.0,$1.1) }
             .skip(1)
@@ -133,9 +140,10 @@ final class HomeViewController: BaseViewController, View {
     
     private func bind() {
         self.homeView.medicalSelectView.medicalType.withLatestFrom(TodocInfo.shared.category) { ($0,$1) }
+            .skip(1)
             .subscribe(onNext: { type, category in
                 self.homeView.categoryButton.isHidden = type == .hospital ? false : true
-                self.homeView.coronaButton.isHidden = type == .hospital ? false : true
+                self.homeView.coronaButtonHide(type != .hospital)
                 if type == .pharmacy {
                     self.homeView.activeCategory.isHidden = true
                 } else if type == .hospital && category != .전체 {

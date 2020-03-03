@@ -16,6 +16,7 @@ import CoreLocation
 final class HomeViewReactor: Reactor {
     private let service: FacilitiesUseCase
     private let coronaService: CoronaUsecase
+    private let secureService: SecureUsecase
     
     var initialState: State = State()
     
@@ -23,6 +24,7 @@ final class HomeViewReactor: Reactor {
         case viewDidLoad(location: CLLocationCoordinate2D, zoomLevel: Int, day: Model.Todoc.Day)
         case facilites(type: Model.Todoc.MedicalType, location: CLLocationCoordinate2D, zoomLevel: Int, day: Model.Todoc.Day, category: Model.Todoc.MedicalType.Category?)
         case corona(location: CLLocationCoordinate2D)
+        case secure(location: CLLocationCoordinate2D)
     }
     
     // represent state changes
@@ -38,9 +40,11 @@ final class HomeViewReactor: Reactor {
     }
     
     init(service: FacilitiesUseCase,
-         coronaService: CoronaUsecase) {
+         coronaService: CoronaUsecase,
+         secureService: SecureUsecase) {
         self.service      = service
         self.coronaService = coronaService
+        self.secureService = secureService
     }
     
     func mutate(action: Action) -> Observable<Mutation> {
@@ -78,6 +82,17 @@ final class HomeViewReactor: Reactor {
         case .corona(let location):
             return self.coronaService.facilities(latitude: location.latitude, longitude: location.longitude)
                 .map { result in
+                    switch result {
+                    case .success(let facilities):
+                        return .setPins(facilities)
+                    case .failure(let error):
+                        return .setError(error)
+                    }
+            }
+            
+        case .secure(let location):
+            return self.secureService.facilities(latitude: location.latitude, longitude: location.longitude)
+                .map  { result in
                     switch result {
                     case .success(let facilities):
                         return .setPins(facilities)
