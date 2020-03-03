@@ -32,7 +32,9 @@ final class HomeView: BaseView, PinDrawable {
     private var panGestureRecognizer: UIPanGestureRecognizer!
     
     // MARK: UI Componenet
-    let coronaButton = CoronaButton()
+    let coronaButton = CoronaButton(title: "코로나진료소")
+    let secureButton = CoronaButton(title: "안심병원")
+    
     let mapControlView: NMFNaverMapView = {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
         if TodocInfo.shared.theme == .night {
@@ -334,7 +336,7 @@ extension HomeView {
         self.coronaButton.snp.makeConstraints {
             $0.left.equalTo(self.medicalSelectView)
             $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-            $0.width.equalTo(106)
+            $0.width.equalTo(101)
             $0.height.equalTo(32)
         }
         

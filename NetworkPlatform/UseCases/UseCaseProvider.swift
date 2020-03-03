@@ -15,12 +15,12 @@ public final class UseCaseProvider: Domain.UseCaseProvider {
         return FacilitiesUseCase()
     }
     
-    public func makeNightFacilitiesUseCase() -> Domain.NightFacilitiesUseCase {
-        return NightFacilitiesUseCase()
-    }
-    
     public func makeCoronaUsecase() -> Domain.CoronaUsecase {
         return CoronaUsecase()
+    }
+    
+    public func makeSecureUsecase() -> Domain.SecureUsecase {
+        return SecureUsecase()
     }
 }
 

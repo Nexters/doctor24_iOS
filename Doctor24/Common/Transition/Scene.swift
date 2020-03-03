@@ -28,7 +28,6 @@ extension Scene {
         case .main:
             let networkService = NetworkPlatform.UseCaseProvider()
             let homeReactor = HomeViewReactor(service: networkService.makeFacilitiesUseCase(),
-                                              nightService: networkService.makeNightFacilitiesUseCase(),
                                               coronaService: networkService.makeCoronaUsecase())
             let vc = HomeViewController(reactor: homeReactor)
 

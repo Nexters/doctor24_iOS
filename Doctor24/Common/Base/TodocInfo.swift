@@ -46,7 +46,7 @@ final class TodocInfo {
     
     private func initTheme() {
         let standardLight = "08:00:00"
-        let standardNight = "20:00:00"
+        let standardNight = "18:00:00"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss"
         dateFormatter.locale = Locale(identifier: "ko_KR")

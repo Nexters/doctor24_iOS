@@ -15,7 +15,6 @@ import CoreLocation
 
 final class HomeViewReactor: Reactor {
     private let service: FacilitiesUseCase
-    private let nightService: NightFacilitiesUseCase
     private let coronaService: CoronaUsecase
     
     var initialState: State = State()
@@ -39,10 +38,8 @@ final class HomeViewReactor: Reactor {
     }
     
     init(service: FacilitiesUseCase,
-         nightService: NightFacilitiesUseCase,
          coronaService: CoronaUsecase) {
         self.service      = service
-        self.nightService = nightService
         self.coronaService = coronaService
     }
     
