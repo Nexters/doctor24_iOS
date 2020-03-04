@@ -13,6 +13,7 @@ pod 'ReactorKit'
 pod 'Alamofire','~> 4.9.1'
 pod 'SnapKit'
 pod 'Toast-Swift', '~> 5.0.1'
+pod 'Firebase/Analytics'
 
 
   target 'Doctor24Tests' do

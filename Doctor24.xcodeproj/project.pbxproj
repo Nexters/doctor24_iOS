@@ -59,6 +59,7 @@
 		A14DDF0F23EC4A82009A1DD9 /* TodocDetailFacility.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF0E23EC4A82009A1DD9 /* TodocDetailFacility.swift */; };
 		A14DDF1423EC5E82009A1DD9 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF1323EC5E82009A1DD9 /* DetailView.swift */; };
 		A14DDF1623EC6535009A1DD9 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF1523EC6535009A1DD9 /* TopBar.swift */; };
+		A14F9C61240FA491009E31E5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A14F9C60240FA491009E31E5 /* GoogleService-Info.plist */; };
 		A17B167823F2E21B0036826A /* ClusterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17B167723F2E21B0036826A /* ClusterCell.swift */; };
 		A17F84BA23E706BF009EC3D7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84B923E706BF009EC3D7 /* UIColor+.swift */; };
 		A17F84BC23E7087D009EC3D7 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84BB23E7087D009EC3D7 /* UIFont+.swift */; };
@@ -253,6 +254,7 @@
 		A14DDF0E23EC4A82009A1DD9 /* TodocDetailFacility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocDetailFacility.swift; sourceTree = "<group>"; };
 		A14DDF1323EC5E82009A1DD9 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		A14DDF1523EC6535009A1DD9 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
+		A14F9C60240FA491009E31E5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A17B167723F2E21B0036826A /* ClusterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCell.swift; sourceTree = "<group>"; };
 		A17F84B923E706BF009EC3D7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		A17F84BB23E7087D009EC3D7 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
@@ -759,6 +761,7 @@
 				A1F19D4023C219A500FE4D6C /* Assets.xcassets */,
 				A1F19D4223C219A500FE4D6C /* LaunchScreen.storyboard */,
 				A1F19D4523C219A500FE4D6C /* Info.plist */,
+				A14F9C60240FA491009E31E5 /* GoogleService-Info.plist */,
 			);
 			path = Doctor24;
 			sourceTree = "<group>";
@@ -1074,6 +1077,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1F19D4423C219A500FE4D6C /* LaunchScreen.storyboard in Resources */,
+				A14F9C61240FA491009E31E5 /* GoogleService-Info.plist in Resources */,
 				A1900B0623EE4B38005DA940 /* View.xib in Resources */,
 				A1F19D4123C219A500FE4D6C /* Assets.xcassets in Resources */,
 			);
@@ -1821,7 +1825,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.JHH.Doctor24;
 				PRODUCT_NAME = "토닥토닥";
 				PROVISIONING_PROFILE_SPECIFIER = Todoc_develop;
@@ -1844,7 +1848,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.1;
+				MARKETING_VERSION = 2.1.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.JHH.Doctor24;
 				PRODUCT_NAME = "토닥토닥";
 				PROVISIONING_PROFILE_SPECIFIER = Todoc_distri;
