@@ -18,6 +18,4 @@ final class CoronaUsecase: Domain.CoronaUsecase {
     func detailFacility(coronaID: String) -> Observable<Result<Model.Todoc.DetailFacility, APIError<MockError>>> {
         return API.DetailCorona(coronaID: coronaID).requestWithCatch()
     }
-    
-    
 }

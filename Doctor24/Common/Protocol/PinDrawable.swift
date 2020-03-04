@@ -12,22 +12,28 @@ import NMapsMap
 
 protocol PinDrawable {
     func clusterPin(count: Int, facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage
-    func detailPin(name: String, medicalType: Model.Todoc.MedicalType) -> NMFOverlayImage
+    func detailPin(name: String, medicalType: Model.Todoc.MedicalType, night: Bool, emergency: Bool) -> NMFOverlayImage
     func pin(facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage
 }
-//coronaPin
+
 extension PinDrawable {
     func pin(facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage {
-        switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy, facility.medicalType == .corona) {
-        case (_, _, _, true):
+        if facility.medicalType == .corona {
             return NMFOverlayImage(name: "coronaPin")
-        case (_, _, true, false):
+        }
+        
+        if facility.medicalType == .secure {
+            return NMFOverlayImage(name: "securePin")
+        }
+        
+        switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy) {
+        case (_, _, true):
             //약국
             return NMFOverlayImage(name: "drugStore")
-        case (_, true, false, false):
+        case (_, true, false):
             //야간
             return NMFOverlayImage(name: "nightHospital")
-        case (true, false, false, false):
+        case (true, false, false):
             //응급
             return NMFOverlayImage(name: "emergency")
         default:
@@ -37,16 +43,22 @@ extension PinDrawable {
     }
     
     func pin(facility: Model.Todoc.PreviewFacility) -> UIImage {
-        switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy, facility.medicalType == .corona) {
-        case (_, _, _, true):
+        if facility.medicalType == .corona {
             return UIImage(named: "coronaPin")!
-        case (_, _, true, false):
+        }
+        
+        if facility.medicalType == .secure {
+            return UIImage(named: "securePin")!
+        }
+        
+        switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy) {
+        case (_, _, true):
             //약국
             return UIImage(named: "drugStore")!
-        case (_, true, false, false):
+        case (_, true, false):
             //야간
             return UIImage(named: "nightHospital")!
-        case (true, false, false, false):
+        case (true, false, false):
             //응급
             return UIImage(named: "emergency")!
         default:
@@ -78,15 +90,26 @@ extension PinDrawable {
         return NMFOverlayImage(image: container.asImage())
     }
     
-    func detailPin(name: String, medicalType: Model.Todoc.MedicalType) -> NMFOverlayImage {
+    func detailPin(name: String,
+                   medicalType: Model.Todoc.MedicalType,
+                   night: Bool,
+                   emergency: Bool) -> NMFOverlayImage{
         var detailImg     = UIImage(named: "detailHospital")
         switch medicalType {
         case .hospital:
-            detailImg = UIImage(named: "detailHospital")
+            if night {
+                detailImg = UIImage(named: "bingmakernight")
+            } else if emergency {
+                detailImg = UIImage(named: "bingmakeremergency")
+            } else {
+                detailImg = UIImage(named: "detailHospital")
+            }
         case .pharmacy:
             detailImg = UIImage(named: "detailDrugStore")
         case .corona:
             detailImg = UIImage(named: "coronaMarker")
+        case .secure:
+            detailImg = UIImage(named: "secureMarker")
         default:
             detailImg = UIImage(named: "detailHospital")
         }

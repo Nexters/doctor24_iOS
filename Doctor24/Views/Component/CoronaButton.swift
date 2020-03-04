@@ -19,9 +19,9 @@ final class CoronaButton: UIButton {
     let buttonState = BehaviorRelay<ButtonState>(value: .normal)
     private let disposeBag = DisposeBag()
     
-    init() {
+    init(title: String) {
         super.init(frame: CGRect.zero)
-        self.setTitle("코로나 진료소", for: .normal)
+        self.setTitle(title, for: .normal)
         self.setTitleColor(.grey2(), for: .normal)
         self.titleLabel?.font = UIFont.regular(size: 14)
         self.setShadow(radius: 16,

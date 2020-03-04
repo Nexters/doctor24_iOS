@@ -16,6 +16,7 @@ final class MedicalSelectView: BaseView {
     // MARK: Properties
     var isMedicalLock = false
     let medicalType = BehaviorRelay<Model.Todoc.MedicalType>(value: .hospital)
+    let medicalLockEvent = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
@@ -120,7 +121,7 @@ final class MedicalSelectView: BaseView {
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 if self.isMedicalLock == true {
-                    self.vc.view.toast("코로나 진료소 보기 중에는 사용할 수 없습니다.\n코로나 진료소 태그를 해제해주세요", duration: 3)
+                    self.medicalLockEvent.accept(())
                 }
             }).disposed(by: self.disposeBag)
     }

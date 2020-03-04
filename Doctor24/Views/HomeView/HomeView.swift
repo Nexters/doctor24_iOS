@@ -16,7 +16,7 @@ import SnapKit
 
 final class HomeView: BaseView, PinDrawable {
     // MARK: Property
-    let coronaSearch      = PublishRelay<Void>()
+    let coronaSearch      = PublishRelay<CoronaTag.CoronaSearchType>()
     let search            = BehaviorRelay<Void>(value: ())
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
@@ -32,7 +32,8 @@ final class HomeView: BaseView, PinDrawable {
     private var panGestureRecognizer: UIPanGestureRecognizer!
     
     // MARK: UI Componenet
-    let coronaButton = CoronaButton()
+    let coronaTag = CoronaTag()
+    
     let mapControlView: NMFNaverMapView = {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
         if TodocInfo.shared.theme == .night {
@@ -184,16 +185,18 @@ final class HomeView: BaseView, PinDrawable {
                     self.onOperatingView()
                 }
             }).disposed(by: self.disposeBag)
-        
-        Observable.merge(self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaButton.buttonState),
-                         self.coronaButton.buttonState.asObservable())
-            .filter { $0 == .focused }
-            .mapToVoid()
+  
+        Observable.merge(self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaTag.coronaType),
+                         self.coronaTag.coronaType.asObservable())
+            .filter { $0 != .none }
+            .do(onNext: { [weak self] _ in
+                self?.cameraType.onNext(.normal)
+            })
             .bind(to: self.coronaSearch)
             .disposed(by: self.disposeBag)
-        
-        self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaButton.buttonState)
-            .filter { $0 == .normal }
+
+        self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaTag.coronaType)
+            .filter { $0 == .none }
             .mapToVoid()
             .bind(to: self.search)
             .disposed(by: self.disposeBag)
@@ -235,6 +238,12 @@ final class HomeView: BaseView, PinDrawable {
             .bind(to: self.cameraType)
             .disposed(by: self.disposeBag)
         
+        self.medicalSelectView.medicalLockEvent
+            .withLatestFrom(self.coronaTag.coronaType)
+            .subscribe(onNext: { state in
+                self.toast("\(state.rawValue) 보기 중에는 사용할 수 없습니다.\n\(state.rawValue) 태그를 해제해주세요", duration: 3)
+            }).disposed(by: self.disposeBag)
+        
         self.mapControlView.mapView.rx
             .didTapMapView
             .map { nil }
@@ -270,7 +279,10 @@ final class HomeView: BaseView, PinDrawable {
                     if facilities.facilities.count > 1 {
                         ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))
                     } else if let facility = facilities.facilities.first {
-                        selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
+                        selected.iconImage = self.detailPin(name: facility.name,
+                                                            medicalType: facility.medicalType,
+                                                            night: facility.nightTimeServe,
+                                                            emergency: facility.emergency)
                         selected.zIndex = 1
                         selected.isHideCollidedMarkers = true
                         selected.isForceShowIcon = true
@@ -280,16 +292,16 @@ final class HomeView: BaseView, PinDrawable {
                 }
             }).disposed(by: self.disposeBag)
         
-        self.coronaButton.buttonState.subscribe(onNext: { state in
-            switch state {
-            case .focused:
-                self.medicalSelectView.isMedicalLock = true
-                self.convertCoronaView()
-            case .normal:
-                self.medicalSelectView.isMedicalLock = false
-                self.revertCoronaView()
-            }
-        }).disposed(by: self.disposeBag)
+        self.coronaTag.coronaType
+            .subscribe(onNext: { [weak self] state in
+                if state == .none {
+                    self?.medicalSelectView.isMedicalLock = false
+                    self?.revertCoronaView()
+                } else {
+                    self?.medicalSelectView.isMedicalLock = true
+                    self?.convertCoronaView()
+                }
+            }).disposed(by: self.disposeBag)
         
         TodocInfo.shared.category
             .subscribe(onNext: { [weak self] category in
@@ -303,7 +315,7 @@ extension HomeView {
     private func setLayout() {
         self.mapControlView.snp.makeConstraints {
             $0.top.left.right.equalToSuperview()
-            $0.bottom.equalTo(self.preview.snp.top).offset(150)
+            $0.bottom.equalTo(self.preview.snp.top).offset(300)
         }
         
         self.operatingView.snp.makeConstraints {
@@ -331,15 +343,15 @@ extension HomeView {
             $0.height.equalTo(58)
         }
         
-        self.coronaButton.snp.makeConstraints {
+        self.coronaTag.snp.makeConstraints {
             $0.left.equalTo(self.medicalSelectView)
             $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-            $0.width.equalTo(106)
+            $0.width.equalTo(218)
             $0.height.equalTo(32)
         }
         
         self.retrySearchView.snp.makeConstraints {
-            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(34)
+            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(72)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(110)
             $0.height.equalTo(44)
@@ -368,8 +380,8 @@ extension HomeView {
         self.addSubview(self.cameraButton)
         self.addSubview(self.categoryButton)
         self.addSubview(self.activeCategory)
+        self.addSubview(self.coronaTag)
         self.addSubview(self.medicalSelectView)
-        self.addSubview(self.coronaButton)
         self.addSubview(self.retrySearchView)
         self.addSubview(self.preview)
         self.addSubview(self.aroundListButton)
@@ -422,7 +434,7 @@ extension HomeView {
         //total - 24
         if facility.medicalType == .hospital {
             height = 306 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
-        } else if facility.medicalType == .corona {
+        } else if facility.medicalType == .corona || facility.medicalType == .secure {
             height = 260 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
         } else {
             height = 236 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
@@ -478,8 +490,9 @@ extension HomeView {
     }
     
     func onOperatingView() {
-        guard self.coronaButton.buttonState.value == .normal else {
-            self.toast("코로나 진료소 보기 중에는 사용할 수 없습니다.\n코로나 진료소 태그를 해제해주세요", duration: 3)
+        guard self.coronaTag.coronaType.value == .none else {
+            let type = self.coronaTag.coronaType.value.rawValue
+            self.toast("\(type) 보기 중에는 사용할 수 없습니다.\n\(type) 태그를 해제해주세요", duration: 3)
             return
         }
         
@@ -601,6 +614,37 @@ extension HomeView {
                         refresh.alpha = 1.0
                         title.textColor = .grey1()
                         self.categoryButton.alpha = 1.0
+                        self.layoutIfNeeded()
+        })
+    }
+    
+    func coronaButtonHide(_ hide: Bool) {
+        var alpha: CGFloat = 0.0
+        if hide {
+            alpha = 0.0
+            self.coronaTag.snp.remakeConstraints {
+                $0.left.equalTo(self.medicalSelectView)
+                $0.top.equalTo(self.medicalSelectView.snp.top)
+                $0.width.equalTo(0)
+                $0.height.equalTo(0)
+            }
+        } else {
+            alpha = 1.0
+            self.coronaTag.snp.remakeConstraints {
+                $0.left.equalTo(self.medicalSelectView)
+                $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
+                $0.width.equalTo(218)
+                $0.height.equalTo(32)
+            }
+        }
+        
+        UIView.animate(withDuration: 0.5,
+                       delay: 0.0,
+                       usingSpringWithDamping: 0.7,
+                       initialSpringVelocity: 0,
+                       options: [.curveLinear],
+                       animations: {
+                        self.coronaTag.alpha = alpha
                         self.layoutIfNeeded()
         })
     }

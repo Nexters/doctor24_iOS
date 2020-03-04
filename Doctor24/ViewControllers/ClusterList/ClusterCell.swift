@@ -8,7 +8,7 @@
 import Domain
 import UIKit
 
-final class ClusterCell: UITableViewCell, FacilityTitleable {
+final class ClusterCell: UITableViewCell, FacilityTitleable, Badgeable {
     private let topLineView: UIView = {
         let line = UIView()
         line.backgroundColor = .grey4()
@@ -23,10 +23,11 @@ final class ClusterCell: UITableViewCell, FacilityTitleable {
         return stkView
     }()
     
-    private let emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
-    private let night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
-    private let normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
-    private let corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
+    var emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
+    var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
+    var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
+    var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
+    var secure: UIImageView = UIImageView(image: UIImage(named: "secureBadge"))
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -76,57 +77,15 @@ final class ClusterCell: UITableViewCell, FacilityTitleable {
         
         self.titleLabel.text = facility.name
         self.timeLabel.text = "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
-        guard facility.medicalType == .hospital || facility.medicalType == .corona else { return }
+        guard facility.medicalType == .hospital ||
+            facility.medicalType == .corona ||
+            facility.medicalType == .secure
+            else { return }
         
-        switch (facility.nightTimeServe, facility.emergency, facility.medicalType == .corona) {
-        case (true, true, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = false
-            self.corona.isHidden = false
-            
-        case (true, true, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = false
-            self.corona.isHidden = true
-        
-        case (false, true, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = true
-            self.corona.isHidden = false
-            
-        case (false, true, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = false
-            self.night.isHidden = true
-            self.corona.isHidden = true
-            
-        case (true, false, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = false
-            self.corona.isHidden = false
-            
-        case (true, false, false):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = false
-            self.corona.isHidden = true
-            
-        case (false, false, true):
-            self.normal.isHidden = true
-            self.emergency.isHidden = true
-            self.night.isHidden = true
-            self.corona.isHidden = false
-            
-        case (false, false, false):
-            self.normal.isHidden = false
-            self.emergency.isHidden = true
-            self.night.isHidden = true
-            self.corona.isHidden = true
-        }
+        self.showBadge(night: facility.nightTimeServe,
+                       emergency: facility.emergency,
+                       corona: facility.medicalType == .corona,
+                       secure: facility.medicalType == .secure)
     }
     
     private func setupUI() {
@@ -134,6 +93,7 @@ final class ClusterCell: UITableViewCell, FacilityTitleable {
         self.emergency.isHidden = true
         self.night.isHidden = true
         self.corona.isHidden = true
+        self.secure.isHidden = true
         
         self.backgroundColor = .clear
         self.addSubview(self.topLineView)
@@ -180,6 +140,7 @@ final class ClusterCell: UITableViewCell, FacilityTitleable {
             $0.height.equalTo(20)
         }
         
+        self.typeStack.addArrangedSubview(self.secure)
         self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.emergency)
         self.typeStack.addArrangedSubview(self.night)

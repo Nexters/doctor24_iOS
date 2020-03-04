@@ -21,6 +21,15 @@ final class TodocInfo {
     let category        = BehaviorSubject<Model.Todoc.MedicalType.Category>(value: .전체)
     var theme           = Theme.light
     
+    var isShowSecureGuide: Bool {
+        let pref = UserDefaults.standard
+        if pref.bool(forKey: "showGuideSecure") {
+            return pref.bool(forKey: "showGuideSecure")
+        }else{
+            return false
+        }
+    }
+    
     private let disposeBag = DisposeBag()
     private let locationManager = CLLocationManager()
     private init() {
@@ -44,9 +53,15 @@ final class TodocInfo {
         }
     }
     
+    func showSecureGuide() {
+        let pref = UserDefaults.standard
+        pref.set(true, forKey: "showGuideSecure")
+        pref.synchronize()
+    }
+    
     private func initTheme() {
         let standardLight = "08:00:00"
-        let standardNight = "20:00:00"
+        let standardNight = "18:00:00"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss"
         dateFormatter.locale = Locale(identifier: "ko_KR")
