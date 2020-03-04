@@ -18,9 +18,9 @@ final class AroundView: BaseView {
     let tapFacility = PublishRelay<Model.Todoc.PreviewFacility?>()
     
     // MARK: UI Component
-    let topBar: TopBar = {
+    lazy var topBar: TopBar = {
         let bar = TopBar()
-        bar.titleLabel.text = "주변 병원 리스트"
+        bar.titleLabel.text = "주변 \(self.medicalTitle()) 리스트"
         return bar
     }()
     
@@ -67,7 +67,11 @@ final class AroundView: BaseView {
         view.backgroundColor = .white()
         
         let label = UILabel()
-        label.text = "병원을 찾을 수 없습니다."
+        if facilities.first!!.medicalType == .corona {
+            label.text = "\(medicalTitle())를 찾을 수 없습니다."
+        } else {
+            label.text = "\(medicalTitle())을 찾을 수 없습니다."
+        }
         label.font = .regular(size: 16)
         label.textColor = .grey2()
         
@@ -167,6 +171,21 @@ final class AroundView: BaseView {
         self.tableView.register(AroundNoMoreCell.self, forCellReuseIdentifier: "AroundNoMoreCell")
         self.tableView.register(AroundCell.self, forCellReuseIdentifier: "AroundCell")
     }
+    
+    private func medicalTitle() -> String {
+        switch facilities.first!!.medicalType {
+        case .hospital:
+            return "병원"
+        case .pharmacy:
+            return "약국"
+        case .corona:
+            return "코로나 진료소"
+        case .secure:
+            return "국민안심병원"
+        case .animal:
+            return ""
+        }
+    }
 }
 
 extension AroundView: UITableViewDelegate {
@@ -193,6 +212,11 @@ extension AroundView: UITableViewDataSource {
         } else {
             let cell : AroundNoMoreCell = tableView.dequeueReusableCell(withIdentifier: "AroundNoMoreCell", for: indexPath) as! AroundNoMoreCell
             cell.selectionStyle = .none
+            if facilities.first!!.medicalType == .corona {
+                cell.contentLabel.text = "더 이상 \(self.medicalTitle())가 없습니다."
+            } else {
+                cell.contentLabel.text = "더 이상 \(self.medicalTitle())이 없습니다."
+            }
             return cell
         }
     }

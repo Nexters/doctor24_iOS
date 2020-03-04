@@ -179,11 +179,10 @@ final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable, Badge
 }
 
 final class AroundNoMoreCell: UITableViewCell {
-    private let contentLabel: UILabel = {
+    let contentLabel: UILabel = {
         let label = UILabel()
         label.font = .regular(size: 16)
         label.textColor = .grey2()
-        label.text = "더 이상 병원이 없습니다."
         return label
     }()
     

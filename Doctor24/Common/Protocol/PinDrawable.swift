@@ -12,7 +12,7 @@ import NMapsMap
 
 protocol PinDrawable {
     func clusterPin(count: Int, facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage
-    func detailPin(name: String, medicalType: Model.Todoc.MedicalType) -> NMFOverlayImage
+    func detailPin(name: String, medicalType: Model.Todoc.MedicalType, night: Bool, emergency: Bool) -> NMFOverlayImage
     func pin(facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage
 }
 
@@ -90,11 +90,20 @@ extension PinDrawable {
         return NMFOverlayImage(image: container.asImage())
     }
     
-    func detailPin(name: String, medicalType: Model.Todoc.MedicalType) -> NMFOverlayImage {
+    func detailPin(name: String,
+                   medicalType: Model.Todoc.MedicalType,
+                   night: Bool,
+                   emergency: Bool) -> NMFOverlayImage{
         var detailImg     = UIImage(named: "detailHospital")
         switch medicalType {
         case .hospital:
-            detailImg = UIImage(named: "detailHospital")
+            if night {
+                detailImg = UIImage(named: "bingmakernight")
+            } else if emergency {
+                detailImg = UIImage(named: "bingmakeremergency")
+            } else {
+                detailImg = UIImage(named: "detailHospital")
+            }
         case .pharmacy:
             detailImg = UIImage(named: "detailDrugStore")
         case .corona:

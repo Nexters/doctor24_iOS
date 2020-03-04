@@ -86,8 +86,11 @@ final class HomeViewController: BaseViewController, View {
         
         self.homeView.coronaSearch
             .debounce(.microseconds(500), scheduler: MainScheduler.instance)
-            .do(onNext: { [weak self] _ in
+            .do(onNext: { [weak self] state in
                 self?.homeView.retrySearchView.hidden(true)
+                if state == .secure && TodocInfo.shared.isShowSecureGuide == false {
+                    ViewTransition.shared.execute(scene: .secureGuide)
+                }
             })
             .map { [weak self] state in
                 let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0

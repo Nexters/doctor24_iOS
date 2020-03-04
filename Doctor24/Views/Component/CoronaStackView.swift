@@ -17,7 +17,7 @@ final class CoronaTag: UIView {
     
     // MARK: UI Componenet
     private let coronaButton = CoronaButton(title: "코로나진료소")
-    private let secureButton = CoronaButton(title: "안심병원")
+    private let secureButton = CoronaButton(title: "국민안심병원")
     
     init() {
         super.init(frame: CGRect.zero)
@@ -44,7 +44,7 @@ extension CoronaTag {
         
         self.secureButton.snp.makeConstraints {
             $0.top.right.bottom.equalToSuperview()
-            $0.width.equalTo(77)
+            $0.width.equalTo(101)
         }
     }
     
@@ -96,6 +96,6 @@ extension CoronaTag {
     enum CoronaSearchType: String {
         case none
         case corona = "코로나진료소"
-        case secure = "안심병원"
+        case secure = "국민안심병원"
     }
 }

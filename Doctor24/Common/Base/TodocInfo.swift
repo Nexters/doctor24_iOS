@@ -21,6 +21,15 @@ final class TodocInfo {
     let category        = BehaviorSubject<Model.Todoc.MedicalType.Category>(value: .전체)
     var theme           = Theme.light
     
+    var isShowSecureGuide: Bool {
+        let pref = UserDefaults.standard
+        if pref.bool(forKey: "showGuideSecure") {
+            return pref.bool(forKey: "showGuideSecure")
+        }else{
+            return false
+        }
+    }
+    
     private let disposeBag = DisposeBag()
     private let locationManager = CLLocationManager()
     private init() {
@@ -42,6 +51,12 @@ final class TodocInfo {
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
             self.locationManager.startUpdatingLocation()
         }
+    }
+    
+    func showSecureGuide() {
+        let pref = UserDefaults.standard
+        pref.set(true, forKey: "showGuideSecure")
+        pref.synchronize()
     }
     
     private func initTheme() {

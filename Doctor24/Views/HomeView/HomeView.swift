@@ -279,7 +279,10 @@ final class HomeView: BaseView, PinDrawable {
                     if facilities.facilities.count > 1 {
                         ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))
                     } else if let facility = facilities.facilities.first {
-                        selected.iconImage = self.detailPin(name: facility.name, medicalType: facility.medicalType)
+                        selected.iconImage = self.detailPin(name: facility.name,
+                                                            medicalType: facility.medicalType,
+                                                            night: facility.nightTimeServe,
+                                                            emergency: facility.emergency)
                         selected.zIndex = 1
                         selected.isHideCollidedMarkers = true
                         selected.isForceShowIcon = true
@@ -343,7 +346,7 @@ extension HomeView {
         self.coronaTag.snp.makeConstraints {
             $0.left.equalTo(self.medicalSelectView)
             $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-            $0.width.equalTo(194)
+            $0.width.equalTo(218)
             $0.height.equalTo(32)
         }
         
@@ -630,7 +633,7 @@ extension HomeView {
             self.coronaTag.snp.remakeConstraints {
                 $0.left.equalTo(self.medicalSelectView)
                 $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-                $0.width.equalTo(194)
+                $0.width.equalTo(218)
                 $0.height.equalTo(32)
             }
         }

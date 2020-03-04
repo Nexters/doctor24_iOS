@@ -201,7 +201,10 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     private func focusPin(data: Model.Todoc.DetailFacility) {
         let marker = NMFMarker()
         marker.position = NMGLatLng(lat: data.latitude, lng: data.longitude)
-        marker.iconImage = self.detailPin(name: data.name, medicalType: data.medicalType)
+        marker.iconImage = self.detailPin(name: data.name,
+                                          medicalType: data.medicalType,
+                                          night: data.nightTimeServe,
+                                          emergency: data.emergency)
         marker.mapView = self.mapView
         marker.anchor = CGPoint(x: 0.5,y: 0.5)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
