@@ -62,7 +62,7 @@ extension HomeView {
     
     private func pinAreaRect(facilites: [Model.Todoc.Facilities]) -> (NMGLatLng, NMGLatLng)? {
         guard let type = facilites.first?.facilities.first?.medicalType,
-                  type == .corona else { return nil }
+                  type == .corona || type == .secure else { return nil }
         var maxLat: Double = 0.0
         var minLat: Double = 200.0
         var maxLong: Double = 0.0
