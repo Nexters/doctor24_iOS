@@ -160,9 +160,14 @@ final class HomeViewController: BaseViewController, View {
             }).disposed(by: self.disposeBag)
         
         self.facilities.filter { $0.count == 0 }
-            .withLatestFrom(self.homeView.medicalSelectView.medicalType)
-            .subscribe(onNext : { [weak self] type in
-                self?.view.toast("현재 운영중인 \(type == .hospital ? "병원":"약국")이 없습니다.", duration: 3)
+            .withLatestFrom(Observable.combineLatest(self.homeView.medicalSelectView.medicalType,
+                                                     self.homeView.coronaTag.coronaType))
+            .subscribe(onNext : { [weak self] medicalType, coronaType in
+                if coronaType == .none {
+                    self?.view.toast("현재 운영중인 \(medicalType == .hospital ? "병원":"약국")이 없습니다.", duration: 3)
+                } else {
+                    self?.view.toast("해당되는 병원이 없습니다.", duration: 3)
+                }
             }).disposed(by: self.disposeBag)
         
         self.homeView.detailFacility
