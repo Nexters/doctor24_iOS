@@ -103,6 +103,7 @@
 		A1F19D4F23C219A500FE4D6C /* Doctor24Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D4E23C219A500FE4D6C /* Doctor24Tests.swift */; };
 		A1F19D5A23C219A500FE4D6C /* Doctor24UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F19D5923C219A500FE4D6C /* Doctor24UITests.swift */; };
 		A1FBC7FB240FD279007311DF /* SecureGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FBC7FA240FD279007311DF /* SecureGuideViewController.swift */; };
+		A1FBC7FD240FE9F4007311DF /* UILabel+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1FBC7FC240FE9F4007311DF /* UILabel+.swift */; };
 		B7B4D6E45F6F9C13B55C1EA6 /* Pods_Doctor24.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1163A7B036FB4B1CF41A5852 /* Pods_Doctor24.framework */; };
 		DED460F3286F03418A2C7BFA /* Pods_Doctor24Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7510603173A6EADA2D1AE8 /* Pods_Doctor24Tests.framework */; };
 		E27363BA905E765BFAA918CA /* Pods_NetworkPlatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD21A8BC3283EDED471C661D /* Pods_NetworkPlatform.framework */; };
@@ -304,6 +305,7 @@
 		A1F19D5923C219A500FE4D6C /* Doctor24UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doctor24UITests.swift; sourceTree = "<group>"; };
 		A1F19D5B23C219A500FE4D6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A1FBC7FA240FD279007311DF /* SecureGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureGuideViewController.swift; sourceTree = "<group>"; };
+		A1FBC7FC240FE9F4007311DF /* UILabel+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+.swift"; sourceTree = "<group>"; };
 		B0731029B4147BCEBC7C2A5E /* Pods-Doctor24Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Doctor24Tests.debug.xcconfig"; path = "Target Support Files/Pods-Doctor24Tests/Pods-Doctor24Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		B252508438D9F20B77BC21CC /* Pods_Doctor24UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Doctor24UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF557F5FD545EE02F7D92D35 /* Pods-DomainTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DomainTests.release.xcconfig"; path = "Target Support Files/Pods-DomainTests/Pods-DomainTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -468,6 +470,7 @@
 				A1D52F1523DAE55100C2ED3D /* UIView+.swift */,
 				A17F84B923E706BF009EC3D7 /* UIColor+.swift */,
 				A17F84BB23E7087D009EC3D7 /* UIFont+.swift */,
+				A1FBC7FC240FE9F4007311DF /* UILabel+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1355,6 +1358,7 @@
 				6F67164D23C7FA2A000EE7F0 /* BaseViewController.swift in Sources */,
 				A17F84C423E72180009EC3D7 /* HomeView+Gesture.swift in Sources */,
 				A17F84C223E70FB3009EC3D7 /* OperatingHoursSetView.PickerView.swift in Sources */,
+				A1FBC7FD240FE9F4007311DF /* UILabel+.swift in Sources */,
 				A1900B0823EE5153005DA940 /* RetrySearchView.swift in Sources */,
 				A1D52F1423DAE19D00C2ED3D /* OperatingHoursSetView.EndView.swift in Sources */,
 				6F6FDA7423C70AB700B091DF /* NSObject+.swift in Sources */,

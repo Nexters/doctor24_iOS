@@ -54,6 +54,7 @@ final class SecureGuideViewController: FadeModalTransitionViewController {
     private let descLabel: UILabel = {
         let label = UILabel()
         label.text = "코로나19의 병원 내 감염을 막기 위해\n호흡기 환자와 비호흡기 환자의\n진료 과정을 분리한 병원입니다."
+        label.setLinespace(spacing: 2)
         label.textAlignment = .center
         label.font = .regular(size: 16)
         label.numberOfLines = 0
