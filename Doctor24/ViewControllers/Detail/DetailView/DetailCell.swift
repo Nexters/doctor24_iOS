@@ -55,6 +55,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
     var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
     var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
+    var secure: UIImageView = UIImageView(image: UIImage(named: "secureBadge"))
     
     private let hospitalTitle: UILabel = {
         let label = UILabel()
@@ -118,7 +119,9 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
             $0.left.equalToSuperview().offset(24)
             $0.right.equalTo(self.navigationButton.snp.left).offset(24)
             $0.bottom.equalTo(self.lineView.snp.top).offset(-16)
-            if data.medicalType == .hospital || data.medicalType == .corona {
+            if data.medicalType == .hospital ||
+                data.medicalType == .corona ||
+                data.medicalType == .secure{
                 $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             } else {
                 $0.top.equalTo(self.mapView.snp.bottom).offset(27)
@@ -126,11 +129,14 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         }
         
         guard data.medicalType == .hospital ||
-              data.medicalType == .corona else { return }
+              data.medicalType == .corona ||
+              data.medicalType == .secure
+        else { return }
         
         self.showBadge(night: data.nightTimeServe,
                        emergency: data.emergency,
-                       corona: data.medicalType == .corona)
+                       corona: data.medicalType == .corona,
+                       secure: data.medicalType == .secure)
     }
     
     private func setupUI(){
@@ -138,6 +144,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         self.emergency.isHidden = true
         self.night.isHidden = true
         self.corona.isHidden = true
+        self.secure.isHidden = true
             
         self.addSubview(self.mapView)
         self.addSubview(self.blockView)
@@ -146,6 +153,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         self.addSubview(self.navigationButton)
         self.addSubview(self.lineView)
         
+        self.typeStack.addArrangedSubview(self.secure)
         self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.normal)
         self.typeStack.addArrangedSubview(self.emergency)
