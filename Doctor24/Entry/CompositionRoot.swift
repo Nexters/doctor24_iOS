@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 struct AppDependency {
     let window: UIWindow
@@ -17,6 +18,7 @@ enum CompositionRoot {
     @available(iOS 13.0, *)
     static func resolve(scene: UIWindowScene) -> AppDependency {
         //Service
+        FirebaseApp.configure()
         
         //root view controller
         let navigationController = UINavigationController()
@@ -37,6 +39,8 @@ enum CompositionRoot {
     }
     
     static func resolve(window: UIWindow) -> AppDependency {
+        FirebaseApp.configure()
+        
         let navigationController = UINavigationController()
         navigationController.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController.navigationBar.shadowImage = UIImage()

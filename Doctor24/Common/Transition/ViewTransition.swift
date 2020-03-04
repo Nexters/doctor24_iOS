@@ -38,7 +38,7 @@ extension ViewTransition {
             let scenes = [scene]
             self.root.setViewControllers(scenes.map { $0.viewController }, animated: false)
             
-        case .detail, .around, .category, .cluster:
+        case .detail, .around, .category, .cluster, .secureGuide:
             if let present = self.root.topViewController?.presentedViewController {
                 present.present(scene.viewController, animated: true, completion: nil)
             } else {
