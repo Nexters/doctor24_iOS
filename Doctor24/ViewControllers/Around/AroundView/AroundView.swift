@@ -14,6 +14,7 @@ import RxCocoa
 
 final class AroundView: BaseView {
     // MARK: Properties
+    private let medicalType: Model.Todoc.MedicalType
     private var facilities: [Model.Todoc.PreviewFacility?]
     let tapFacility = PublishRelay<Model.Todoc.PreviewFacility?>()
     
@@ -67,7 +68,7 @@ final class AroundView: BaseView {
         view.backgroundColor = .white()
         
         let label = UILabel()
-        if facilities.first!!.medicalType == .corona {
+        if self.medicalType == .corona {
             label.text = "\(medicalTitle())를 찾을 수 없습니다."
         } else {
             label.text = "\(medicalTitle())을 찾을 수 없습니다."
@@ -86,8 +87,10 @@ final class AroundView: BaseView {
     }()
     
     required init(controlBy viewController: BaseViewController,
-                  facilities: [Model.Todoc.PreviewFacility]) {
+                  facilities: [Model.Todoc.PreviewFacility],
+                  type: Model.Todoc.MedicalType) {
         self.facilities = facilities
+        self.medicalType = type
         super.init(controlBy: viewController)
         self.registerCell()
         
@@ -173,7 +176,7 @@ final class AroundView: BaseView {
     }
     
     private func medicalTitle() -> String {
-        switch facilities.first!!.medicalType {
+        switch self.medicalType {
         case .hospital:
             return "병원"
         case .pharmacy:
@@ -212,7 +215,7 @@ extension AroundView: UITableViewDataSource {
         } else {
             let cell : AroundNoMoreCell = tableView.dequeueReusableCell(withIdentifier: "AroundNoMoreCell", for: indexPath) as! AroundNoMoreCell
             cell.selectionStyle = .none
-            if facilities.first!!.medicalType == .corona {
+            if self.medicalType == .corona {
                 cell.contentLabel.text = "더 이상 \(self.medicalTitle())가 없습니다."
             } else {
                 cell.contentLabel.text = "더 이상 \(self.medicalTitle())이 없습니다."

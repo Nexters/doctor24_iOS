@@ -15,12 +15,16 @@ import RxCocoa
 class AroundViewController: BaseViewController {
     // MARK: UI Component
     private lazy var aroundView = AroundView(controlBy: self,
-                                             facilities: facilities)
+                                             facilities: facilities,
+                                             type: self.type)
     private let facilities: [Model.Todoc.PreviewFacility]
+    private let type: Model.Todoc.MedicalType
     private let disposeBag = DisposeBag()
     
-    init(facilities: [Model.Todoc.PreviewFacility]) {
+    init(facilities: [Model.Todoc.PreviewFacility],
+         type: Model.Todoc.MedicalType) {
         self.facilities = facilities
+        self.type = type
         super.init(nibName: nil, bundle: nil)
         self.modalPresentationStyle = .fullScreen
     }

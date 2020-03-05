@@ -174,23 +174,41 @@ final class HomeViewController: BaseViewController, View {
             .subscribe(onNext:{ facility in
                 ViewTransition.shared.execute(scene: .detail(facility: facility))
             }).disposed(by: self.disposeBag)
-        
+
         self.homeView.aroundListButton.rx.tap
-            .withLatestFrom(self.facilities).map { facilities in
-                guard let current = try? TodocInfo.shared.currentLocation.value() else { return facilities.flatMap { $0.facilities } }
-                let currentLoc = CLLocation(latitude: current.latitude, longitude: current.longitude)
-                
-                return facilities
-                    .flatMap { $0.facilities }
-                    .sorted { (facility1, facility2) -> Bool in
-                    let distance1 = currentLoc.distance(from: CLLocation(latitude: facility1.latitude, longitude: facility1.longitude))
-                    let distance2 = currentLoc.distance(from: CLLocation(latitude: facility2.latitude, longitude: facility2.longitude))
-                    
-                    return distance1 < distance2
+            .withLatestFrom( Observable.combineLatest(self.facilities.map { $0.sortedFacilities()},
+                                                      self.homeView.medicalSelectView.medicalType,
+                                                      self.homeView.coronaTag.coronaType))
+            .subscribe(onNext: { data, medicalType, coronaType in
+                var type: Model.Todoc.MedicalType = .hospital
+                switch (medicalType, coronaType) {
+                case (_, .corona):
+                    type = .corona
+                case (_,.secure):
+                    type = .secure
+                case (.hospital, _):
+                    type = .hospital
+                case (.pharmacy, _):
+                    type = .pharmacy
+                default:
+                    break
                 }
-            }
-            .subscribe(onNext: { data in
-                ViewTransition.shared.execute(scene: .around(facilities: data))
+                ViewTransition.shared.execute(scene: .around(facilities: data, type: type))
             }).disposed(by: self.disposeBag)
+    }
+}
+
+fileprivate extension Array where Element == Model.Todoc.Facilities {
+    func sortedFacilities() -> [Model.Todoc.PreviewFacility] {
+        guard let current = try? TodocInfo.shared.currentLocation.value() else { return self.flatMap { $0.facilities } }
+        let currentLoc = CLLocation(latitude: current.latitude, longitude: current.longitude)
+        
+        return self.flatMap { $0.facilities }
+            .sorted { (facility1, facility2) -> Bool in
+                let distance1 = currentLoc.distance(from: CLLocation(latitude: facility1.latitude, longitude: facility1.longitude))
+                let distance2 = currentLoc.distance(from: CLLocation(latitude: facility2.latitude, longitude: facility2.longitude))
+                
+                return distance1 < distance2
+        }
     }
 }

@@ -13,7 +13,7 @@ import UIKit
 enum Scene {
     case main
     case detail(facility: Model.Todoc.PreviewFacility)
-    case around(facilities: [Model.Todoc.PreviewFacility])
+    case around(facilities: [Model.Todoc.PreviewFacility], type: Model.Todoc.MedicalType)
     case category
     case cluster(facilities: [Model.Todoc.PreviewFacility])
     case secureGuide
@@ -41,8 +41,9 @@ extension Scene {
             
             return vc
             
-        case .around(let facilities):
-            return AroundViewController(facilities: facilities)
+        case .around(let facilities, let type):
+            return AroundViewController(facilities: facilities,
+                                        type: type)
             
         case .category:
             return CategoryViewController()
