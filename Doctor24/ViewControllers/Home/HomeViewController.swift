@@ -65,6 +65,10 @@ final class HomeViewController: BaseViewController, View {
                 cameraUpdate.animation = .linear
                 self?.homeView.mapControlView.mapView.moveCamera(cameraUpdate)
             })
+            .flatMap { [weak self] data -> Observable<(CLLocationCoordinate2D, Date, Date)> in
+                guard let self = self else { return Observable.just(data) }
+                return self.homeView.moveToCurrentCamera().map{ _ in data }
+            }
             .map { [weak self] location, startTime, endTime in
                 let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
                 return HomeViewReactor.Action.viewDidLoad(location: location,

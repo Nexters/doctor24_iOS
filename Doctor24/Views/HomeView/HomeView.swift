@@ -242,7 +242,10 @@ final class HomeView: BaseView, PinDrawable {
         
         Observable.merge(self.medicalSelectView.medicalType.asObservable().do(onNext: { _ in self.coronaTag.onNormalButtons() }),
                          self.coronaTag.coronaType.filter { $0 != .none }.map { $0.medicalType() }.unwrap(),
-                         self.coronaTag.coronaType.filter { $0 == .none }.withLatestFrom(self.medicalSelectView.medicalType))
+                         self.coronaTag.coronaType.filter { $0 == .none }
+                            .flatMap { [weak self] _ in
+                                self?.moveToCurrentCamera() ?? .empty()
+                         }.withLatestFrom(self.medicalSelectView.medicalType))
             .bind(to: self.medicalType)
             .disposed(by: self.disposeBag)
         
@@ -300,21 +303,36 @@ final class HomeView: BaseView, PinDrawable {
                 }
             }).disposed(by: self.disposeBag)
         
-        self.coronaTag.coronaType
-            .subscribe(onNext: { [weak self] state in
-                if state == .none {
-//                    self?.medicalSelectView.isMedicalLock = false
-                    self?.revertCoronaView()
-                } else {
-//                    self?.medicalSelectView.isMedicalLock = true
-                    self?.convertCoronaView()
-                }
-            }).disposed(by: self.disposeBag)
+        self.medicalType.subscribe(onNext: { [weak self] type in
+            if type == .hospital || type == .pharmacy {
+                self?.revertCoronaView()
+            } else {
+                self?.convertCoronaView()
+            }
+        }).disposed(by: self.disposeBag)
         
         TodocInfo.shared.category
             .subscribe(onNext: { [weak self] category in
                 self?.activeCategory.isHidden = category == .전체 ? true : false
             }).disposed(by: self.disposeBag)
+    }
+    
+    func moveToCurrentCamera() -> Observable<Void>{
+        return Observable.create{ observer in
+            let dispose = TodocInfo.shared.currentLocation
+                .subscribe(onNext : { [weak self] location in
+                    let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: location.latitude, lng: location.longitude), zoomTo: 14)
+                    cameraUpdate.animation = .linear
+                    self?.mapControlView.mapView.moveCamera(cameraUpdate, completion: { _ in
+                        observer.onNext(())
+                        observer.onCompleted()
+                    })
+                })
+            
+            return Disposables.create{
+                dispose.dispose()
+            }
+        }
     }
 }
 
