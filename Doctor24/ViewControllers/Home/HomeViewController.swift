@@ -55,60 +55,8 @@ final class HomeViewController: BaseViewController, View {
     }
     
     func bind(reactor: HomeViewReactor) {
-        let selectMedical = self.homeView.medicalSelectView.medicalType
-            .withLatestFrom(self.homeView.coronaTag.coronaType) { ($0,$1) }.filter { $1 == .none }.map { $0.0 }
-        
-        Observable.combineLatest(selectMedical,
-                                 Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
-                                                          TodocInfo.shared.endTimeFilter.unwrap()),
-                                 TodocInfo.shared.category,
-                                 self.homeView.search.mapToVoid()) {($0, $1.0, $1.1, $2, $3) }
-            .debounce(.microseconds(500), scheduler: MainScheduler.instance)
-            .skip(1)
-            .do(onNext: { [weak self] _ in
-                self?.homeView.retrySearchView.hidden(true)
-            })
-            .map { [weak self] (type, startTime, endTime, category, _) -> HomeViewReactor.Action in
-            let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
-            let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
-            let loc = CLLocationCoordinate2D(latitude: lat,
-                                             longitude: lng)
-            let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
-            
-            return HomeViewReactor.Action.facilites(type: type,
-                                                    location: loc,
-                                                    zoomLevel: self?.zoomLevel ?? 0,
-                                                    day: day,
-                                                    category: type == .pharmacy ? nil : category)
-        }
-        .bind(to: reactor.action)
-        .disposed(by: self.disposeBag)
-        
-        self.homeView.coronaSearch
-            .debounce(.microseconds(500), scheduler: MainScheduler.instance)
-            .do(onNext: { [weak self] state in
-                self?.homeView.retrySearchView.hidden(true)
-                if state == .secure && TodocInfo.shared.isShowSecureGuide == false {
-                    ViewTransition.shared.execute(scene: .secureGuide)
-                }
-            })
-            .map { [weak self] state in
-                let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
-                let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
-                let loc = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-                
-                if state == .corona {
-                    return HomeViewReactor.Action.corona(location: loc)
-                } else {
-                    return HomeViewReactor.Action.secure(location: loc)
-                }
-                
-            }.bind(to: reactor.action)
-            .disposed(by: self.disposeBag)
-        
-        Observable.merge(TodocInfo.shared.currentLocation.filter { $0.isValid() }.take(1),
-                         self.homeView.coronaTag.coronaType.filter { $0 == .none }.withLatestFrom(TodocInfo.shared.currentLocation)
-        )
+        // 초기 호출
+        TodocInfo.shared.currentLocation.filter { $0.isValid() }.take(1)
             .withLatestFrom(Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
                                                      TodocInfo.shared.endTimeFilter.unwrap())) { ($0,$1.0,$1.1) }
             .skip(1)
@@ -125,6 +73,38 @@ final class HomeViewController: BaseViewController, View {
             }
             .bind(to: reactor.action)
             .disposed(by: self.disposeBag)
+        
+        //(병원, 약국) 시간필터, 카테고리, 재탐색
+        Observable.combineLatest(self.homeView.medicalType,
+                                 Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
+                                                          TodocInfo.shared.endTimeFilter.unwrap()),
+                                 TodocInfo.shared.category,
+                                 self.homeView.search.mapToVoid()) {($0, $1.0, $1.1, $2, $3) }
+            .debounce(.microseconds(500), scheduler: MainScheduler.instance)
+            .skip(1)
+            .do(onNext: { [weak self] _ in
+                self?.homeView.retrySearchView.hidden(true)
+            })
+            .map { [weak self] (type, startTime, endTime, category, _) -> HomeViewReactor.Action in
+                let lat = self?.homeView.mapControlView.mapView.cameraPosition.target.lat ?? 0.0
+                let lng = self?.homeView.mapControlView.mapView.cameraPosition.target.lng ?? 0.0
+                let loc = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+                let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
+                
+                if type == .corona {
+                    return HomeViewReactor.Action.corona(location: loc)
+                } else if type == .secure {
+                    return HomeViewReactor.Action.secure(location: loc)
+                } else {
+                    return HomeViewReactor.Action.facilites(type: type,
+                                                            location: loc,
+                                                            zoomLevel: self?.zoomLevel ?? 0,
+                                                            day: day,
+                                                            category: type == .pharmacy ? nil : category)
+                }
+        }
+        .bind(to: reactor.action)
+        .disposed(by: self.disposeBag)
         
         reactor.state.asObservable()
             .map{ $0.pins }
