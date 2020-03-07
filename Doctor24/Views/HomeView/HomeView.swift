@@ -32,7 +32,6 @@ final class HomeView: BaseView, PinDrawable {
     private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     private let disposeBag = DisposeBag()
     
-    
     // MARK: UI Componenet
     let coronaTag = CoronaTag()
     

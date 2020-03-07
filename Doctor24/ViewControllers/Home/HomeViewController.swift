@@ -95,11 +95,12 @@ final class HomeViewController: BaseViewController, View {
                 let loc = CLLocationCoordinate2D(latitude: lat, longitude: lng)
                 let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
                 
-                if type == .corona {
+                switch type {
+                case .corona:
                     return HomeViewReactor.Action.corona(location: loc)
-                } else if type == .secure {
+                case .secure:
                     return HomeViewReactor.Action.secure(location: loc)
-                } else {
+                default:
                     return HomeViewReactor.Action.facilites(type: type,
                                                             location: loc,
                                                             zoomLevel: self?.zoomLevel ?? 0,

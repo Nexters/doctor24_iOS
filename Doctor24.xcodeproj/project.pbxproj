@@ -1841,7 +1841,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.22;
+				MARKETING_VERSION = 2.1.30;
 				PRODUCT_BUNDLE_IDENTIFIER = com.JHH.Doctor24;
 				PRODUCT_NAME = "토닥토닥";
 				PROVISIONING_PROFILE_SPECIFIER = Todoc_develop;
@@ -1864,7 +1864,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.22;
+				MARKETING_VERSION = 2.1.30;
 				PRODUCT_BUNDLE_IDENTIFIER = com.JHH.Doctor24;
 				PRODUCT_NAME = "토닥토닥";
 				PROVISIONING_PROFILE_SPECIFIER = Todoc_distri;
