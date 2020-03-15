@@ -5,7 +5,7 @@
 //  Created by Haehyeon Jeong on 2020/03/03.
 //  Copyright © 2020 JHH. All rights reserved.
 //
-
+import Domain
 import UIKit
 import RxSwift
 import RxCocoa
@@ -29,7 +29,6 @@ final class CoronaTag: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
 
 extension CoronaTag {
     private func setupUI() {
@@ -90,6 +89,11 @@ extension CoronaTag {
                 }
             }).disposed(by: self.disposeBag)
     }
+    
+    func onNormalButtons() {
+        self.secureButton.buttonState.accept(.normal)
+        self.coronaButton.buttonState.accept(.normal)
+    }
 }
 
 extension CoronaTag {
@@ -97,5 +101,16 @@ extension CoronaTag {
         case none
         case corona = "코로나진료소"
         case secure = "국민안심병원"
+        
+        func medicalType() -> Model.Todoc.MedicalType? {
+            switch self {
+            case .corona:
+                return .corona
+            case .secure:
+                return .secure
+            default :
+                return nil
+            }
+        }
     }
 }
