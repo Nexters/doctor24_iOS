@@ -95,18 +95,12 @@ final class HomeViewController: BaseViewController, View {
                 let loc = CLLocationCoordinate2D(latitude: lat, longitude: lng)
                 let day = Model.Todoc.Day(starTime: startTime.convertParam, endTime: endTime.convertParam)
                 
-                switch type {
-                case .corona:
-                    return HomeViewReactor.Action.corona(location: loc)
-                case .secure:
-                    return HomeViewReactor.Action.secure(location: loc)
-                default:
-                    return HomeViewReactor.Action.facilites(type: type,
-                                                            location: loc,
-                                                            zoomLevel: self?.zoomLevel ?? 0,
-                                                            day: day,
-                                                            category: type == .pharmacy ? nil : category)
-                }
+                return HomeViewReactor.Action.facilites(type: type,
+                                                        location: loc,
+                                                        zoomLevel: self?.zoomLevel ?? 0,
+                                                        day: day,
+                                                        category: type == .pharmacy ? nil : category)
+                
         }
         .bind(to: reactor.action)
         .disposed(by: self.disposeBag)
@@ -131,7 +125,6 @@ final class HomeViewController: BaseViewController, View {
             .skip(1)
             .subscribe(onNext: { type, category in
                 self.homeView.categoryButton.isHidden = type == .hospital ? false : true
-                self.homeView.coronaButtonHide(type != .hospital)
                 if type == .pharmacy {
                     self.homeView.activeCategory.isHidden = true
                 } else if type == .hospital && category != .전체 {
@@ -145,14 +138,9 @@ final class HomeViewController: BaseViewController, View {
             }).disposed(by: self.disposeBag)
         
         self.facilities.filter { $0.count == 0 }
-            .withLatestFrom(Observable.combineLatest(self.homeView.medicalSelectView.medicalType,
-                                                     self.homeView.coronaTag.coronaType))
-            .subscribe(onNext : { [weak self] medicalType, coronaType in
-                if coronaType == .none {
-                    self?.view.toast("현재 운영중인 \(medicalType == .hospital ? "병원":"약국")이 없습니다.", duration: 3)
-                } else {
-                    self?.view.toast("해당되는 병원이 없습니다.", duration: 3)
-                }
+            .withLatestFrom(self.homeView.medicalSelectView.medicalType)
+            .subscribe(onNext : { [weak self] medicalType in
+                self?.view.toast("현재 운영중인 \(medicalType == .hospital ? "병원":"약국")이 없습니다.", duration: 3)
             }).disposed(by: self.disposeBag)
         
         self.homeView.detailFacility
@@ -162,18 +150,13 @@ final class HomeViewController: BaseViewController, View {
 
         self.homeView.aroundListButton.rx.tap
             .withLatestFrom( Observable.combineLatest(self.facilities.map { $0.sortedFacilities()},
-                                                      self.homeView.medicalSelectView.medicalType,
-                                                      self.homeView.coronaTag.coronaType))
-            .subscribe(onNext: { data, medicalType, coronaType in
+                                                      self.homeView.medicalSelectView.medicalType))
+            .subscribe(onNext: { data, medicalType in
                 var type: Model.Todoc.MedicalType = .hospital
-                switch (medicalType, coronaType) {
-                case (_, .corona):
-                    type = .corona
-                case (_,.secure):
-                    type = .secure
-                case (.hospital, _):
+                switch medicalType {
+                case .hospital:
                     type = .hospital
-                case (.pharmacy, _):
+                case .pharmacy:
                     type = .pharmacy
                 default:
                     break

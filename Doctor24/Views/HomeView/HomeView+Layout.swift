@@ -43,15 +43,8 @@ extension HomeView {
             $0.height.equalTo(58)
         }
         
-        self.coronaTag.snp.makeConstraints {
-            $0.left.equalTo(self.medicalSelectView)
-            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-            $0.width.equalTo(218)
-            $0.height.equalTo(32)
-        }
-        
         self.retrySearchView.snp.makeConstraints {
-            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(72)
+            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(34)
             $0.centerX.equalToSuperview()
             $0.width.equalTo(110)
             $0.height.equalTo(44)
@@ -80,7 +73,6 @@ extension HomeView {
         self.addSubview(self.cameraButton)
         self.addSubview(self.categoryButton)
         self.addSubview(self.activeCategory)
-        self.addSubview(self.coronaTag)
         self.addSubview(self.medicalSelectView)
         self.addSubview(self.retrySearchView)
         self.addSubview(self.preview)
@@ -190,12 +182,6 @@ extension HomeView {
     }
     
     func onOperatingView() {
-        guard self.coronaTag.coronaType.value == .none else {
-            let type = self.coronaTag.coronaType.value.rawValue
-            self.toast("\(type) 보기 중에는 사용할 수 없습니다.\n\(type) 태그를 해제해주세요", duration: 3)
-            return
-        }
-        
         self.operatingView.viewState.onNext(.open)
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height - (396 + bottomSafeAreaInset))
@@ -314,37 +300,6 @@ extension HomeView {
                         refresh.alpha = 1.0
                         title.textColor = .grey1()
                         self.categoryButton.alpha = 1.0
-                        self.layoutIfNeeded()
-        })
-    }
-    
-    func coronaButtonHide(_ hide: Bool) {
-        var alpha: CGFloat = 0.0
-        if hide {
-            alpha = 0.0
-            self.coronaTag.snp.remakeConstraints {
-                $0.left.equalTo(self.medicalSelectView)
-                $0.top.equalTo(self.medicalSelectView.snp.top)
-                $0.width.equalTo(0)
-                $0.height.equalTo(0)
-            }
-        } else {
-            alpha = 1.0
-            self.coronaTag.snp.remakeConstraints {
-                $0.left.equalTo(self.medicalSelectView)
-                $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-                $0.width.equalTo(218)
-                $0.height.equalTo(32)
-            }
-        }
-        
-        UIView.animate(withDuration: 0.5,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0,
-                       options: [.curveLinear],
-                       animations: {
-                        self.coronaTag.alpha = alpha
                         self.layoutIfNeeded()
         })
     }
