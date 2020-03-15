@@ -52,8 +52,8 @@ final class CoronaButton: UIButton {
         
         self.rx.tap
             .withLatestFrom(buttonState)
-            .map{ state in
-                return state == .focused ? ButtonState.normal : ButtonState.focused
+            .map{ _ in
+                .focused
             }.bind(to: self.buttonState)
             .disposed(by: self.disposeBag)
     }

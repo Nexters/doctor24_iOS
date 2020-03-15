@@ -32,6 +32,7 @@ extension Model.Todoc {
         case animal
         case corona
         case secure
+        case mask
     }
     
     public enum DayType: String, Codable {

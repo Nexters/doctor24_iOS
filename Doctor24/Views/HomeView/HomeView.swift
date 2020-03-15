@@ -28,7 +28,6 @@ final class HomeView: BaseView, PinDrawable {
     var selectedMarker    = Set<NMFMarker>()
     var panGestureRecognizer: UIPanGestureRecognizer!
     
-    private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
@@ -49,15 +48,18 @@ final class HomeView: BaseView, PinDrawable {
         return mapView
     }()
     
-    let cameraButton: UIButton = {
+    let coronaButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .white()
+        button.setImage(UIImage(named: "btnImgCorona19"), for: .normal)
         button.setShadow(radius: 30,
                          shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
                          shadowOffset: CGSize(width: 0, height: 2),
                          shadowBlur: 6)
         return button
     }()
+    
+    let cameraButton = CameraButton()
     
     let categoryButton: UIButton = {
         let button = UIButton()
@@ -130,16 +132,7 @@ final class HomeView: BaseView, PinDrawable {
         return btn
     }()
     
-    let retrySearchView: RetrySearchView = {
-        let view = RetrySearchView()
-        view.backgroundColor = .white()
-        view.setShadow(radius: 22,
-                       shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
-                       shadowOffset: CGSize(width: 0, height: 2),
-                       shadowBlur: 6)
-        view.hidden(true)
-        return view
-    }()
+    let retrySearchView = RetrySearchView()
     
     deinit {
         self.removeGesture()
@@ -189,41 +182,18 @@ final class HomeView: BaseView, PinDrawable {
             .disposed(by: self.disposeBag)
         
         self.panGestureMap.subscribe(onNext:{ [weak self] in
-            self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
+            self?.cameraButton.cameraType.onNext(.normal)
             self?.retrySearchView.hidden(false)
         }).disposed(by: self.disposeBag)
         
-        self.cameraType
+        self.cameraButton.cameraType
             .subscribe(onNext: { [weak self] type in
-                switch type {
-                case .normal:
-                    self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
-                case .direction:
-                    self?.cameraButton.setImage(UIImage(named: "camera2"), for: .normal)
-                case .compass:
-                    self?.cameraButton.setImage(UIImage(named: "camera3"), for: .normal)
-                default:
-                    break
-                }
-                
                 self?.mapControlView.positionMode = type
             }).disposed(by: self.disposeBag)
         
-        self.cameraButton.rx.tap
-            .withLatestFrom(self.cameraType)
-            .map { type -> NMFMyPositionMode in
-                switch type {
-                case .normal:
-                    return .direction
-                case .direction:
-                    return .compass
-                case .compass:
-                    return .normal
-                default:
-                    return .normal
-                }}
-            .bind(to: self.cameraType)
-            .disposed(by: self.disposeBag)
+        self.coronaButton.rx.tap.subscribe(onNext: {
+            ViewTransition.shared.execute(scene: .corona)
+        }).disposed(by: self.disposeBag)
         
         self.medicalSelectView.medicalType
             .bind(to: self.medicalType)
@@ -259,7 +229,7 @@ final class HomeView: BaseView, PinDrawable {
                 
                 self.dismissPreview()
                 if let selected = overlay as? NMFMarker {
-                    self.cameraType.onNext(.normal)
+                    self.cameraButton.cameraType.onNext(.normal)
                     let facilities = selected.userInfo["tag"] as! Model.Todoc.Facilities
                     if facilities.facilities.count > 1 {
                         ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))

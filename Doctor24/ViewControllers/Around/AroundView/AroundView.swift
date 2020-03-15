@@ -177,6 +177,8 @@ final class AroundView: BaseView {
     
     private func medicalTitle() -> String {
         switch self.medicalType {
+        case .mask:
+            return "마스크"
         case .hospital:
             return "병원"
         case .pharmacy:

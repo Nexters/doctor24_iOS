@@ -27,7 +27,12 @@ final class RetrySearchView: UIView {
     
     init() {
         super.init(frame: CGRect.zero)
-        self.backgroundColor = .white
+        self.backgroundColor = .white()
+        self.setShadow(radius: 22,
+                       shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
+                       shadowOffset: CGSize(width: 0, height: 2),
+                       shadowBlur: 6)
+        self.hidden(true)
         self.alpha = 0
         self.addSubviews()
         self.setLayout()

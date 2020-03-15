@@ -17,6 +17,7 @@ enum Scene {
     case category
     case cluster(facilities: [Model.Todoc.PreviewFacility])
     case secureGuide
+    case corona
 }
 
 extension Scene {
@@ -53,6 +54,9 @@ extension Scene {
             
         case .secureGuide:
             return SecureGuideViewController()
+            
+        case .corona:
+            return CoronaViewController()
         }
     }
 }

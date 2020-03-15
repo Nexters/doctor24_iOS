@@ -60,11 +60,17 @@
 		A14DDF1423EC5E82009A1DD9 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF1323EC5E82009A1DD9 /* DetailView.swift */; };
 		A14DDF1623EC6535009A1DD9 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF1523EC6535009A1DD9 /* TopBar.swift */; };
 		A14F9C61240FA491009E31E5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A14F9C60240FA491009E31E5 /* GoogleService-Info.plist */; };
+		A154D51D241E29630027F91F /* CoronaMaskInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A154D51C241E29630027F91F /* CoronaMaskInfoView.swift */; };
+		A154D51F241E3C910027F91F /* CameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A154D51E241E3C910027F91F /* CameraButton.swift */; };
+		A154D521241E541E0027F91F /* CoronaView+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A154D520241E541E0027F91F /* CoronaView+Gesture.swift */; };
 		A17B167823F2E21B0036826A /* ClusterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17B167723F2E21B0036826A /* ClusterCell.swift */; };
 		A17F84BA23E706BF009EC3D7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84B923E706BF009EC3D7 /* UIColor+.swift */; };
 		A17F84BC23E7087D009EC3D7 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84BB23E7087D009EC3D7 /* UIFont+.swift */; };
 		A17F84C223E70FB3009EC3D7 /* OperatingHoursSetView.PickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84C123E70FB3009EC3D7 /* OperatingHoursSetView.PickerView.swift */; };
 		A17F84C423E72180009EC3D7 /* HomeView+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84C323E72180009EC3D7 /* HomeView+Gesture.swift */; };
+		A17FC4DB241E0E280023BA36 /* CoronaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FC4DA241E0E280023BA36 /* CoronaViewController.swift */; };
+		A17FC4DD241E12200023BA36 /* CoronaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FC4DC241E12200023BA36 /* CoronaView.swift */; };
+		A17FC4E0241E133C0023BA36 /* CoronaView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17FC4DF241E133C0023BA36 /* CoronaView+Layout.swift */; };
 		A1900B0623EE4B38005DA940 /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = A1900B0523EE4B38005DA940 /* View.xib */; };
 		A1900B0823EE5153005DA940 /* RetrySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1900B0723EE5153005DA940 /* RetrySearchView.swift */; };
 		A1900B0D23F020CA005DA940 /* AroundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1900B0C23F020CA005DA940 /* AroundViewController.swift */; };
@@ -257,11 +263,17 @@
 		A14DDF1323EC5E82009A1DD9 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		A14DDF1523EC6535009A1DD9 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
 		A14F9C60240FA491009E31E5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A154D51C241E29630027F91F /* CoronaMaskInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoronaMaskInfoView.swift; sourceTree = "<group>"; };
+		A154D51E241E3C910027F91F /* CameraButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraButton.swift; sourceTree = "<group>"; };
+		A154D520241E541E0027F91F /* CoronaView+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoronaView+Gesture.swift"; sourceTree = "<group>"; };
 		A17B167723F2E21B0036826A /* ClusterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCell.swift; sourceTree = "<group>"; };
 		A17F84B923E706BF009EC3D7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		A17F84BB23E7087D009EC3D7 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		A17F84C123E70FB3009EC3D7 /* OperatingHoursSetView.PickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatingHoursSetView.PickerView.swift; sourceTree = "<group>"; };
 		A17F84C323E72180009EC3D7 /* HomeView+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeView+Gesture.swift"; sourceTree = "<group>"; };
+		A17FC4DA241E0E280023BA36 /* CoronaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoronaViewController.swift; sourceTree = "<group>"; };
+		A17FC4DC241E12200023BA36 /* CoronaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoronaView.swift; sourceTree = "<group>"; };
+		A17FC4DF241E133C0023BA36 /* CoronaView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CoronaView+Layout.swift"; path = "Doctor24/ViewControllers/CoronaView+Layout.swift"; sourceTree = SOURCE_ROOT; };
 		A1900B0523EE4B38005DA940 /* View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
 		A1900B0723EE5153005DA940 /* RetrySearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetrySearchView.swift; sourceTree = "<group>"; };
 		A1900B0C23F020CA005DA940 /* AroundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AroundViewController.swift; sourceTree = "<group>"; };
@@ -440,6 +452,7 @@
 		6F6FDA6B23C708EC00B091DF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A17FC4D9241E0E190023BA36 /* Corona */,
 				A1FBC7F9240FD263007311DF /* Guide */,
 				A12210F423F2D9DE00BC33B8 /* ClusterList */,
 				A133D6BF23F1906D00A97BB3 /* Category */,
@@ -622,8 +635,10 @@
 				A1900B0723EE5153005DA940 /* RetrySearchView.swift */,
 				A1D94DC123E9AF810047F5DA /* PreviewFacilityView.swift */,
 				A12C34A323DD99C100BF4D06 /* MedicalSelectView.swift */,
+				A154D51E241E3C910027F91F /* CameraButton.swift */,
 				A1C6B6A3240552DA00C766F6 /* CoronaButton.swift */,
 				A145A109240E823200F3E0B3 /* CoronaStackView.swift */,
+				A154D51C241E29630027F91F /* CoronaMaskInfoView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -659,6 +674,24 @@
 			path = OperatingHoursSetView;
 			sourceTree = "<group>";
 		};
+		A17FC4D9241E0E190023BA36 /* Corona */ = {
+			isa = PBXGroup;
+			children = (
+				A17FC4DA241E0E280023BA36 /* CoronaViewController.swift */,
+			);
+			path = Corona;
+			sourceTree = "<group>";
+		};
+		A17FC4DE241E13200023BA36 /* CoronaView */ = {
+			isa = PBXGroup;
+			children = (
+				A17FC4DC241E12200023BA36 /* CoronaView.swift */,
+				A17FC4DF241E133C0023BA36 /* CoronaView+Layout.swift */,
+				A154D520241E541E0027F91F /* CoronaView+Gesture.swift */,
+			);
+			path = CoronaView;
+			sourceTree = "<group>";
+		};
 		A1900B0923F020A1005DA940 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -690,6 +723,7 @@
 		A1AEAE4F23C9A202002B5AB2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A17FC4DE241E13200023BA36 /* CoronaView */,
 				A17F84C523E722C6009EC3D7 /* HomeView */,
 				A17F84C623E722CF009EC3D7 /* OperatingHoursSetView */,
 				A145A108240E819100F3E0B3 /* Component */,
@@ -1370,6 +1404,7 @@
 				A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */,
 				A12210F923F2DA1600BC33B8 /* ClusterListView.swift in Sources */,
 				A1D52F1623DAE55100C2ED3D /* UIView+.swift in Sources */,
+				A17FC4DD241E12200023BA36 /* CoronaView.swift in Sources */,
 				A17F84BC23E7087D009EC3D7 /* UIFont+.swift in Sources */,
 				A1900B0F23F020E7005DA940 /* AroundView.swift in Sources */,
 				6FE7DD6623D2D79A00B33BE3 /* HomeViewReactor.swift in Sources */,
@@ -1384,19 +1419,24 @@
 				6FC1B2F423C719D900BCC9ED /* Rx+NMFMapView.swift in Sources */,
 				A1C3702C23DC1C90001E60C8 /* Rx+CLLocationManager.swift in Sources */,
 				A1D94DC223E9AF810047F5DA /* PreviewFacilityView.swift in Sources */,
+				A154D521241E541E0027F91F /* CoronaView+Gesture.swift in Sources */,
 				A14DDF0B23EC47DF009A1DD9 /* DetailViewController.swift in Sources */,
+				A154D51D241E29630027F91F /* CoronaMaskInfoView.swift in Sources */,
 				A1D52F1223DAE17600C2ED3D /* OperatingHoursSetView.StartView.swift in Sources */,
 				A1CFFFD823ED730400FA47E4 /* DetailCell.swift in Sources */,
 				A1F19D3A23C219A200FE4D6C /* SceneDelegate.swift in Sources */,
 				A133D6C423F190A800A97BB3 /* CategoryView.swift in Sources */,
 				6F67164B23C7F9F7000EE7F0 /* BaseView.swift in Sources */,
 				A1CCA66E23E870F3000DE602 /* HomeView+Markers.swift in Sources */,
+				A17FC4DB241E0E280023BA36 /* CoronaViewController.swift in Sources */,
 				6F6FDA7023C70A3200B091DF /* ViewTransition.swift in Sources */,
+				A154D51F241E3C910027F91F /* CameraButton.swift in Sources */,
 				A1AEAE5423CB0AF6002B5AB2 /* ViewMenuable.swift in Sources */,
 				A14DDF0D23EC4893009A1DD9 /* DetailViewReactor.swift in Sources */,
 				A133D6C123F1908100A97BB3 /* CategoryViewController.swift in Sources */,
 				A1BE11BC2413491500D85FF9 /* HomeView+Layout.swift in Sources */,
 				A145A10A240E823200F3E0B3 /* CoronaStackView.swift in Sources */,
+				A17FC4E0241E133C0023BA36 /* CoronaView+Layout.swift in Sources */,
 				A14DDF1423EC5E82009A1DD9 /* DetailView.swift in Sources */,
 				6FC1B2F723C71A3E00BCC9ED /* RxNMFMapViewDelegateProxy.swift in Sources */,
 				A17F84BA23E706BF009EC3D7 /* UIColor+.swift in Sources */,

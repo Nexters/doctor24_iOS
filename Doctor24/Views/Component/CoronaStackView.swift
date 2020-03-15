@@ -12,13 +12,19 @@ import RxCocoa
 
 final class CoronaTag: UIView {
     // MARK: Properties
-    let coronaType = BehaviorRelay<CoronaSearchType>(value: .none)
+    let coronaType = BehaviorRelay<CoronaSearchType>(value: .mask)
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
+    private let maskButton   = CoronaButton(title: "공적마스크")
     private let coronaButton = CoronaButton(title: "코로나진료소")
     private let secureButton = CoronaButton(title: "국민안심병원")
-    
+    private let containerStack: UIStackView = {
+        let stkView = UIStackView()
+        stkView.axis = .horizontal
+        stkView.spacing = 18
+        return stkView
+    }()
     init() {
         super.init(frame: CGRect.zero)
         self.setupUI()
@@ -32,62 +38,57 @@ final class CoronaTag: UIView {
 
 extension CoronaTag {
     private func setupUI() {
-        self.addSubview(self.coronaButton)
-        self.addSubview(self.secureButton)
+        self.addSubview(self.containerStack)
+        self.containerStack.addArrangedSubview(self.maskButton)
+        self.containerStack.addArrangedSubview(self.coronaButton)
+        self.containerStack.addArrangedSubview(self.secureButton)
+        
+        self.containerStack.snp.makeConstraints {
+            $0.left.right.bottom.top.equalToSuperview()
+        }
+        
+        self.maskButton.snp.makeConstraints {
+            $0.width.equalTo(89)
+        }
         
         self.coronaButton.snp.makeConstraints {
-            $0.top.left.bottom.equalToSuperview()
-            $0.right.equalTo(self.secureButton.snp.left).offset(-16)
             $0.width.equalTo(101)
         }
         
         self.secureButton.snp.makeConstraints {
-            $0.top.right.bottom.equalToSuperview()
             $0.width.equalTo(101)
         }
     }
     
     private func setBind() {
-        let secureState = self.secureButton.buttonState
-        self.coronaButton.buttonState
-            .flatMap { coronaState in
-                secureState.map { (coronaState, $0) }.take(1)
+        self.coronaType.subscribe(onNext: { [weak self] state in
+            switch state{
+            case .corona:
+                self?.coronaButton.buttonState.accept(.focused)
+                self?.maskButton.buttonState.accept(.normal)
+                self?.secureButton.buttonState.accept(.normal)
+            case .mask:
+                self?.maskButton.buttonState.accept(.focused)
+                self?.coronaButton.buttonState.accept(.normal)
+                self?.secureButton.buttonState.accept(.normal)
+            case .secure:
+                self?.secureButton.buttonState.accept(.focused)
+                self?.coronaButton.buttonState.accept(.normal)
+                self?.maskButton.buttonState.accept(.normal)
             }
-            .subscribe(onNext:  { [weak self] (coronaState, secureState) in
-                guard let self = self else { return }
-                switch (coronaState,secureState) {
-                case (.focused,.normal):
-                    self.coronaType.accept(.corona)
-                case (.normal, .focused):
-                    self.coronaType.accept(.secure)
-                case (.focused, .focused):
-                    self.coronaType.accept(.corona)
-                    self.secureButton.buttonState.accept(.normal)
-                case (.normal, .normal):
-                    self.coronaType.accept(.none)
-                }
-            }).disposed(by: self.disposeBag)
-            
+        }).disposed(by: self.disposeBag)
         
-        let coronaState = self.coronaButton.buttonState
-        self.secureButton.buttonState
-            .flatMap { secureState in
-                coronaState.map { (secureState, $0) }.take(1)
-            }
-            .subscribe(onNext:  { [weak self] (secureState, coronaState) in
-                guard let self = self else { return }
-                switch (secureState, coronaState) {
-                case (.focused,.normal):
-                    self.coronaType.accept(.secure)
-                case (.normal, .focused):
-                    self.coronaType.accept(.corona)
-                case (.focused, .focused):
-                    self.coronaType.accept(.secure)
-                    self.coronaButton.buttonState.accept(.normal)
-                case (.normal, .normal):
-                    self.coronaType.accept(.none)
-                }
-            }).disposed(by: self.disposeBag)
+        self.maskButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.coronaType.accept(.mask)
+        }).disposed(by: self.disposeBag)
+        
+        self.coronaButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.coronaType.accept(.corona)
+        }).disposed(by: self.disposeBag)
+        
+        self.secureButton.rx.tap.subscribe(onNext: { [weak self] in
+            self?.coronaType.accept(.secure)
+        }).disposed(by: self.disposeBag)
     }
     
     func onNormalButtons() {
@@ -98,12 +99,14 @@ extension CoronaTag {
 
 extension CoronaTag {
     enum CoronaSearchType: String {
-        case none
+        case mask   = "공적마스크"
         case corona = "코로나진료소"
         case secure = "국민안심병원"
         
         func medicalType() -> Model.Todoc.MedicalType? {
             switch self {
+            case .mask:
+                return .mask
             case .corona:
                 return .corona
             case .secure:
