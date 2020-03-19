@@ -17,7 +17,6 @@ import SnapKit
 final class HomeView: BaseView, PinDrawable {
     // MARK: Property
     let medicalType       = BehaviorRelay<Model.Todoc.MedicalType>(value: .hospital)
-    let coronaSearch      = PublishRelay<CoronaTag.CoronaSearchType>()
     let search            = BehaviorRelay<Void>(value: ())
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
@@ -29,12 +28,9 @@ final class HomeView: BaseView, PinDrawable {
     var selectedMarker    = Set<NMFMarker>()
     var panGestureRecognizer: UIPanGestureRecognizer!
     
-    private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
-    let coronaTag = CoronaTag()
-    
     let mapControlView: NMFNaverMapView = {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
         if TodocInfo.shared.theme == .night {
@@ -52,15 +48,7 @@ final class HomeView: BaseView, PinDrawable {
         return mapView
     }()
     
-    let cameraButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .white()
-        button.setShadow(radius: 30,
-                         shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
-                         shadowOffset: CGSize(width: 0, height: 2),
-                         shadowBlur: 6)
-        return button
-    }()
+    let cameraButton = CameraButton()
     
     let categoryButton: UIButton = {
         let button = UIButton()
@@ -133,16 +121,7 @@ final class HomeView: BaseView, PinDrawable {
         return btn
     }()
     
-    let retrySearchView: RetrySearchView = {
-        let view = RetrySearchView()
-        view.backgroundColor = .white()
-        view.setShadow(radius: 22,
-                       shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
-                       shadowOffset: CGSize(width: 0, height: 2),
-                       shadowBlur: 6)
-        view.hidden(true)
-        return view
-    }()
+    let retrySearchView = RetrySearchView()
     
     deinit {
         self.removeGesture()
@@ -186,73 +165,24 @@ final class HomeView: BaseView, PinDrawable {
                     self.onOperatingView()
                 }
             }).disposed(by: self.disposeBag)
-  
-        Observable.merge(self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaTag.coronaType),
-                         self.coronaTag.coronaType.asObservable())
-            .filter { $0 != .none }
-            .do(onNext: { [weak self] _ in
-                self?.cameraType.onNext(.normal)
-            })
-            .bind(to: self.coronaSearch)
-            .disposed(by: self.disposeBag)
 
-        self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaTag.coronaType)
-            .filter { $0 == .none }
-            .mapToVoid()
+        self.retrySearchView.button.rx.tap
             .bind(to: self.search)
             .disposed(by: self.disposeBag)
         
         self.panGestureMap.subscribe(onNext:{ [weak self] in
-            self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
+            self?.cameraButton.cameraType.onNext(.normal)
             self?.retrySearchView.hidden(false)
         }).disposed(by: self.disposeBag)
         
-        self.cameraType
+        self.cameraButton.cameraType
             .subscribe(onNext: { [weak self] type in
-                switch type {
-                case .normal:
-                    self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
-                case .direction:
-                    self?.cameraButton.setImage(UIImage(named: "camera2"), for: .normal)
-                case .compass:
-                    self?.cameraButton.setImage(UIImage(named: "camera3"), for: .normal)
-                default:
-                    break
-                }
-                
                 self?.mapControlView.positionMode = type
             }).disposed(by: self.disposeBag)
         
-        self.cameraButton.rx.tap
-            .withLatestFrom(self.cameraType)
-            .map { type -> NMFMyPositionMode in
-                switch type {
-                case .normal:
-                    return .direction
-                case .direction:
-                    return .compass
-                case .compass:
-                    return .normal
-                default:
-                    return .normal
-                }}
-            .bind(to: self.cameraType)
-            .disposed(by: self.disposeBag)
-        
-        Observable.merge(self.medicalSelectView.medicalType.asObservable().do(onNext: { _ in self.coronaTag.onNormalButtons() }),
-                         self.coronaTag.coronaType.filter { $0 != .none }.map { $0.medicalType() }.unwrap(),
-                         self.coronaTag.coronaType.filter { $0 == .none }
-                            .flatMap { [weak self] _ in
-                                self?.moveToCurrentCamera() ?? .empty()
-                         }.withLatestFrom(self.medicalSelectView.medicalType))
+        self.medicalSelectView.medicalType
             .bind(to: self.medicalType)
             .disposed(by: self.disposeBag)
-        
-        self.medicalSelectView.medicalLockEvent
-            .withLatestFrom(self.coronaTag.coronaType)
-            .subscribe(onNext: { state in
-                self.toast("\(state.rawValue) 보기 중에는 사용할 수 없습니다.\n\(state.rawValue) 태그를 해제해주세요", duration: 3)
-            }).disposed(by: self.disposeBag)
         
         self.mapControlView.mapView.rx
             .didTapMapView
@@ -284,7 +214,7 @@ final class HomeView: BaseView, PinDrawable {
                 
                 self.dismissPreview()
                 if let selected = overlay as? NMFMarker {
-                    self.cameraType.onNext(.normal)
+                    self.cameraButton.cameraType.onNext(.normal)
                     let facilities = selected.userInfo["tag"] as! Model.Todoc.Facilities
                     if facilities.facilities.count > 1 {
                         ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))
@@ -301,14 +231,6 @@ final class HomeView: BaseView, PinDrawable {
                     }
                 }
             }).disposed(by: self.disposeBag)
-        
-        self.medicalType.subscribe(onNext: { [weak self] type in
-            if type == .hospital || type == .pharmacy {
-                self?.revertCoronaView()
-            } else {
-                self?.convertCoronaView()
-            }
-        }).disposed(by: self.disposeBag)
         
         TodocInfo.shared.category
             .subscribe(onNext: { [weak self] category in

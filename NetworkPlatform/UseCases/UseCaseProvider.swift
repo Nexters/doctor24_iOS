@@ -14,13 +14,5 @@ public final class UseCaseProvider: Domain.UseCaseProvider {
     public func makeFacilitiesUseCase() -> Domain.FacilitiesUseCase {
         return FacilitiesUseCase()
     }
-    
-    public func makeCoronaUsecase() -> Domain.CoronaUsecase {
-        return CoronaUsecase()
-    }
-    
-    public func makeSecureUsecase() -> Domain.SecureUsecase {
-        return SecureUsecase()
-    }
 }
 

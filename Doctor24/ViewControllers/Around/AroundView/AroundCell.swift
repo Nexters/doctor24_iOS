@@ -51,8 +51,6 @@ final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable, Badge
     var emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
     var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
     var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
-    var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
-    var secure: UIImageView = UIImageView(image: UIImage(named: "secureBadge"))
     
     private let type: UIImageView = UIImageView()
     
@@ -110,23 +108,17 @@ final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable, Badge
         self.dayLabel.text =  "\(facility.day.startTime.convertDate) ~ \(facility.day.endTime.convertDate)"
         self.distanceLabel.text = self.distance(lat: facility.latitude, long: facility.longitude)
         
-        guard facility.medicalType == .hospital ||
-              facility.medicalType == .corona ||
-              facility.medicalType == .secure
+        guard facility.medicalType == .hospital
         else { return }
         
         self.showBadge(night: facility.nightTimeServe,
-                       emergency: facility.emergency,
-                       corona: facility.medicalType == .corona,
-                       secure: facility.medicalType == .secure)
+                       emergency: facility.emergency)
     }
     
     private func setupUI() {
         self.normal.isHidden = true
         self.emergency.isHidden = true
         self.night.isHidden  = true
-        self.corona.isHidden = true
-        self.secure.isHidden = true
         
         self.backgroundColor = .clear
         self.addSubview(self.contentStackView)
@@ -143,8 +135,6 @@ final class AroundCell: UITableViewCell, FacilityTitleable, MapSelectable, Badge
             $0.height.equalTo(18)
         }
         
-        self.typeStack.addArrangedSubview(self.secure)
-        self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.normal)
         self.typeStack.addArrangedSubview(self.night)
         self.typeStack.addArrangedSubview(self.emergency)

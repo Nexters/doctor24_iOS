@@ -40,12 +40,6 @@ extension HomeView {
             
             self.markers.append(marker)
         }
-        
-        if let (southWest, northEast) = self.pinAreaRect(facilites: facilities) {
-            let cameraUpdate = NMFCameraUpdate(fit: NMGLatLngBounds(southWest: southWest, northEast: northEast))
-            cameraUpdate.animation = .linear
-            self.mapControlView.mapView.moveCamera(cameraUpdate)
-        }
     }
     
     func unselectPins() {
@@ -61,8 +55,6 @@ extension HomeView {
     }
     
     private func pinAreaRect(facilites: [Model.Todoc.Facilities]) -> (NMGLatLng, NMGLatLng)? {
-        guard let type = facilites.first?.facilities.first?.medicalType,
-                  type == .corona || type == .secure else { return nil }
         var maxLat: Double = 0.0
         var minLat: Double = 200.0
         var maxLong: Double = 0.0

@@ -16,7 +16,6 @@ final class MedicalSelectView: BaseView {
     // MARK: Properties
     var isMedicalLock = false
     let medicalType = BehaviorRelay<Model.Todoc.MedicalType>(value: .hospital)
-    let medicalLockEvent = PublishRelay<Void>()
     private let disposeBag = DisposeBag()
     
     // MARK: UI Componenet
@@ -115,15 +114,6 @@ final class MedicalSelectView: BaseView {
             .map { Model.Todoc.MedicalType.pharmacy }
             .bind(to: self.medicalType)
             .disposed(by: self.disposeBag)
-        
-        Observable.merge(self.hospital.rx.tap.asObservable(),
-                         self.pharmacy.rx.tap.asObservable())
-            .subscribe(onNext: { [weak self] in
-                guard let self = self else { return }
-                if self.isMedicalLock == true {
-                    self.medicalLockEvent.accept(())
-                }
-            }).disposed(by: self.disposeBag)
     }
 }
 
