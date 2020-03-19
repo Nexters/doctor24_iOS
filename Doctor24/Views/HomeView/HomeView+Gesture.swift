@@ -95,6 +95,7 @@ extension HomeView {
                             if point.y <= self.vc.view.frame.height / 2 {
                                 self.previewFullSignal.accept(())
                             } else if self.vc.view.frame.height - point.y <= (contentViewHeight * 2) / 3 {
+                                TodocEvents.Marker.bottomDragEnd.commit()
                                 self.dismissPreview()
                             } else {
                                 height = contentViewHeight

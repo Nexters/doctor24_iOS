@@ -221,6 +221,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable, Bad
     
     override func setBind() {
         self.callButton.rx.tap.subscribe(onNext: {
+            TodocEvents.Marker.call.commit()
                 guard let url = URL(string: "tel://\(self.phoneNumber.onlyDigits())"),
                     UIApplication.shared.canOpenURL(url) else { return }
                 UIApplication.shared.open(url)
@@ -229,6 +230,7 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable, Bad
         self.navigationButton.rx.tap
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
+                TodocEvents.Marker.navi.commit()
                 self.selectMap(latitude: self.facility.latitude, longitude: self.facility.longitude, title: self.facility.name)
             }).disposed(by: self.disposeBag)
     }

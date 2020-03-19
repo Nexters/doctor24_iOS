@@ -36,6 +36,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         return view
     }()
     
+    private let emptyMapButton = UIButton()
     private let titleStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis      = .vertical
@@ -102,12 +103,17 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupUI()
+        self.setBind()
     }
     
     func setData(data: Model.Todoc.DetailFacility) {
-        self.navigationButton.rx.tap.subscribe(onNext: { [weak self] in
-            self?.selectMap(latitude: data.latitude, longitude: data.longitude, title: data.name)
-        }).disposed(by: self.disposeBag)
+        self.navigationButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                TodocEvents.Detail.navi.commit()
+                self?.selectMap(latitude: data.latitude,
+                                longitude: data.longitude,
+                                title: data.name)
+            }).disposed(by: self.disposeBag)
         
         self.hospitalTitle.text = data.name
         self.timeLabel.text  = "\(data.today.startTime.convertDate) ~ \(data.today.endTime.convertDate)"
@@ -138,6 +144,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
             
         self.addSubview(self.mapView)
         self.addSubview(self.blockView)
+        self.addSubview(self.emptyMapButton)
         self.addSubview(self.typeStack)
         self.addSubview(self.titleStackView)
         self.addSubview(self.navigationButton)
@@ -157,6 +164,10 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         }
         
         self.blockView.snp.makeConstraints {
+            $0.top.left.right.bottom.equalTo(self.mapView)
+        }
+        
+        self.emptyMapButton.snp.makeConstraints {
             $0.top.left.right.bottom.equalTo(self.mapView)
         }
         
@@ -184,6 +195,12 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
             $0.right.equalToSuperview().offset(-24)
             $0.height.equalTo(1)
         }
+    }
+    
+    private func setBind() {
+        self.emptyMapButton.rx.tap.subscribe(onNext: {
+            TodocEvents.Detail.mapTouch.commit()
+        }).disposed(by: self.disposeBag)
     }
     
     private func focusPin(data: Model.Todoc.DetailFacility) {

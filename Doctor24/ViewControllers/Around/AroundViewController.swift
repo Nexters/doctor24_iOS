@@ -35,6 +35,7 @@ class AroundViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        TodocEvents.Around.click(type: self.type.rawValue).commit()
         self.aroundView.setupUI()
         self.aroundView.setBind()
     }

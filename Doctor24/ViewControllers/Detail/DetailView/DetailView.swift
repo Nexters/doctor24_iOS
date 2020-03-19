@@ -106,6 +106,7 @@ final class DetailView: BaseView, FacilityTitleable {
     
     override func setBind() {
         self.callButton.rx.tap.subscribe(onNext: {
+            TodocEvents.Detail.call.commit()
                 guard let url = URL(string: "tel://\(self.phoneNumber.onlyDigits())"),
                     UIApplication.shared.canOpenURL(url) else { return }
                 UIApplication.shared.open(url)

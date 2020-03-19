@@ -104,6 +104,7 @@ extension HomeView {
     
     @objc
     func dismissOperatingView(_ gestureRecognizer: UIPanGestureRecognizer) {
+        TodocEvents.TimeFilter.dimmed.commit()
         self.dismissOperatingView()
     }
     
@@ -149,6 +150,7 @@ extension HomeView {
         if !self.selectedMarker.isEmpty {
             self.unselectPins()
         }
+        
         self.preview.snp.updateConstraints {
             $0.height.equalTo(0)
         }
@@ -180,6 +182,7 @@ extension HomeView {
     }
     
     func onOperatingView() {
+        TodocEvents.TimeFilter.click.commit()
         self.operatingView.viewState.onNext(.open)
         self.operatingView.snp.updateConstraints {
             $0.top.equalToSuperview().offset(self.frame.height - (396 + bottomSafeAreaInset))
