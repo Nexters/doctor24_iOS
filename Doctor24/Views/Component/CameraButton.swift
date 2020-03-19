@@ -48,6 +48,9 @@ final class CameraButton: UIButton {
         
         self.rx.tap
             .withLatestFrom(self.cameraType)
+            .do(onNext: { _ in
+                TodocEvents.Camera.click.commit()
+            })
             .map { type -> NMFMyPositionMode in
                 switch type {
                 case .normal:

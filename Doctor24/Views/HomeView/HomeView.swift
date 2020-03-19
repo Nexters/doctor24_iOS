@@ -151,6 +151,9 @@ final class HomeView: BaseView, PinDrawable {
             .disposed(by: self.disposeBag)
         
         self.operatingView.closeButton.rx.tap
+            .do(onNext: { _ in
+                TodocEvents.TimeFilter.close.commit()
+            })
             .subscribe(onNext: { [weak self] in
                 self?.dismissOperatingView()
             }).disposed(by: self.disposeBag)
@@ -167,6 +170,9 @@ final class HomeView: BaseView, PinDrawable {
             }).disposed(by: self.disposeBag)
 
         self.retrySearchView.button.rx.tap
+            .do(onNext: {
+                TodocEvents.Retry.click.commit()
+            })
             .bind(to: self.search)
             .disposed(by: self.disposeBag)
         
@@ -201,16 +207,27 @@ final class HomeView: BaseView, PinDrawable {
             }).withLatestFrom(self.markerSignal).map{
                 ($0?.userInfo["tag"] as? Model.Todoc.Facilities)?.facilities.first
             }.unwrap()
+            .do(onNext: { facility in
+                TodocEvents.Marker.detail(id: facility.id,
+                                          name: facility.name,
+                                          category: facility.categories?.joined(separator: ", ") ?? "",
+                                          type: facility.medicalType.rawValue).commit()
+            })
             .bind(to: self.detailFacility)
             .disposed(by: self.disposeBag)
         
         self.categoryButton.rx.tap.subscribe(onNext: {
+            TodocEvents.MedicalCategory.click.commit()
             ViewTransition.shared.execute(scene: .category)
         }).disposed(by: self.disposeBag)
         
         self.markerSignal
             .subscribe(onNext: { [weak self] overlay in
                 guard let self = self else { return }
+                
+                if !self.selectedMarker.isEmpty {
+                    TodocEvents.Marker.dimmed.commit()
+                }
                 
                 self.dismissPreview()
                 if let selected = overlay as? NMFMarker {
@@ -219,6 +236,11 @@ final class HomeView: BaseView, PinDrawable {
                     if facilities.facilities.count > 1 {
                         ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))
                     } else if let facility = facilities.facilities.first {
+                        TodocEvents.Marker.click(id: facility.id,
+                                                 name: facility.name,
+                                                 category: facility.categories?.joined(separator: ", ") ?? "",
+                            type: facility.medicalType.rawValue).commit()
+                        
                         selected.iconImage = self.detailPin(name: facility.name,
                                                             medicalType: facility.medicalType,
                                                             night: facility.nightTimeServe,

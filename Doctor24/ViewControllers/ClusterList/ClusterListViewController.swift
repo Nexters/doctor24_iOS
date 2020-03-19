@@ -31,6 +31,7 @@ class ClusterListViewController: FadeModalTransitionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        TodocEvents.Cluster.click.commit()
         self.clusterView.setupUI()
         self.clusterView.setBind()
     }
@@ -52,10 +53,15 @@ class ClusterListViewController: FadeModalTransitionViewController {
     override func setBind() {
         self.clusterView.closeButton.rx.tap
             .subscribe(onNext: { [weak self] in
+                TodocEvents.Cluster.close.commit()
                 self?.dismiss(animated: false, completion: nil)
             }).disposed(by: self.disposeBag)
         
         self.clusterView.tapFacility.subscribe(onNext: { facility in
+            TodocEvents.Cluster.detail(id: facility.id,
+                                       name: facility.name,
+                                       category: facility.categories?.joined(separator: ",") ?? "",
+                                       type: facility.medicalType.rawValue).commit()
             ViewTransition.shared.execute(scene: .detail(facility: facility))
         }).disposed(by:self.disposeBag)
     }

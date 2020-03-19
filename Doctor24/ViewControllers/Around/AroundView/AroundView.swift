@@ -14,6 +14,7 @@ import RxCocoa
 
 final class AroundView: BaseView {
     // MARK: Properties
+    private let disposeBag = DisposeBag()
     private let medicalType: Model.Todoc.MedicalType
     private var facilities: [Model.Todoc.PreviewFacility?]
     let tapFacility = PublishRelay<Model.Todoc.PreviewFacility?>()
@@ -53,6 +54,12 @@ final class AroundView: BaseView {
         label.font = .regular(size: 14)
         label.text = "거리순"
         return label
+    }()
+    
+    private let distanceEmptyBtn: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        return button
     }()
     
     private let countLabel: UILabel = {
@@ -117,6 +124,7 @@ final class AroundView: BaseView {
         self.addSubview(self.infoView)
         self.infoView.addSubview(self.countLabel)
         self.infoView.addSubview(self.distance)
+        self.infoView.addSubview(self.distanceEmptyBtn)
         self.addSubview(self.tableView)
         self.addSubview(self.emptyView)
         
@@ -151,6 +159,10 @@ final class AroundView: BaseView {
             $0.right.equalToSuperview().offset(-24)
         }
         
+        self.distanceEmptyBtn.snp.makeConstraints {
+            $0.left.right.top.bottom.equalTo(self.distance)
+        }
+        
         self.tableView.snp.makeConstraints {
             $0.top.equalTo(self.infoView.snp.bottom)
             $0.left.right.bottom.equalToSuperview()
@@ -165,6 +177,9 @@ final class AroundView: BaseView {
     override func setBind() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.distanceEmptyBtn.rx.tap.subscribe(onNext: {
+            TodocEvents.Around.sortClick.commit()
+        }).disposed(by: self.disposeBag)
     }
     
     private func registerCell() {

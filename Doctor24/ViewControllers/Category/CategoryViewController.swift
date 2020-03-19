@@ -67,7 +67,8 @@ class CategoryViewController: FadeModalTransitionViewController {
                 self.categoryView.마취통증과.rx.tap.map{ .마취통증과 },
                 self.categoryView.신경과.rx.tap.map{ .신경과 }
             )
-            .do(onNext: { [weak self] _ in
+            .do(onNext: { [weak self] type in
+                TodocEvents.MedicalCategory.type(type: type.rawValue).commit()
                 self?.dismiss(animated: true, completion: nil)
             })
             .bind(to: TodocInfo.shared.category)

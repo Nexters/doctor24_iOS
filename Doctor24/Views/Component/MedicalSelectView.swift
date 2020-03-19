@@ -14,7 +14,6 @@ import Toast_Swift
 
 final class MedicalSelectView: BaseView {
     // MARK: Properties
-    var isMedicalLock = false
     let medicalType = BehaviorRelay<Model.Todoc.MedicalType>(value: .hospital)
     private let disposeBag = DisposeBag()
     
@@ -98,8 +97,8 @@ final class MedicalSelectView: BaseView {
     
     override func setBind() {
         self.hospital.rx.tap
-            .filter{ self.isMedicalLock == false }
             .do(onNext: { [weak self] in
+                TodocEvents.Hospital.click.commit()
                 self?.animateSelectHospital()
             })
             .map { Model.Todoc.MedicalType.hospital }
@@ -107,8 +106,8 @@ final class MedicalSelectView: BaseView {
             .disposed(by: self.disposeBag)
         
         self.pharmacy.rx.tap
-            .filter{ self.isMedicalLock == false }
             .do(onNext: { [weak self] in
+                TodocEvents.Pharmacy.click.commit()
                 self?.animateSelectPharmacy()
             })
             .map { Model.Todoc.MedicalType.pharmacy }
