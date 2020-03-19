@@ -48,17 +48,6 @@ final class HomeView: BaseView, PinDrawable {
         return mapView
     }()
     
-    let coronaButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .white()
-        button.setImage(UIImage(named: "btnImgCorona19"), for: .normal)
-        button.setShadow(radius: 30,
-                         shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
-                         shadowOffset: CGSize(width: 0, height: 2),
-                         shadowBlur: 6)
-        return button
-    }()
-    
     let cameraButton = CameraButton()
     
     let categoryButton: UIButton = {
@@ -190,10 +179,6 @@ final class HomeView: BaseView, PinDrawable {
             .subscribe(onNext: { [weak self] type in
                 self?.mapControlView.positionMode = type
             }).disposed(by: self.disposeBag)
-        
-        self.coronaButton.rx.tap.subscribe(onNext: {
-            ViewTransition.shared.execute(scene: .corona)
-        }).disposed(by: self.disposeBag)
         
         self.medicalSelectView.medicalType
             .bind(to: self.medicalType)

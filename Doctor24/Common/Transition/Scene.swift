@@ -17,7 +17,6 @@ enum Scene {
     case category
     case cluster(facilities: [Model.Todoc.PreviewFacility])
     case secureGuide
-    case corona
 }
 
 extension Scene {
@@ -29,9 +28,7 @@ extension Scene {
         switch self {
         case .main:
             let networkService = NetworkPlatform.UseCaseProvider()
-            let homeReactor = HomeViewReactor(service: networkService.makeFacilitiesUseCase(),
-                                              coronaService: networkService.makeCoronaUsecase(),
-                                              secureService: networkService.makeSecureUsecase())
+            let homeReactor = HomeViewReactor(service: networkService.makeFacilitiesUseCase())
             let vc = HomeViewController(reactor: homeReactor)
             return vc
             
@@ -54,9 +51,6 @@ extension Scene {
             
         case .secureGuide:
             return SecureGuideViewController()
-            
-        case .corona:
-            return CoronaViewController()
         }
     }
 }

@@ -24,12 +24,6 @@ extension HomeView {
             $0.height.equalTo(396 + bottomSafeAreaInset)
         }
         
-        self.coronaButton.snp.makeConstraints {
-            $0.bottom.equalTo(self.cameraButton.snp.top).offset(-16)
-            $0.right.equalTo(-24)
-            $0.size.equalTo(58)
-        }
-        
         self.cameraButton.snp.makeConstraints {
             $0.bottom.equalTo(self.operatingView.snp.top).offset(-24)
             $0.right.equalTo(-24)
@@ -76,7 +70,6 @@ extension HomeView {
     func addSubViews() {
         self.addSubview(self.mapControlView)
         self.addSubview(self.operatingView)
-        self.addSubview(self.coronaButton)
         self.addSubview(self.cameraButton)
         self.addSubview(self.categoryButton)
         self.addSubview(self.activeCategory)
@@ -133,8 +126,6 @@ extension HomeView {
         //total - 24
         if facility.medicalType == .hospital {
             height = 306 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
-        } else if facility.medicalType == .corona || facility.medicalType == .secure {
-            height = 260 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
         } else {
             height = 236 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
         }
@@ -253,7 +244,7 @@ extension HomeView {
         })
     }
     
-    func convertCoronaView() {
+    func convertHideOperatingView() {
         let start        = operatingView.startView.startTimeLabel
         let end          = operatingView.endView.endTimeLabel
         let spacing      = operatingView.spacingLabel
@@ -282,7 +273,7 @@ extension HomeView {
         })
     }
     
-    func revertCoronaView() {
+    func revertOperatingView() {
         let start        = operatingView.startView.startTimeLabel
         let end          = operatingView.endView.endTimeLabel
         let spacing      = operatingView.spacingLabel

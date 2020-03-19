@@ -18,14 +18,6 @@ protocol PinDrawable {
 
 extension PinDrawable {
     func pin(facility: Model.Todoc.PreviewFacility) -> NMFOverlayImage {
-        if facility.medicalType == .corona {
-            return NMFOverlayImage(name: "coronaPin")
-        }
-        
-        if facility.medicalType == .secure {
-            return NMFOverlayImage(name: "securePin")
-        }
-        
         switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy) {
         case (_, _, true):
             //약국
@@ -43,14 +35,6 @@ extension PinDrawable {
     }
     
     func pin(facility: Model.Todoc.PreviewFacility) -> UIImage {
-        if facility.medicalType == .corona {
-            return UIImage(named: "coronaPin")!
-        }
-        
-        if facility.medicalType == .secure {
-            return UIImage(named: "securePin")!
-        }
-        
         switch (facility.emergency, facility.nightTimeServe, facility.medicalType == .pharmacy) {
         case (_, _, true):
             //약국
@@ -106,10 +90,6 @@ extension PinDrawable {
             }
         case .pharmacy:
             detailImg = UIImage(named: "detailDrugStore")
-        case .corona:
-            detailImg = UIImage(named: "coronaMarker")
-        case .secure:
-            detailImg = UIImage(named: "secureMarker")
         default:
             detailImg = UIImage(named: "detailHospital")
         }

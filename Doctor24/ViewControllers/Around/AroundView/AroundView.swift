@@ -68,11 +68,8 @@ final class AroundView: BaseView {
         view.backgroundColor = .white()
         
         let label = UILabel()
-        if self.medicalType == .corona {
-            label.text = "\(medicalTitle())를 찾을 수 없습니다."
-        } else {
-            label.text = "\(medicalTitle())을 찾을 수 없습니다."
-        }
+        label.text = "\(medicalTitle())을 찾을 수 없습니다."
+        
         label.font = .regular(size: 16)
         label.textColor = .grey2()
         
@@ -177,16 +174,10 @@ final class AroundView: BaseView {
     
     private func medicalTitle() -> String {
         switch self.medicalType {
-        case .mask:
-            return "마스크"
         case .hospital:
             return "병원"
         case .pharmacy:
             return "약국"
-        case .corona:
-            return "코로나 진료소"
-        case .secure:
-            return "국민안심병원"
         case .animal:
             return ""
         }
@@ -217,11 +208,8 @@ extension AroundView: UITableViewDataSource {
         } else {
             let cell : AroundNoMoreCell = tableView.dequeueReusableCell(withIdentifier: "AroundNoMoreCell", for: indexPath) as! AroundNoMoreCell
             cell.selectionStyle = .none
-            if self.medicalType == .corona {
-                cell.contentLabel.text = "더 이상 \(self.medicalTitle())가 없습니다."
-            } else {
-                cell.contentLabel.text = "더 이상 \(self.medicalTitle())이 없습니다."
-            }
+            cell.contentLabel.text = "더 이상 \(self.medicalTitle())이 없습니다."
+            
             return cell
         }
     }

@@ -70,8 +70,6 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable, Bad
     var emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
     var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
     var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
-    var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
-    var secure: UIImageView = UIImageView(image: UIImage(named: "secureBadge"))
     
     private let contentView: UIView = {
         let view = UIView()
@@ -262,22 +260,16 @@ final class PreviewFacilityView: BaseView, FacilityTitleable, MapSelectable, Bad
             heightView2.isHidden = true
         }
         
-        guard facility.medicalType == .hospital ||
-              facility.medicalType == .corona ||
-              facility.medicalType == .secure
+        guard facility.medicalType == .hospital
         else {
             self.normal.isHidden = true
             self.emergency.isHidden = true
             self.night.isHidden = true
-            self.corona.isHidden = true
-            self.secure.isHidden = true
             return
         }
         
         self.showBadge(night: facility.nightTimeServe,
-                       emergency: facility.emergency,
-                       corona: facility.medicalType == .corona,
-                       secure: facility.medicalType == .secure)
+                       emergency: facility.emergency)
     }
 }
 
@@ -289,8 +281,6 @@ extension PreviewFacilityView {
         self.contentView.addSubview(self.contentStack)
         self.contentView.addSubview(self.typeStack)
         
-        self.typeStack.addArrangedSubview(self.secure)
-        self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.normal)
         self.typeStack.addArrangedSubview(self.emergency)
         self.typeStack.addArrangedSubview(self.night)
