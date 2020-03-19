@@ -58,6 +58,8 @@
 		A14DDF1623EC6535009A1DD9 /* TopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14DDF1523EC6535009A1DD9 /* TopBar.swift */; };
 		A14F9C61240FA491009E31E5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A14F9C60240FA491009E31E5 /* GoogleService-Info.plist */; };
 		A154D52F242356D10027F91F /* CameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A154D52E242356D10027F91F /* CameraButton.swift */; };
+		A154D53224235B420027F91F /* TodocEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = A154D53124235B420027F91F /* TodocEvents.swift */; };
+		A154D53424235D690027F91F /* EventCommitable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A154D53324235D690027F91F /* EventCommitable.swift */; };
 		A17B167823F2E21B0036826A /* ClusterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17B167723F2E21B0036826A /* ClusterCell.swift */; };
 		A17F84BA23E706BF009EC3D7 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84B923E706BF009EC3D7 /* UIColor+.swift */; };
 		A17F84BC23E7087D009EC3D7 /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17F84BB23E7087D009EC3D7 /* UIFont+.swift */; };
@@ -249,6 +251,8 @@
 		A14DDF1523EC6535009A1DD9 /* TopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopBar.swift; sourceTree = "<group>"; };
 		A14F9C60240FA491009E31E5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A154D52E242356D10027F91F /* CameraButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraButton.swift; sourceTree = "<group>"; };
+		A154D53124235B420027F91F /* TodocEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodocEvents.swift; sourceTree = "<group>"; };
+		A154D53324235D690027F91F /* EventCommitable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCommitable.swift; sourceTree = "<group>"; };
 		A17B167723F2E21B0036826A /* ClusterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusterCell.swift; sourceTree = "<group>"; };
 		A17F84B923E706BF009EC3D7 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		A17F84BB23E7087D009EC3D7 /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
@@ -406,6 +410,7 @@
 		6F6FDA6923C7084800B091DF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				A154D53024235B330027F91F /* EventLog */,
 				6F67164923C7F9EF000EE7F0 /* Base */,
 				6FC1B2F523C71A1D00BCC9ED /* DelegateProxy */,
 				6F6FDA7523C70ABC00B091DF /* Extension */,
@@ -620,6 +625,15 @@
 				A1CFFFD723ED730400FA47E4 /* DetailCell.swift */,
 			);
 			path = DetailView;
+			sourceTree = "<group>";
+		};
+		A154D53024235B330027F91F /* EventLog */ = {
+			isa = PBXGroup;
+			children = (
+				A154D53324235D690027F91F /* EventCommitable.swift */,
+				A154D53124235B420027F91F /* TodocEvents.swift */,
+			);
+			path = EventLog;
 			sourceTree = "<group>";
 		};
 		A17F84C523E722C6009EC3D7 /* HomeView */ = {
@@ -1333,6 +1347,7 @@
 				A1C3702A23DC1C2B001E60C8 /* RxCLLocationManagerDelegateProxy.swift in Sources */,
 				A1F19D3C23C219A200FE4D6C /* HomeViewController.swift in Sources */,
 				A1AEAE5623CB0B6A002B5AB2 /* ViewMenuSeletable.swift in Sources */,
+				A154D53224235B420027F91F /* TodocEvents.swift in Sources */,
 				A1D3389F23F6E07900D52112 /* Alertable.swift in Sources */,
 				A1B5190B2406BE4900888751 /* Badgeable.swift in Sources */,
 				6F67164D23C7FA2A000EE7F0 /* BaseViewController.swift in Sources */,
@@ -1344,6 +1359,7 @@
 				6F6FDA7423C70AB700B091DF /* NSObject+.swift in Sources */,
 				A12720AB23F8757F00924CD6 /* SplashViewController.swift in Sources */,
 				6F6FDA7223C70A3800B091DF /* Scene.swift in Sources */,
+				A154D53424235D690027F91F /* EventCommitable.swift in Sources */,
 				A1F19D3823C219A200FE4D6C /* AppDelegate.swift in Sources */,
 				A12210F923F2DA1600BC33B8 /* ClusterListView.swift in Sources */,
 				A1D52F1623DAE55100C2ED3D /* UIView+.swift in Sources */,
