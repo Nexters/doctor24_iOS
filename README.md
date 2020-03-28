@@ -5,7 +5,7 @@
 <br/>
 <br/>
 <br/>
-<img align="left" src="./pictures/screen1.png" width="20%" height="20%" /> <img align="left" src="./pictures/screen2.png" width="20%" height="20%" />  
+<img align="left" src="./pictures/screen1.png" width="20%" height="20%" /> <img align="left" src="./pictures/screen2.png" width="20%" height="20%" /> <br/>
 <img src="./pictures/screen3.png" width="20%" height="20%" /> <img src="./pictures/screen4.png" width="20%" height="20%" /> <img src="./pictures/screen5.png" width="20%" height="20%" /> <img src="./pictures/screen6.png" width="20%" height="20%" /> 
 
 ## Concept
