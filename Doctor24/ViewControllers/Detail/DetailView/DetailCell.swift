@@ -36,6 +36,7 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         return view
     }()
     
+    private let emptyMapButton = UIButton()
     private let titleStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis      = .vertical
@@ -54,8 +55,6 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     var emergency: UIImageView = UIImageView(image: UIImage(named: "emergencyType"))
     var night: UIImageView = UIImageView(image: UIImage(named: "nightType"))
     var normal: UIImageView = UIImageView(image: UIImage(named: "nomal"))
-    var corona: UIImageView = UIImageView(image: UIImage(named: "coronaBadge"))
-    var secure: UIImageView = UIImageView(image: UIImage(named: "secureBadge"))
     
     private let hospitalTitle: UILabel = {
         let label = UILabel()
@@ -104,12 +103,17 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupUI()
+        self.setBind()
     }
     
     func setData(data: Model.Todoc.DetailFacility) {
-        self.navigationButton.rx.tap.subscribe(onNext: { [weak self] in
-            self?.selectMap(latitude: data.latitude, longitude: data.longitude, title: data.name)
-        }).disposed(by: self.disposeBag)
+        self.navigationButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                TodocEvents.Detail.navi.commit()
+                self?.selectMap(latitude: data.latitude,
+                                longitude: data.longitude,
+                                title: data.name)
+            }).disposed(by: self.disposeBag)
         
         self.hospitalTitle.text = data.name
         self.timeLabel.text  = "\(data.today.startTime.convertDate) ~ \(data.today.endTime.convertDate)"
@@ -119,42 +123,33 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
             $0.left.equalToSuperview().offset(24)
             $0.right.equalTo(self.navigationButton.snp.left).offset(24)
             $0.bottom.equalTo(self.lineView.snp.top).offset(-16)
-            if data.medicalType == .hospital ||
-                data.medicalType == .corona ||
-                data.medicalType == .secure{
+            if data.medicalType == .hospital{
                 $0.top.equalTo(self.typeStack.snp.bottom).offset(8)
             } else {
                 $0.top.equalTo(self.mapView.snp.bottom).offset(27)
             }
         }
         
-        guard data.medicalType == .hospital ||
-              data.medicalType == .corona ||
-              data.medicalType == .secure
+        guard data.medicalType == .hospital
         else { return }
         
         self.showBadge(night: data.nightTimeServe,
-                       emergency: data.emergency,
-                       corona: data.medicalType == .corona,
-                       secure: data.medicalType == .secure)
+                       emergency: data.emergency)
     }
     
     private func setupUI(){
         self.normal.isHidden = true
         self.emergency.isHidden = true
         self.night.isHidden = true
-        self.corona.isHidden = true
-        self.secure.isHidden = true
             
         self.addSubview(self.mapView)
         self.addSubview(self.blockView)
+        self.addSubview(self.emptyMapButton)
         self.addSubview(self.typeStack)
         self.addSubview(self.titleStackView)
         self.addSubview(self.navigationButton)
         self.addSubview(self.lineView)
         
-        self.typeStack.addArrangedSubview(self.secure)
-        self.typeStack.addArrangedSubview(self.corona)
         self.typeStack.addArrangedSubview(self.normal)
         self.typeStack.addArrangedSubview(self.emergency)
         self.typeStack.addArrangedSubview(self.night)
@@ -169,6 +164,10 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
         }
         
         self.blockView.snp.makeConstraints {
+            $0.top.left.right.bottom.equalTo(self.mapView)
+        }
+        
+        self.emptyMapButton.snp.makeConstraints {
             $0.top.left.right.bottom.equalTo(self.mapView)
         }
         
@@ -196,6 +195,12 @@ final class DetailHeaderView: UICollectionReusableView, FacilityTitleable, PinDr
             $0.right.equalToSuperview().offset(-24)
             $0.height.equalTo(1)
         }
+    }
+    
+    private func setBind() {
+        self.emptyMapButton.rx.tap.subscribe(onNext: {
+            TodocEvents.Detail.mapTouch.commit()
+        }).disposed(by: self.disposeBag)
     }
     
     private func focusPin(data: Model.Todoc.DetailFacility) {

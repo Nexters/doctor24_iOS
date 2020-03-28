@@ -130,6 +130,10 @@ final class CategoryView: BaseView {
     }
     
     override func setBind() {
+        self.refreshButton.rx.tap.subscribe(onNext: {
+            TodocEvents.MedicalCategory.refresh.commit()
+        }).disposed(by: self.disposeBag)
+        
         TodocInfo.shared.category
             .subscribe(onNext: { [weak self] type in
                 guard let self = self else { return }

@@ -14,6 +14,7 @@ import RxCocoa
 
 final class AroundView: BaseView {
     // MARK: Properties
+    private let disposeBag = DisposeBag()
     private let medicalType: Model.Todoc.MedicalType
     private var facilities: [Model.Todoc.PreviewFacility?]
     let tapFacility = PublishRelay<Model.Todoc.PreviewFacility?>()
@@ -55,6 +56,12 @@ final class AroundView: BaseView {
         return label
     }()
     
+    private let distanceEmptyBtn: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        return button
+    }()
+    
     private let countLabel: UILabel = {
         let label = UILabel()
         label.textColor = .grey1()
@@ -68,11 +75,8 @@ final class AroundView: BaseView {
         view.backgroundColor = .white()
         
         let label = UILabel()
-        if self.medicalType == .corona {
-            label.text = "\(medicalTitle())를 찾을 수 없습니다."
-        } else {
-            label.text = "\(medicalTitle())을 찾을 수 없습니다."
-        }
+        label.text = "\(medicalTitle())을 찾을 수 없습니다."
+        
         label.font = .regular(size: 16)
         label.textColor = .grey2()
         
@@ -120,6 +124,7 @@ final class AroundView: BaseView {
         self.addSubview(self.infoView)
         self.infoView.addSubview(self.countLabel)
         self.infoView.addSubview(self.distance)
+        self.infoView.addSubview(self.distanceEmptyBtn)
         self.addSubview(self.tableView)
         self.addSubview(self.emptyView)
         
@@ -154,6 +159,10 @@ final class AroundView: BaseView {
             $0.right.equalToSuperview().offset(-24)
         }
         
+        self.distanceEmptyBtn.snp.makeConstraints {
+            $0.left.right.top.bottom.equalTo(self.distance)
+        }
+        
         self.tableView.snp.makeConstraints {
             $0.top.equalTo(self.infoView.snp.bottom)
             $0.left.right.bottom.equalToSuperview()
@@ -168,6 +177,9 @@ final class AroundView: BaseView {
     override func setBind() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
+        self.distanceEmptyBtn.rx.tap.subscribe(onNext: {
+            TodocEvents.Around.sortClick.commit()
+        }).disposed(by: self.disposeBag)
     }
     
     private func registerCell() {
@@ -181,10 +193,6 @@ final class AroundView: BaseView {
             return "병원"
         case .pharmacy:
             return "약국"
-        case .corona:
-            return "코로나 진료소"
-        case .secure:
-            return "국민안심병원"
         case .animal:
             return ""
         }
@@ -215,11 +223,8 @@ extension AroundView: UITableViewDataSource {
         } else {
             let cell : AroundNoMoreCell = tableView.dequeueReusableCell(withIdentifier: "AroundNoMoreCell", for: indexPath) as! AroundNoMoreCell
             cell.selectionStyle = .none
-            if self.medicalType == .corona {
-                cell.contentLabel.text = "더 이상 \(self.medicalTitle())가 없습니다."
-            } else {
-                cell.contentLabel.text = "더 이상 \(self.medicalTitle())이 없습니다."
-            }
+            cell.contentLabel.text = "더 이상 \(self.medicalTitle())이 없습니다."
+            
             return cell
         }
     }
