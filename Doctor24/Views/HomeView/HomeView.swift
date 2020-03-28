@@ -16,7 +16,7 @@ import SnapKit
 
 final class HomeView: BaseView, PinDrawable {
     // MARK: Property
-    let coronaSearch      = PublishRelay<CoronaTag.CoronaSearchType>()
+    let medicalType       = BehaviorRelay<Model.Todoc.MedicalType>(value: .hospital)
     let search            = BehaviorRelay<Void>(value: ())
     let regionDidChanging = PublishRelay<Int>()
     let panGestureMap     = PublishRelay<Void>()
@@ -26,14 +26,11 @@ final class HomeView: BaseView, PinDrawable {
     
     var markers           = [NMFMarker]()
     var selectedMarker    = Set<NMFMarker>()
-    private let cameraType = BehaviorSubject<NMFMyPositionMode>(value: .direction)
+    var panGestureRecognizer: UIPanGestureRecognizer!
     
     private let disposeBag = DisposeBag()
-    private var panGestureRecognizer: UIPanGestureRecognizer!
     
     // MARK: UI Componenet
-    let coronaTag = CoronaTag()
-    
     let mapControlView: NMFNaverMapView = {
         let mapView = NMFNaverMapView(frame: CGRect.zero)
         if TodocInfo.shared.theme == .night {
@@ -51,15 +48,7 @@ final class HomeView: BaseView, PinDrawable {
         return mapView
     }()
     
-    private let cameraButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .white()
-        button.setShadow(radius: 30,
-                         shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
-                         shadowOffset: CGSize(width: 0, height: 2),
-                         shadowBlur: 6)
-        return button
-    }()
+    let cameraButton = CameraButton()
     
     let categoryButton: UIButton = {
         let button = UIButton()
@@ -86,7 +75,7 @@ final class HomeView: BaseView, PinDrawable {
         return view
     }()
     
-    private lazy var preview: PreviewFacilityView = {
+    lazy var preview: PreviewFacilityView = {
         let view = PreviewFacilityView(controlBy: vc)
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(previewDragView(_:)))
         let tap = UITapGestureRecognizer(target: self, action: #selector(onDetailView(_:)))
@@ -109,7 +98,7 @@ final class HomeView: BaseView, PinDrawable {
         return view
     }()
     
-    private lazy var operatingView: OperatingHoursSetView = {
+    lazy var operatingView: OperatingHoursSetView = {
         let view = OperatingHoursSetView(controlBy: vc)
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(operatingDragView(_:)))
         let tap = UITapGestureRecognizer(target: self, action: #selector(onOperatingView(_:)))
@@ -132,16 +121,7 @@ final class HomeView: BaseView, PinDrawable {
         return btn
     }()
     
-    let retrySearchView: RetrySearchView = {
-        let view = RetrySearchView()
-        view.backgroundColor = .white()
-        view.setShadow(radius: 22,
-                       shadowColor: UIColor(red: 74, green: 74, blue: 74, alpha: 0.14),
-                       shadowOffset: CGSize(width: 0, height: 2),
-                       shadowBlur: 6)
-        view.hidden(true)
-        return view
-    }()
+    let retrySearchView = RetrySearchView()
     
     deinit {
         self.removeGesture()
@@ -161,7 +141,7 @@ final class HomeView: BaseView, PinDrawable {
     
     override func setBind() {
         self.addGesture()
-        
+
         Observable.merge(self.operatingView.pickerConfirm.asObservable(),
                          self.operatingView.refreshButton.rx.tap.asObservable())
             .do(onNext:  { [weak self] in
@@ -171,6 +151,9 @@ final class HomeView: BaseView, PinDrawable {
             .disposed(by: self.disposeBag)
         
         self.operatingView.closeButton.rx.tap
+            .do(onNext: { _ in
+                TodocEvents.TimeFilter.close.commit()
+            })
             .subscribe(onNext: { [weak self] in
                 self?.dismissOperatingView()
             }).disposed(by: self.disposeBag)
@@ -185,64 +168,27 @@ final class HomeView: BaseView, PinDrawable {
                     self.onOperatingView()
                 }
             }).disposed(by: self.disposeBag)
-  
-        Observable.merge(self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaTag.coronaType),
-                         self.coronaTag.coronaType.asObservable())
-            .filter { $0 != .none }
-            .do(onNext: { [weak self] _ in
-                self?.cameraType.onNext(.normal)
-            })
-            .bind(to: self.coronaSearch)
-            .disposed(by: self.disposeBag)
 
-        self.retrySearchView.button.rx.tap.withLatestFrom(self.coronaTag.coronaType)
-            .filter { $0 == .none }
-            .mapToVoid()
+        self.retrySearchView.button.rx.tap
+            .do(onNext: {
+                TodocEvents.Retry.click.commit()
+            })
             .bind(to: self.search)
             .disposed(by: self.disposeBag)
         
         self.panGestureMap.subscribe(onNext:{ [weak self] in
-            self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
+            self?.cameraButton.cameraType.onNext(.normal)
             self?.retrySearchView.hidden(false)
         }).disposed(by: self.disposeBag)
         
-        self.cameraType
+        self.cameraButton.cameraType
             .subscribe(onNext: { [weak self] type in
-                switch type {
-                case .normal:
-                    self?.cameraButton.setImage(UIImage(named: "cameraOff"), for: .normal)
-                case .direction:
-                    self?.cameraButton.setImage(UIImage(named: "camera2"), for: .normal)
-                case .compass:
-                    self?.cameraButton.setImage(UIImage(named: "camera3"), for: .normal)
-                default:
-                    break
-                }
-                
                 self?.mapControlView.positionMode = type
             }).disposed(by: self.disposeBag)
         
-        self.cameraButton.rx.tap
-            .withLatestFrom(self.cameraType)
-            .map { type -> NMFMyPositionMode in
-                switch type {
-                case .normal:
-                    return .direction
-                case .direction:
-                    return .compass
-                case .compass:
-                    return .normal
-                default:
-                    return .normal
-                }}
-            .bind(to: self.cameraType)
+        self.medicalSelectView.medicalType
+            .bind(to: self.medicalType)
             .disposed(by: self.disposeBag)
-        
-        self.medicalSelectView.medicalLockEvent
-            .withLatestFrom(self.coronaTag.coronaType)
-            .subscribe(onNext: { state in
-                self.toast("\(state.rawValue) 보기 중에는 사용할 수 없습니다.\n\(state.rawValue) 태그를 해제해주세요", duration: 3)
-            }).disposed(by: self.disposeBag)
         
         self.mapControlView.mapView.rx
             .didTapMapView
@@ -261,10 +207,17 @@ final class HomeView: BaseView, PinDrawable {
             }).withLatestFrom(self.markerSignal).map{
                 ($0?.userInfo["tag"] as? Model.Todoc.Facilities)?.facilities.first
             }.unwrap()
+            .do(onNext: { facility in
+                TodocEvents.Marker.detail(id: facility.id,
+                                          name: facility.name,
+                                          category: facility.categories?.joined(separator: ", ") ?? "",
+                                          type: facility.medicalType.rawValue).commit()
+            })
             .bind(to: self.detailFacility)
             .disposed(by: self.disposeBag)
         
         self.categoryButton.rx.tap.subscribe(onNext: {
+            TodocEvents.MedicalCategory.click.commit()
             ViewTransition.shared.execute(scene: .category)
         }).disposed(by: self.disposeBag)
         
@@ -272,13 +225,22 @@ final class HomeView: BaseView, PinDrawable {
             .subscribe(onNext: { [weak self] overlay in
                 guard let self = self else { return }
                 
+                if !self.selectedMarker.isEmpty {
+                    TodocEvents.Marker.dimmed.commit()
+                }
+                
                 self.dismissPreview()
                 if let selected = overlay as? NMFMarker {
-                    self.cameraType.onNext(.normal)
+                    self.cameraButton.cameraType.onNext(.normal)
                     let facilities = selected.userInfo["tag"] as! Model.Todoc.Facilities
                     if facilities.facilities.count > 1 {
                         ViewTransition.shared.execute(scene: .cluster(facilities: facilities.facilities))
                     } else if let facility = facilities.facilities.first {
+                        TodocEvents.Marker.click(id: facility.id,
+                                                 name: facility.name,
+                                                 category: facility.categories?.joined(separator: ", ") ?? "",
+                            type: facility.medicalType.rawValue).commit()
+                        
                         selected.iconImage = self.detailPin(name: facility.name,
                                                             medicalType: facility.medicalType,
                                                             night: facility.nightTimeServe,
@@ -292,361 +254,28 @@ final class HomeView: BaseView, PinDrawable {
                 }
             }).disposed(by: self.disposeBag)
         
-        self.coronaTag.coronaType
-            .subscribe(onNext: { [weak self] state in
-                if state == .none {
-                    self?.medicalSelectView.isMedicalLock = false
-                    self?.revertCoronaView()
-                } else {
-                    self?.medicalSelectView.isMedicalLock = true
-                    self?.convertCoronaView()
-                }
-            }).disposed(by: self.disposeBag)
-        
         TodocInfo.shared.category
             .subscribe(onNext: { [weak self] category in
                 self?.activeCategory.isHidden = category == .전체 ? true : false
             }).disposed(by: self.disposeBag)
     }
-}
-
-// MARK: Private Function
-extension HomeView {
-    private func setLayout() {
-        self.mapControlView.snp.makeConstraints {
-            $0.top.left.right.equalToSuperview()
-            $0.bottom.equalTo(self.preview.snp.top).offset(300)
-        }
-        
-        self.operatingView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(self.frame.height - 132 - self.bottomSafeAreaInset)
-            $0.left.right.equalToSuperview()
-            $0.height.equalTo(396 + bottomSafeAreaInset)
-        }
-        
-        self.cameraButton.snp.makeConstraints {
-            $0.bottom.equalTo(self.operatingView.snp.top).offset(-24)
-            $0.right.equalTo(-24)
-            $0.size.equalTo(58)
-        }
-        
-        self.categoryButton.snp.makeConstraints {
-            $0.bottom.equalTo(self.operatingView.snp.top).offset(-24)
-            $0.left.equalTo(24)
-            $0.size.equalTo(58)
-        }
-        
-        self.medicalSelectView.snp.makeConstraints {
-            $0.top.equalTo(self.safeArea.top)
-            $0.left.equalToSuperview().offset(24)
-            $0.width.equalTo(192)
-            $0.height.equalTo(58)
-        }
-        
-        self.coronaTag.snp.makeConstraints {
-            $0.left.equalTo(self.medicalSelectView)
-            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-            $0.width.equalTo(218)
-            $0.height.equalTo(32)
-        }
-        
-        self.retrySearchView.snp.makeConstraints {
-            $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(72)
-            $0.centerX.equalToSuperview()
-            $0.width.equalTo(110)
-            $0.height.equalTo(44)
-        }
-        
-        self.preview.snp.makeConstraints {
-            $0.left.right.bottom.equalToSuperview()
-            $0.height.equalTo(0)
-        }
-        
-        self.aroundListButton.snp.makeConstraints {
-            $0.size.equalTo(58)
-            $0.centerY.equalTo(self.medicalSelectView)
-            $0.right.equalToSuperview().offset(-24)
-        }
-        
-        self.activeCategory.snp.makeConstraints {
-            $0.top.right.equalTo(self.categoryButton)
-            $0.size.equalTo(20)
-        }
-    }
-
-    private func addSubViews() {
-        self.addSubview(self.mapControlView)
-        self.addSubview(self.operatingView)
-        self.addSubview(self.cameraButton)
-        self.addSubview(self.categoryButton)
-        self.addSubview(self.activeCategory)
-        self.addSubview(self.coronaTag)
-        self.addSubview(self.medicalSelectView)
-        self.addSubview(self.retrySearchView)
-        self.addSubview(self.preview)
-        self.addSubview(self.aroundListButton)
-    }
     
-    private func addGesture() {
-        self.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(triggerTouchAction))
-        self.panGestureRecognizer.delegate = self
-        self.mapControlView.mapView.addGestureRecognizer(self.panGestureRecognizer)
-    }
-    
-    private func removeGesture() {
-        self.mapControlView.mapView.removeGestureRecognizer(self.panGestureRecognizer)
-    }
-    
-    @objc
-    private func triggerTouchAction(){
-        self.panGestureMap.accept(())
-    }
-    
-    @objc
-    private func onOperatingView(_ gestureRecognizer: UIPanGestureRecognizer) {
-        if let state = try? operatingView.viewState.value(), state == .close {
-            self.onOperatorBack()
-            self.onOperatingView()
-        }
-    }
-    
-    @objc
-    private func dismissOperatingView(_ gestureRecognizer: UIPanGestureRecognizer) {
-        self.dismissOperatingView()
-    }
-    
-    @objc
-    private func onDetailView(_ gestureRecognizer: UIPanGestureRecognizer){
-        self.previewFullSignal.accept(())
-    }
-    
-    private func onPreview(with facility: Model.Todoc.PreviewFacility) {
-        let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: facility.latitude, lng: facility.longitude))
-        cameraUpdate.animation = .linear
-        
-        self.mapControlView.mapView.moveCamera(cameraUpdate)
-        self.retrySearchView.isHidden = true
-        self.preview.setData(facility: facility)
-        self.preview.alpha = 1.0
-        self.layoutIfNeeded()
-        var height: CGFloat = 0
-        self.operatingView.isHidden = true
-        //total - 24
-        if facility.medicalType == .hospital {
-            height = 306 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //317
-        } else if facility.medicalType == .corona || facility.medicalType == .secure {
-            height = 260 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
-        } else {
-            height = 236 + self.preview.titleStack.frame.height + self.bottomSafeAreaInset //295
-        }
-        
-        self.preview.snp.updateConstraints {
-            $0.height.equalTo(height)
-        }
-        
-        UIView.animate(withDuration: 0.5,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0.0,
-                       options: [],
-                       animations: {
-                        self.layoutIfNeeded()
-        })
-    }
-    
-    func dismissPreview() {
-        self.operatingView.isHidden = false
-        if !self.selectedMarker.isEmpty {
-            self.unselectPins()
-        }
-        self.preview.snp.updateConstraints {
-            $0.height.equalTo(0)
-        }
-        
-        UIView.animate(withDuration: 0.5,
-                       delay: 0.0,
-                       usingSpringWithDamping: 1.0,
-                       initialSpringVelocity: 0.0,
-                       options: [],
-                       animations: {
-                        self.preview.alpha = 0.0
-                        self.layoutIfNeeded()
-        })
-    }
-    
-    func onOperatorBack() {
-        self.addSubview(self.operatingBackGround)
-        self.operatingBackGround.snp.makeConstraints {
-            $0.top.left.bottom.right.equalToSuperview()
-        }
-        
-        self.bringSubviewToFront(self.operatingView)
-        self.layoutIfNeeded()
-    }
-    
-    func removeOperatorBack() {
-        self.operatingBackGround.snp.removeConstraints()
-        self.operatingBackGround.removeFromSuperview()
-    }
-    
-    func onOperatingView() {
-        guard self.coronaTag.coronaType.value == .none else {
-            let type = self.coronaTag.coronaType.value.rawValue
-            self.toast("\(type) 보기 중에는 사용할 수 없습니다.\n\(type) 태그를 해제해주세요", duration: 3)
-            return
-        }
-        
-        self.operatingView.viewState.onNext(.open)
-        self.operatingView.snp.updateConstraints {
-            $0.top.equalToSuperview().offset(self.frame.height - (396 + bottomSafeAreaInset))
-        }
-        
-        self.animateOpertaingView(show: true)
-    }
-    
-    func dismissOperatingView() {
-        self.operatingBackGround.alpha = 0.0
-        self.removeOperatorBack()
-        self.operatingView.viewState.onNext(.close)
-        self.operatingView.snp.updateConstraints {
-            $0.top.equalToSuperview().offset(self.frame.height -  (132 + bottomSafeAreaInset))
-        }
-        
-        self.animateOpertaingView(show: false)
-        self.bringSubviewToFront(self.preview)
-    }
-    
-    func animateOpertaingView(show: Bool) {
-        var backAlpha: CGFloat = 0.0
-        var alpha : CGFloat = 0.0
-        let maxFontSize:CGFloat = 1
-        let minFontSize:CGFloat = 0.87
-        var size:CGFloat = 0.0
-        
-        let start        = operatingView.startView.startTimeLabel
-        let end          = operatingView.endView.endTimeLabel
-        let spaincg      = operatingView.spacingLabel
-        let pickerView   = operatingView.pickerView
-        let background   = operatingView.operatingBackgroundView
-        let close        = operatingView.closeButton
-        
-        if show {
-            alpha  = 1.0
-            backAlpha = 0.6
-            size = minFontSize
-        } else {
-            alpha  = 0.0
-            backAlpha = 0.0
-            size = maxFontSize
-        }
-        
-        UIView.animate(withDuration: 0.5,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0.0,
-                       options: [],
-                       animations: {
-                        let transform = CGAffineTransform(scaleX: size, y: size)
-                        close.isHidden = show ? false:true
-                        start.transform = transform
-                        end.transform   = transform
-                        spaincg.transform = transform
-                        
-                        pickerView.alpha = alpha
-                        background.alpha = alpha
-                        close.alpha      = alpha
-                        self.operatingBackGround.alpha = backAlpha
-                        self.layoutIfNeeded()
-        })
-    }
-    
-    func convertCoronaView() {
-        let start        = operatingView.startView.startTimeLabel
-        let end          = operatingView.endView.endTimeLabel
-        let spacing      = operatingView.spacingLabel
-        let holder       = operatingView.holderView
-        let title        = operatingView.titleLabel
-        let refresh      = operatingView.refreshButton
-        
-        self.operatingView.snp.updateConstraints {
-            $0.top.equalToSuperview().offset(self.frame.height - (56 + bottomSafeAreaInset))
-        }
-        
-        UIView.animate(withDuration: 0.5,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0.0,
-                       options: [],
-                       animations: {
-                        start.alpha = 0.0
-                        end.alpha = 0.0
-                        spacing.alpha = 0.0
-                        holder.alpha = 0.0
-                        refresh.alpha = 0.0
-                        title.textColor = .grey3()
-                        self.categoryButton.alpha = 0.0
-                        self.layoutIfNeeded()
-        })
-    }
-    
-    func revertCoronaView() {
-        let start        = operatingView.startView.startTimeLabel
-        let end          = operatingView.endView.endTimeLabel
-        let spacing      = operatingView.spacingLabel
-        let holder       = operatingView.holderView
-        let title        = operatingView.titleLabel
-        let refresh      = operatingView.refreshButton
-        
-        self.operatingView.snp.updateConstraints {
-            $0.top.equalToSuperview().offset(self.frame.height -  (132 + bottomSafeAreaInset))
-        }
-        
-        UIView.animate(withDuration: 0.5,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0.0,
-                       options: [],
-                       animations: {
-                        start.alpha = 1.0
-                        end.alpha = 1.0
-                        spacing.alpha = 1.0
-                        holder.alpha = 1.0
-                        refresh.alpha = 1.0
-                        title.textColor = .grey1()
-                        self.categoryButton.alpha = 1.0
-                        self.layoutIfNeeded()
-        })
-    }
-    
-    func coronaButtonHide(_ hide: Bool) {
-        var alpha: CGFloat = 0.0
-        if hide {
-            alpha = 0.0
-            self.coronaTag.snp.remakeConstraints {
-                $0.left.equalTo(self.medicalSelectView)
-                $0.top.equalTo(self.medicalSelectView.snp.top)
-                $0.width.equalTo(0)
-                $0.height.equalTo(0)
-            }
-        } else {
-            alpha = 1.0
-            self.coronaTag.snp.remakeConstraints {
-                $0.left.equalTo(self.medicalSelectView)
-                $0.top.equalTo(self.medicalSelectView.snp.bottom).offset(16)
-                $0.width.equalTo(218)
-                $0.height.equalTo(32)
+    func moveToCurrentCamera() -> Observable<Void>{
+        return Observable.create{ observer in
+            let dispose = TodocInfo.shared.currentLocation
+                .subscribe(onNext : { [weak self] location in
+                    let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: location.latitude, lng: location.longitude), zoomTo: 14)
+                    cameraUpdate.animation = .linear
+                    self?.mapControlView.mapView.moveCamera(cameraUpdate, completion: { _ in
+                        observer.onNext(())
+                        observer.onCompleted()
+                    })
+                })
+            
+            return Disposables.create{
+                dispose.dispose()
             }
         }
-        
-        UIView.animate(withDuration: 0.5,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.7,
-                       initialSpringVelocity: 0,
-                       options: [.curveLinear],
-                       animations: {
-                        self.coronaTag.alpha = alpha
-                        self.layoutIfNeeded()
-        })
     }
 }
 

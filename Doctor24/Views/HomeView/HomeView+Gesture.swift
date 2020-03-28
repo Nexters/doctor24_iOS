@@ -12,7 +12,7 @@ import SnapKit
 extension HomeView {
     @objc
     func operatingDragView(_ gesture : UIGestureRecognizer){
-//        guard self.coronaButton.buttonState.value == .normal else { return }
+        guard self.medicalType.value == .hospital || self.medicalType.value == .pharmacy else { return }
         
         var maxHeight: CGFloat = 0.0
         var originHeight:CGFloat = 0.0
@@ -71,8 +71,6 @@ extension HomeView {
         var contentViewHeight: CGFloat = bottomSafeAreaInset
         if preview.facility.medicalType == .hospital {
             contentViewHeight = 306 + preview.titleStack.frame.height + self.bottomSafeAreaInset
-        }  else if preview.facility.medicalType == .corona {
-            contentViewHeight = 260 + preview.titleStack.frame.height + self.bottomSafeAreaInset //295
         } else {
             contentViewHeight = 236 + preview.titleStack.frame.height + self.bottomSafeAreaInset
         }
@@ -97,6 +95,7 @@ extension HomeView {
                             if point.y <= self.vc.view.frame.height / 2 {
                                 self.previewFullSignal.accept(())
                             } else if self.vc.view.frame.height - point.y <= (contentViewHeight * 2) / 3 {
+                                TodocEvents.Marker.bottomDragEnd.commit()
                                 self.dismissPreview()
                             } else {
                                 height = contentViewHeight

@@ -138,6 +138,7 @@ final class OperatingHoursSetView: BaseView {
             self.refreshButton.isHidden = true
             let start = Date()
             let end   = Date().addingTimeInterval(TimeInterval(60.0*60.0))
+            TodocEvents.TimeFilter.refresh.commit()
             TodocInfo.shared.startTimeFilter.onNext(start)
             TodocInfo.shared.endTimeFilter.onNext(end)
             self.startView.startTimeLabel.text = start.convertDate
@@ -159,6 +160,7 @@ final class OperatingHoursSetView: BaseView {
         self.startView.startTimeButton.rx.tap
             .withLatestFrom(self.viewState).filter { $0 == .open }
             .do(onNext: { [weak self] _ in
+                TodocEvents.TimeFilter.startClick.commit()
                 self?.startView.able(true)
                 self?.endView.able(false)
             })
@@ -169,6 +171,7 @@ final class OperatingHoursSetView: BaseView {
         self.endView.endTimeButton.rx.tap
             .withLatestFrom(self.viewState).filter { $0 == .open }
             .do(onNext: { [weak self] _ in
+                TodocEvents.TimeFilter.endClick.commit()
                 self?.startView.able(false)
                 self?.endView.able(true)
             })
@@ -196,6 +199,9 @@ final class OperatingHoursSetView: BaseView {
                 self.refreshButton.isHidden = false
                 TodocInfo.shared.startTimeFilter.onNext(self.startTime)
                 TodocInfo.shared.endTimeFilter.onNext(self.endTime)
+                TodocEvents.TimeFilter
+                    .confirm(start: self.startTime.convertParam,
+                             end: self.endTime.convertParam).commit()
             })
             .bind(to: self.pickerConfirm)
             .disposed(by:self.disposeBag)

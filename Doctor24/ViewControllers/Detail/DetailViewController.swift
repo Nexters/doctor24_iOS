@@ -55,6 +55,7 @@ class DetailViewController: BaseViewController, View {
     override func setBind() {
         self.detailView.topBar.closeButton.rx.tap
             .subscribe(onNext: {[weak self] in
+                TodocEvents.Detail.close.commit()
                 self?.dismiss(animated: true, completion: nil)
             }).disposed(by:self.disposeBag)
     }
