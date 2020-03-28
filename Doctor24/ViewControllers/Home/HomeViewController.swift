@@ -60,11 +60,6 @@ final class HomeViewController: BaseViewController, View {
             .withLatestFrom(Observable.combineLatest(TodocInfo.shared.startTimeFilter.unwrap(),
                                                      TodocInfo.shared.endTimeFilter.unwrap())) { ($0,$1.0,$1.1) }
             .skip(1)
-            .do(onNext:{ [weak self] (location, _, _) in
-                let cameraUpdate = NMFCameraUpdate(scrollTo: NMGLatLng(lat: location.latitude, lng: location.longitude), zoomTo: 14)
-                cameraUpdate.animation = .linear
-                self?.homeView.mapControlView.mapView.moveCamera(cameraUpdate)
-            })
             .flatMap { [weak self] data -> Observable<(CLLocationCoordinate2D, Date, Date)> in
                 guard let self = self else { return Observable.just(data) }
                 return self.homeView.moveToCurrentCamera().map{ _ in data }
