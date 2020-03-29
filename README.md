@@ -1,6 +1,6 @@
 ## 토닥토닥
 
-<img src="./pictures/splashIcon.png"/> Todoc is provides searching hospitals and pharmacies nearby.
+<img align="left src="./pictures/splashIcon.png"/> **Todoc is provides searching hospitals and pharmacies nearby.**
 
 ## Screenshot
 
