@@ -1,12 +1,13 @@
 ## 토닥토닥
 
 <img align="left" src="./pictures/splashIcon.png"/> 
-Todoc is provides searching hospitals and pharmacies nearby. <br/>
+Todoc is provides searching hospitals and pharmacies nearby.
 
 ## Screenshot
 
-<img src="./pictures/screen1.png" width="20%" height="20%" /> <img src="./pictures/screen2.png" width="20%" height="20%"/>
-<img src="./pictures/screen3.png" width="20%" height="20%" /> <img src="./pictures/screen4.png" width="20%" height="20%"/> <img src="./pictures/screen5.png" width="20%" height="20%" /> <img src="./pictures/screen6.png" width="20%" height="20%"/> 
+<img src="./pictures/screen1.png" width="20%" height="20%"/> <img src="./pictures/screen2.png" width="20%" height="20%"/>
+<img src="./pictures/screen3.png" width="20%" height="20%"/> <img src="./pictures/screen4.png" width="20%" height="20%"/> 
+<img src="./pictures/screen5.png" width="20%" height="20%"/> <img src="./pictures/screen6.png" width="20%" height="20%"/> 
 
 ## Concept
 
