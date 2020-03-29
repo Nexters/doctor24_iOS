@@ -1,5 +1,6 @@
 ## 토닥토닥
 
+[App store](https://itunes.apple.com/kr/app/tiptap/id1439433799?mt=8)<br/>
 <img src="./pictures/splashIcon.png"/> **Todoc is provides searching hospitals and pharmacies nearby.**
 
 ## Screenshot
