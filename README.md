@@ -20,13 +20,10 @@
 #### Architecture
 - Clean Architecture
 - ReactorKit
-
 #### UI
 - SnapKit
-
 #### Reactive
 - RxSwift
 - RxCocoa
-
 #### Network
 - Alamofire
